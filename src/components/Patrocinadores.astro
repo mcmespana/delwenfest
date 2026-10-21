@@ -1,0 +1,120 @@
+---
+import { Image } from 'astro:assets';
+import { SPONSORS } from '../data/event';
+---
+
+<section id="colaboradores" class="relative overflow-hidden bg-cream py-28 md:py-36">
+  <div class="paper-texture !opacity-40"></div>
+  <div class="relative mx-auto max-w-7xl px-4 sm:px-8">
+    <div class="grid items-center gap-14 lg:grid-cols-2">
+      <div>
+        <p class="eyebrow text-coral" data-reveal="up">✦ {SPONSORS.length} colaboradores</p>
+        <h2 class="section-title mt-3" data-split>Gracias a<br /><span class="text-pop [--pop:var(--color-gold)]">quienes suman</span></h2>
+        <p class="mt-6 max-w-md text-lg leading-snug font-semibold sm:text-xl" data-reveal="up">
+          Negocios y entidades de Castellón que hacen posible el DelwenFest. Desliza la baraja para descubrirlos uno a uno.
+        </p>
+        <div class="mt-8 flex items-center gap-4" data-reveal="up">
+          <button type="button" class="sticker grid size-14 place-items-center rounded-full bg-cream !shadow-[var(--shadow-hard-sm)] transition-transform hover:-translate-y-0.5" aria-label="Colaborador anterior" data-prev>
+            <svg viewBox="0 0 24 24" class="size-6" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M15 5l-7 7 7 7"></path></svg>
+          </button>
+          <p class="font-display min-w-24 text-center text-3xl tabular-nums" aria-live="polite"><span data-current>01</span><span class="text-ink/40"> / {String(SPONSORS.length).padStart(2, '0')}</span></p>
+          <button type="button" class="sticker grid size-14 place-items-center rounded-full bg-gold !shadow-[var(--shadow-hard-sm)] transition-transform hover:-translate-y-0.5" aria-label="Siguiente colaborador" data-next>
+            <svg viewBox="0 0 24 24" class="size-6" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M9 5l7 7-7 7"></path></svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="relative mx-auto w-full max-w-[340px] sm:max-w-[380px]" data-reveal="pop">
+        <div class="swiper !overflow-visible" data-deck>
+          <div class="swiper-wrapper">
+            {
+              SPONSORS.map((s) => (
+                <div class="swiper-slide !h-auto">
+                  <article class="relative flex aspect-[3/4] flex-col overflow-hidden rounded-[2rem] border-[3px] border-ink p-6" style={`background:${s.bg}`}>
+                    <div class="absolute -top-16 -right-16 size-48 rounded-full bg-white/15" />
+                    <div class="absolute -bottom-20 -left-10 size-56 rounded-full bg-black/10" />
+                    <div class="relative grid flex-1 place-items-center rounded-[1.5rem] border-[3px] border-ink bg-white p-6 shadow-[var(--shadow-hard-sm)]">
+                      <Image src={s.logo} alt={`Logo de ${s.name}`} widths={[200, 400]} sizes="260px" class="max-h-44 w-auto max-w-full object-contain" loading="lazy" />
+                    </div>
+                    <div class={`relative mt-5 ${s.dark ? 'text-cream' : 'text-ink'}`}>
+                      <p class="font-display text-[1.7rem] leading-[0.95] uppercase">{s.name}</p>
+                      <p class="mt-1 font-semibold opacity-80">{s.kind}</p>
+                    </div>
+                  </article>
+                </div>
+              ))
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cinta infinita con todos los logos -->
+  <div class="relative mt-24 flex flex-col gap-5" aria-hidden="true">
+    {
+      [1, -1].map((dir) => (
+        <div class="overflow-hidden" data-logo-row data-dir={dir}>
+          <div class="flex w-max gap-5" data-logo-track>
+            {[...SPONSORS, ...SPONSORS].map((s) => (
+              <div class="sticker grid h-24 w-44 shrink-0 place-items-center rounded-2xl bg-white p-4 !shadow-[var(--shadow-hard-sm)] sm:h-28 sm:w-52">
+                <Image src={s.logo} alt="" widths={[200, 400]} sizes="200px" class="max-h-full w-auto max-w-full object-contain" loading="lazy" />
+              </div>
+            ))}
+          </div>
+        </div>
+      ))
+    }
+  </div>
+</section>
+
+<script>
+  import Swiper from 'swiper';
+  import { EffectCards, Keyboard, A11y, Autoplay } from 'swiper/modules';
+  import 'swiper/css';
+  import 'swiper/css/effect-cards';
+  import confetti from 'canvas-confetti';
+  import { gsap, reduceMotion } from '../scripts/motion';
+
+  const current = document.querySelector<HTMLElement>('[data-current]')!;
+  let celebrated = false;
+
+  const deck = new Swiper('[data-deck]', {
+    modules: [EffectCards, Keyboard, A11y, Autoplay],
+    effect: 'cards',
+    grabCursor: true,
+    loop: false,
+    keyboard: { enabled: true },
+    cardsEffect: { perSlideOffset: 9, perSlideRotate: 3, rotate: true, slideShadows: false },
+    autoplay: reduceMotion ? false : { delay: 2600, disableOnInteraction: true, pauseOnMouseEnter: true },
+    a11y: { prevSlideMessage: 'Colaborador anterior', nextSlideMessage: 'Siguiente colaborador' },
+    on: {
+      slideChange(s) {
+        current.textContent = String(s.activeIndex + 1).padStart(2, '0');
+        if (!reduceMotion) gsap.fromTo(current, { yPercent: -60, opacity: 0 }, { yPercent: 0, opacity: 1, duration: 0.4, ease: 'back.out(2)' });
+        if (s.isEnd && !celebrated) {
+          celebrated = true;
+          confetti({ particleCount: 120, spread: 90, origin: { y: 0.6 }, colors: ['#8cc63f', '#f5b50b', '#f87341', '#f7363a', '#1fb3b0'], disableForReducedMotion: true });
+        }
+      },
+    },
+  });
+  // El autoplay solo arranca cuando la baraja está a la vista
+  if (deck.autoplay) {
+    deck.autoplay.stop();
+    new IntersectionObserver(([e]) => (e.isIntersecting ? deck.autoplay.start() : deck.autoplay.stop()), { threshold: 0.4 }).observe(deck.el);
+  }
+
+  document.querySelector('[data-prev]')?.addEventListener('click', () => deck.slidePrev());
+  document.querySelector('[data-next]')?.addEventListener('click', () => (deck.isEnd ? deck.slideTo(0) : deck.slideNext()));
+
+  if (!reduceMotion) {
+    gsap.utils.toArray<HTMLElement>('[data-logo-row]').forEach((row) => {
+      const dir = Number(row.dataset.dir);
+      const track = row.querySelector('[data-logo-track]')!;
+      const tween = gsap.fromTo(track, { xPercent: dir > 0 ? 0 : -50 }, { xPercent: dir > 0 ? -50 : 0, duration: 60, ease: 'none', repeat: -1 });
+      row.addEventListener('pointerenter', () => gsap.to(tween, { timeScale: 0.2, duration: 0.6 }));
+      row.addEventListener('pointerleave', () => gsap.to(tween, { timeScale: 1, duration: 0.6 }));
+    });
+  }
+</script>

@@ -1,0 +1,165 @@
+---
+import { Image } from 'astro:assets';
+import delwende from '../assets/partners/delwende.webp';
+import donativo from '../assets/brand/badge-donativo.webp';
+import { CAUSE } from '../data/event';
+
+const stats = [
+  { n: 85, suffix: '', label: 'jóvenes atendidas en el centro' },
+  { n: 15, to: 25, label: 'años: la edad de las alumnas' },
+  { n: 100, suffix: '%', label: 'de lo recaudado va al proyecto' },
+  { n: CAUSE.distanceKm, suffix: ' km', label: 'entre Castellón y Atakpamé' },
+];
+const chipColors = ['bg-gold', 'bg-coral', 'bg-lime', 'bg-teal', 'bg-pink', 'bg-amber'];
+---
+
+<section id="causa" class="relative overflow-hidden bg-gold px-4 py-28 sm:px-8 md:py-36">
+  <div class="paper-texture !opacity-35"></div>
+  <div class="relative mx-auto max-w-7xl">
+    <div class="grid gap-12 lg:grid-cols-[1.25fr_0.75fr] lg:items-end">
+      <div>
+        <p class="eyebrow" data-reveal="up">✦ Destinado a…</p>
+        <p class="mt-6 font-display text-[clamp(2rem,4.6vw,4.2rem)] leading-[1.02] uppercase" data-words>
+          Todo lo recaudado irá destinado al proyecto de la ONGD Delwende: el Centro de Promoción Social de la Mujer en Atakpamé (Togo).
+        </p>
+      </div>
+      <div class="relative flex flex-col items-start gap-6 lg:items-end">
+        <div class="relative w-44 sm:w-52" data-donativo>
+          <Image src={donativo} alt="Donativo: 2 euros" widths={[300, 600]} sizes="210px" class="h-auto w-full drop-shadow-[6px_6px_0_rgba(36,33,30,.9)]" />
+        </div>
+        <div class="sticker rounded-2xl bg-cream px-5 py-4" data-reveal="up">
+          <Image src={delwende} alt="Delwende, al servicio de la vida" widths={[300, 600]} sizes="260px" class="h-auto w-56 sm:w-64" />
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-16 grid gap-10 lg:grid-cols-2 lg:gap-16">
+      <div class="sticker relative rounded-[2rem] bg-cream p-7 sm:p-10" data-reveal="up">
+        <h3 class="font-display text-3xl leading-none uppercase sm:text-4xl">{CAUSE.project}</h3>
+        <p class="mt-1 font-display text-xl text-forest uppercase">{CAUSE.place}</p>
+        <p class="mt-5 text-lg leading-snug font-semibold sm:text-xl">
+          {CAUSE.intro} Allí reciben alfabetización y formación profesional en costura y peluquería, además de educación sanitaria, cultural y sobre gestión de cooperativas.
+        </p>
+        <p class="mt-4 text-lg leading-snug font-semibold sm:text-xl">
+          El centro atiende a <strong class="font-black">85 jóvenes de entre 15 y 25 años</strong>, ayudándolas a adquirir conocimientos y habilidades que puedan abrirles nuevas oportunidades.
+        </p>
+        <ul class="mt-7 flex flex-wrap gap-2.5" aria-label="Formación que reciben">
+          {
+            CAUSE.learn.map((l, i) => (
+              <li class={`rounded-full border-[2.5px] border-ink px-4 pt-2 pb-1.5 font-display text-base uppercase shadow-[var(--shadow-hard-sm)] ${chipColors[i % chipColors.length]}`} data-chip>
+                {l}
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+
+      <div class="flex flex-col gap-8">
+        <dl class="grid grid-cols-2 gap-4 sm:gap-5">
+          {
+            stats.map((s) => (
+              <div class="sticker rounded-[1.5rem] bg-ink p-5 text-cream sm:p-6" data-stat>
+                <dt class="sr-only">{s.label}</dt>
+                <dd>
+                  <p class="font-display text-[clamp(2.4rem,5vw,3.8rem)] leading-none text-gold tabular-nums">
+                    <span data-count={s.n}>{s.n.toLocaleString('es-ES')}</span>{s.to && <>–<span data-count={s.to}>{s.to}</span></>}{s.suffix}
+                  </p>
+                  <p class="mt-2 text-base leading-tight font-semibold text-cream/80">{s.label}</p>
+                </dd>
+              </div>
+            ))
+          }
+        </dl>
+
+        <!-- Ruta Castellón → Atakpamé -->
+        <div class="sticker relative overflow-hidden rounded-[2rem] bg-cream p-6 sm:p-8" data-reveal="up">
+          <svg viewBox="0 0 400 170" class="h-auto w-full" aria-labelledby="ruta-title" role="img">
+            <title id="ruta-title">De Castellón a Atakpamé (Togo): 3.611 km</title>
+            <path d="M40 120 C 120 -10, 280 -10, 360 120" fill="none" stroke="#24211e" stroke-opacity=".15" stroke-width="4" stroke-dasharray="2 10" stroke-linecap="round"></path>
+            <path d="M40 120 C 120 -10, 280 -10, 360 120" fill="none" stroke="#f7363a" stroke-width="5" stroke-linecap="round" data-route></path>
+            <circle cx="40" cy="120" r="10" fill="#24211e"></circle>
+            <circle cx="360" cy="120" r="10" fill="#1d8462"></circle>
+            <circle cx="360" cy="120" r="10" fill="none" stroke="#1d8462" stroke-width="3" class="origin-[360px_120px] animate-pulse-ring"></circle>
+            <g data-heart>
+              <path d="M0 -6 C -6 -14 -18 -8 -12 2 L0 12 L12 2 C18 -8 6 -14 0 -6Z" fill="#f7363a" stroke="#24211e" stroke-width="2.5"></path>
+            </g>
+            <text x="40" y="152" text-anchor="middle" font-family="Chau Philomene One" font-size="18" fill="#24211e">CASTELLÓN</text>
+            <text x="360" y="152" text-anchor="middle" font-family="Chau Philomene One" font-size="18" fill="#1d8462">ATAKPAMÉ</text>
+          </svg>
+          <p class="mt-2 text-center text-lg font-semibold">Tu tarde de fiesta aquí, una oportunidad allí.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  import { gsap, ScrollTrigger, SplitText, reduceMotion } from '../scripts/motion';
+
+  if (!reduceMotion) {
+    // Texto que se “enciende” palabra a palabra al hacer scroll
+    const words = new SplitText('[data-words]', { type: 'words' });
+    gsap.fromTo(
+      words.words,
+      { opacity: 0.15 },
+      { opacity: 1, stagger: 0.1, ease: 'none', scrollTrigger: { trigger: '[data-words]', start: 'top 80%', end: 'bottom 45%', scrub: true } },
+    );
+
+    gsap.from('[data-donativo]', {
+      scale: 0,
+      rotate: -200,
+      duration: 1.2,
+      ease: 'back.out(1.8)',
+      scrollTrigger: { trigger: '[data-donativo]', start: 'top 90%', once: true },
+    });
+    gsap.to('[data-donativo]', { rotate: 10, y: -10, duration: 2.4, ease: 'sine.inOut', yoyo: true, repeat: -1 });
+
+    gsap.from('[data-chip]', {
+      scale: 0,
+      rotate: () => gsap.utils.random(-25, 25),
+      duration: 0.7,
+      stagger: 0.08,
+      ease: 'back.out(2.5)',
+      scrollTrigger: { trigger: '[data-chip]', start: 'top 92%', once: true },
+    });
+
+    gsap.from('[data-stat]', {
+      y: 60,
+      opacity: 0,
+      duration: 0.8,
+      stagger: 0.1,
+      ease: 'back.out(1.6)',
+      scrollTrigger: { trigger: '[data-stat]', start: 'top 88%', once: true },
+    });
+
+    // Contadores
+    document.querySelectorAll<HTMLElement>('[data-count]').forEach((el) => {
+      const target = Number(el.dataset.count);
+      const obj = { v: 0 };
+      el.textContent = '0';
+      gsap.to(obj, {
+        v: target,
+        duration: 2,
+        ease: 'power3.out',
+        scrollTrigger: { trigger: el, start: 'top 92%', once: true },
+        onUpdate: () => (el.textContent = Math.round(obj.v).toLocaleString('es-ES')),
+      });
+    });
+
+    // Ruta con corazón viajando
+    const route = document.querySelector<SVGPathElement>('[data-route]')!;
+    const heart = document.querySelector<SVGGElement>('[data-heart]')!;
+    const len = route.getTotalLength();
+    gsap.set(route, { strokeDasharray: len, strokeDashoffset: len });
+    const progress = { t: 0 };
+    const placeHeart = () => {
+      const p = route.getPointAtLength(progress.t * len);
+      heart.setAttribute('transform', `translate(${p.x} ${p.y})`);
+    };
+    placeHeart();
+    gsap
+      .timeline({ scrollTrigger: { trigger: route, start: 'top 85%', end: 'bottom 40%', scrub: 0.6 } })
+      .to(route, { strokeDashoffset: 0, ease: 'none' }, 0)
+      .to(progress, { t: 1, ease: 'none', onUpdate: placeHeart }, 0);
+  }
+</script>

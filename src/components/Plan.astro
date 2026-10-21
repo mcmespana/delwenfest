@@ -1,0 +1,95 @@
+---
+import { Image } from 'astro:assets';
+import { ACTIVITIES } from '../data/event';
+---
+
+<section id="plan" class="relative overflow-hidden bg-mint px-4 pt-28 pb-32 sm:px-8">
+  <div class="paper-texture"></div>
+  <div class="relative mx-auto max-w-7xl">
+    <div class="mb-14 flex flex-col gap-6 md:mb-20 md:flex-row md:items-end md:justify-between">
+      <div>
+        <p class="eyebrow text-forest" data-reveal="up">✦ Todo el plan</p>
+        <h2 class="section-title mt-3" data-split>
+          Una tarde<br /><span class="text-pop">para no parar</span>
+        </h2>
+      </div>
+      <p class="max-w-md text-lg leading-snug font-semibold sm:text-xl" data-reveal="up">
+        Juegos, comida, música, premios y mucha fiesta. Todo con una única misión: que lo recaudado llegue a Atakpamé (Togo).
+      </p>
+    </div>
+
+    <div class="grid auto-rows-[minmax(250px,auto)] grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-4 md:gap-6" data-bento>
+      {
+        ACTIVITIES.map((a) => (
+          <article
+            class={`sticker group perspective relative isolate overflow-visible rounded-[2rem] p-6 pb-44 sm:p-7 sm:pb-36 md:pb-7 ${a.theme} ${a.span}`}
+            data-card
+            data-tilt
+          >
+            <div class="relative z-10 flex h-full max-w-[72%] flex-col justify-between gap-4 md:max-w-[62%] md:gap-6">
+              <div>
+                {a.tag && (
+                  <span class="mb-3 inline-block rounded-full border-2 border-current bg-cream/90 px-3 pt-1 pb-0.5 font-display text-sm text-ink">
+                    {a.tag}
+                  </span>
+                )}
+                <h3 class="font-display text-[clamp(2rem,3.4vw,3rem)] leading-[0.9] uppercase">{a.title}</h3>
+              </div>
+              <p class="text-base leading-snug font-semibold sm:text-lg">{a.text}</p>
+            </div>
+            {a.imgs.map((img) => (
+              <Image
+                src={img.src}
+                alt={img.alt}
+                widths={[240, 480, 720]}
+                sizes="(min-width: 768px) 25vw, 60vw"
+                class={`pointer-events-none absolute z-20 h-auto drop-shadow-[6px_8px_0_rgba(36,33,30,.22)] transition-transform duration-500 ease-[var(--ease-bounce)] group-hover:scale-110 group-hover:-rotate-3 max-md:!top-auto max-md:!bottom-[-5%] ${img.cls}`}
+                data-card-img
+              />
+            ))}
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<script>
+  import { gsap, ScrollTrigger, finePointer, reduceMotion } from '../scripts/motion';
+
+  if (!reduceMotion) {
+    const cards = gsap.utils.toArray<HTMLElement>('[data-card]');
+    gsap.set(cards, { opacity: 0, y: 120, rotate: () => gsap.utils.random(-8, 8), scale: 0.9 });
+    ScrollTrigger.batch(cards, {
+      start: 'top 88%',
+      once: true,
+      onEnter: (batch) =>
+        gsap.to(batch, { opacity: 1, y: 0, rotate: 0, scale: 1, duration: 1, stagger: 0.12, ease: 'back.out(1.4)', clearProps: 'transform' }),
+    });
+    const wide = window.matchMedia('(min-width: 768px)').matches;
+    cards.forEach((c) => {
+      if (!wide) return;
+      c.querySelectorAll('[data-card-img]').forEach((img) => {
+        gsap.fromTo(img, { yPercent: 18 }, { yPercent: -18, ease: 'none', scrollTrigger: { trigger: c, start: 'top bottom', end: 'bottom top', scrub: true } });
+      });
+    });
+
+    // Inclinación 3D al pasar el ratón
+    if (finePointer) {
+      cards.forEach((card) => {
+        const rx = gsap.quickTo(card, 'rotationX', { duration: 0.6, ease: 'power3.out' });
+        const ry = gsap.quickTo(card, 'rotationY', { duration: 0.6, ease: 'power3.out' });
+        gsap.set(card, { transformPerspective: 900 });
+        card.addEventListener('pointermove', (e) => {
+          const r = card.getBoundingClientRect();
+          ry(((e.clientX - r.left) / r.width - 0.5) * 12);
+          rx(-((e.clientY - r.top) / r.height - 0.5) * 12);
+        });
+        card.addEventListener('pointerleave', () => {
+          rx(0);
+          ry(0);
+        });
+      });
+    }
+  }
+</script>

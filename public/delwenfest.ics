@@ -1,0 +1,22 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//MCM Castellon//DELWENFEST//ES
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+BEGIN:VEVENT
+UID:delwenfest-2026@movimientoconsolacion.com
+DTSTAMP:20261021T120000Z
+DTSTART:20261030T161500Z
+DTEND:20261030T213000Z
+SUMMARY:DELWENFEST · Festival solidario Delwende
+DESCRIPTION:Festival solidario a beneficio de la ONGD Delwende. Juegos\, food trucks\, bingo musical\, premios\, rifa\, Sinbikini en directo\, Rodhel Show DJ\, toro mecánico e hinchables.\nEntrada por C/ Mª Rosa Molas (delante del Carrefour Express).\nhttps://delwenfest.movimientoconsolacion.com
+LOCATION:Colegio Consolación Castellón\, Avda. Virgen de Lidón 49\, 12004 Castellón de la Plana
+GEO:39.99179;-0.03084
+URL:https://delwenfest.movimientoconsolacion.com
+BEGIN:VALARM
+TRIGGER:-PT2H
+ACTION:DISPLAY
+DESCRIPTION:¡Hoy es el DELWENFEST!
+END:VALARM
+END:VEVENT
+END:VCALENDAR

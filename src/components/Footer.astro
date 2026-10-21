@@ -1,0 +1,84 @@
+---
+import { Image } from 'astro:assets';
+import delwen from '../assets/brand/delwen.webp';
+import fest from '../assets/brand/fest.webp';
+import mcm from '../assets/partners/mcm.webp';
+import delwende from '../assets/partners/delwende.webp';
+import { INSTITUTIONS, SOCIAL, EVENT } from '../data/event';
+---
+
+<footer class="relative overflow-hidden bg-ink px-4 pt-24 pb-10 text-cream sm:px-8">
+  <div class="relative mx-auto max-w-7xl">
+    <div class="grid gap-6 md:grid-cols-3">
+      <div class="rounded-[2rem] bg-cream p-7 text-ink" data-reveal="up">
+        <p class="eyebrow text-ink/60">Organiza</p>
+        <Image src={mcm} alt="Movimiento Consolación para el Mundo" widths={[300, 600]} sizes="260px" class="mt-4 h-auto w-60" />
+      </div>
+      <div class="rounded-[2rem] bg-cream p-7 text-ink" data-reveal="up">
+        <p class="eyebrow text-ink/60">En beneficio de la ONGD</p>
+        <Image src={delwende} alt="Delwende, al servicio de la vida" widths={[300, 600]} sizes="280px" class="mt-6 h-auto w-64" />
+      </div>
+      <div class="rounded-[2rem] bg-gold p-7 text-ink" data-reveal="up">
+        <p class="eyebrow text-ink/60">Síguenos</p>
+        <ul class="mt-4 flex flex-col gap-3">
+          {
+            SOCIAL.map((s) => (
+              <li>
+                <a href={s.url} target="_blank" rel="noopener" class="group flex items-center gap-3 font-display text-2xl">
+                  <span class="grid size-10 place-items-center rounded-xl bg-[linear-gradient(45deg,#f9ce34,#ee2a7b,#6228d7)] text-white transition-transform duration-300 group-hover:rotate-12">
+                    <svg viewBox="0 0 24 24" class="size-5" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
+                      <rect x="3" y="3" width="18" height="18" rx="5" />
+                      <circle cx="12" cy="12" r="4" />
+                      <circle cx="17.5" cy="6.5" r="1" fill="currentColor" />
+                    </svg>
+                  </span>
+                  <span class="underline decoration-[3px] underline-offset-4 decoration-transparent transition-colors group-hover:decoration-ink">{s.label}</span>
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+
+    <div class="mt-6 rounded-[2rem] bg-cream p-7 text-ink" data-reveal="up">
+      <p class="eyebrow text-ink/60">Con la colaboración de</p>
+      <ul class="mt-5 flex flex-wrap items-center gap-x-10 gap-y-6">
+        {
+          INSTITUTIONS.map((i) => (
+            <li>
+              <Image src={i.logo} alt={i.name} widths={[300, 600]} sizes="240px" class={`h-auto ${i.w}`} />
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+
+    <div class="relative mt-20 select-none" aria-hidden="true" data-footer-mark>
+      <span class="relative mx-auto block aspect-[1191/337] w-full max-w-6xl">
+        <span class="absolute top-0 left-0 block w-[68.5%]"><Image src={delwen} alt="" widths={[800, 1600]} sizes="70vw" class="h-auto w-full" /></span>
+        <span class="absolute top-[0.6%] left-[60.4%] block w-[39.6%]"><Image src={fest} alt="" widths={[500, 925]} sizes="40vw" class="h-auto w-full" /></span>
+      </span>
+    </div>
+
+    <div class="mt-10 flex flex-col items-center justify-between gap-3 border-t border-cream/15 pt-6 text-sm text-cream/60 sm:flex-row">
+      <p>DELWENFEST · {EVENT.weekday} 30 de octubre de 2026 · Consolación Castellón</p>
+      <p>Hecho con ♥ por MCM Castellón</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+  import { gsap, reduceMotion } from '../scripts/motion';
+  if (!reduceMotion) {
+    gsap.from('[data-footer-mark] > span > span', {
+      yPercent: 70,
+      rotate: (i: number) => (i ? 8 : -8),
+      opacity: 0,
+      duration: 1.2,
+      stagger: 0.15,
+      ease: 'back.out(1.6)',
+      scrollTrigger: { trigger: '[data-footer-mark]', start: 'top 95%', once: true },
+    });
+  }
+</script>

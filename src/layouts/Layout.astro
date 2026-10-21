@@ -1,0 +1,99 @@
+---
+import '../styles/global.css';
+import { EVENT, VENUE } from '../data/event';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = 'DELWENFEST · 30 octubre 2026 · Consolación Castellón',
+  description = 'El festival solidario de la ONGD Delwende: juegos, food trucks, bingo musical, premios, Sinbikini en directo, Rodhel Show DJ, toro mecánico e hinchables. Viernes 30 de octubre de 2026, de 17:15 a 22:30 en Consolación Castellón.',
+} = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const ogImage = new URL('/og.jpg', Astro.site);
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Event',
+  name: 'DELWENFEST',
+  description,
+  startDate: EVENT.start,
+  endDate: EVENT.end,
+  eventStatus: 'https://schema.org/EventScheduled',
+  eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+  image: [ogImage.href],
+  location: {
+    '@type': 'Place',
+    name: VENUE.name,
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: 'Avenida Virgen de Lidón, 49',
+      postalCode: '12004',
+      addressLocality: 'Castellón de la Plana',
+      addressRegion: 'Castellón',
+      addressCountry: 'ES',
+    },
+    geo: { '@type': 'GeoCoordinates', latitude: VENUE.schoolCoords[0], longitude: VENUE.schoolCoords[1] },
+  },
+  organizer: {
+    '@type': 'Organization',
+    name: 'Movimiento Consolación para el Mundo · MCM Castellón',
+    url: 'https://movimientoconsolacion.com',
+  },
+  performer: [
+    { '@type': 'MusicGroup', name: 'Sinbikini' },
+    { '@type': 'Person', name: 'Rodhel Show' },
+  ],
+};
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta name="theme-color" content="#b4cec5" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="es_ES" />
+    <meta property="og:site_name" content="DELWENFEST" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="DELWENFEST · 30 de octubre de 2026 · Consolación Castellón" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+
+    <script is:inline>
+      // Solo ocultamos lo animable si hay JS y movimiento permitido. Si el bundle no
+      // llega a arrancar en 4 s, lo mostramos todo igualmente.
+      (function () {
+        var d = document.documentElement;
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+        d.classList.add('js-anim');
+        setTimeout(function () {
+          if (!window.__delwenReady) d.classList.remove('js-anim');
+        }, 4000);
+      })();
+    </script>
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://delwenfest.movimientoconsolacion.com/sitemap-index.xml
