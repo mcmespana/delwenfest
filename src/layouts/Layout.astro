@@ -58,7 +58,12 @@ const jsonLd = {
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
-    <meta name="theme-color" content="#b4cec5" />
+    <meta name="theme-color" content="#161412" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="DelwenFest" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="sitemap" href="/sitemap-index.xml" />
@@ -81,10 +86,18 @@ const jsonLd = {
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
 
     <script is:inline>
-      // Solo ocultamos lo animable si hay JS y movimiento permitido. Si el bundle no
-      // llega a arrancar en 4 s, lo mostramos todo igualmente.
       (function () {
         var d = document.documentElement;
+        // Secciones en borrador (Delwende, proyecto, hazte socio): solo con ?borrador
+        try {
+          var q = new URLSearchParams(location.search);
+          if (q.has('borrador')) localStorage.setItem('delwen-borrador', q.get('borrador') === '0' ? '0' : '1');
+          if (localStorage.getItem('delwen-borrador') === '1') d.classList.add('show-drafts');
+        } catch (e) {
+          if (location.search.indexOf('borrador') > -1) d.classList.add('show-drafts');
+        }
+        // Solo ocultamos lo animable si hay JS y movimiento permitido. Si el bundle no
+        // llega a arrancar en 4 s, lo mostramos todo igualmente.
         if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
         d.classList.add('js-anim');
         setTimeout(function () {
@@ -95,5 +108,10 @@ const jsonLd = {
   </head>
   <body>
     <slot />
+    <script>
+      if (import.meta.env.PROD && 'serviceWorker' in navigator) {
+        window.addEventListener('load', () => navigator.serviceWorker.register('/sw.js').catch(() => {}));
+      }
+    </script>
   </body>
 </html>

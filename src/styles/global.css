@@ -6,6 +6,7 @@
 
 @theme {
   --color-ink: #24211e;
+  --color-night: #161412;
   --color-ink-soft: #3d3934;
   --color-cream: #fff7e8;
   --color-paper: #f4efe4;
@@ -291,6 +292,11 @@
   .no-scrollbar {
     scrollbar-width: none;
   }
+}
+
+/* Contenido en borrador: oculto salvo que se entre con ?borrador */
+html:not(.show-drafts) [data-draft] {
+  display: none !important;
 }
 
 /* Estado inicial de elementos que GSAP anima (evita parpadeos). Si no hay JS o se

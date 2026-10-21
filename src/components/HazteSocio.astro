@@ -1,0 +1,249 @@
+---
+import Placeholder from './Placeholder.astro';
+import { MEMBERSHIP } from '../data/delwende';
+
+const steps = [
+  { n: '01', title: 'Elige tu cuota', text: 'Mensual, trimestral o anual. Lorem ipsum dolor sit amet.' },
+  { n: '02', title: 'Rellena el formulario', text: 'Tus datos y tu NIF para poder aplicarte la deducción. Lorem ipsum.' },
+  { n: '03', title: 'Desgrava en tu renta', text: 'Te enviamos el certificado y Hacienda te devuelve buena parte.' },
+];
+---
+
+<section id="socio" class="relative overflow-hidden bg-mint px-4 py-28 sm:px-8 md:py-36" data-draft data-socio>
+  <div class="paper-texture"></div>
+  <div class="relative mx-auto max-w-7xl">
+    <div class="grid gap-14 lg:grid-cols-[1fr_1.05fr] lg:gap-16">
+      <div>
+        <p class="eyebrow text-forest" data-reveal="up">✦ Súmate todo el año</p>
+        <h2 class="section-title mt-3" data-split>Hazte<br /><span class="text-pop">socio/a</span></h2>
+        <p class="mt-6 max-w-lg text-lg leading-snug font-semibold sm:text-xl" data-reveal="up">{MEMBERSHIP.intro}</p>
+
+        <ol class="mt-10 flex flex-col gap-4">
+          {
+            steps.map((s) => (
+              <li class="sticker flex items-start gap-5 rounded-[1.5rem] bg-cream p-5" data-reveal="up">
+                <span class="font-display grid size-12 shrink-0 place-items-center rounded-full bg-ink text-lg text-gold">{s.n}</span>
+                <span>
+                  <span class="block font-display text-xl uppercase">{s.title}</span>
+                  <span class="mt-1 block leading-snug font-medium text-ink/75">{s.text}</span>
+                </span>
+              </li>
+            ))
+          }
+        </ol>
+
+        <ul class="mt-8 flex flex-col gap-2.5" data-reveal="up">
+          {
+            MEMBERSHIP.perks.map((p) => (
+              <li class="flex items-start gap-3 text-lg font-medium">
+                <span class="mt-1 grid size-6 shrink-0 place-items-center rounded-full bg-forest text-cream">
+                  <svg viewBox="0 0 24 24" class="size-3.5" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L20 7" /></svg>
+                </span>
+                {p}
+              </li>
+            ))
+          }
+        </ul>
+
+        <Placeholder label="Foto: socios/as o voluntariado de Delwende" class="mt-10 hidden aspect-[16/9] w-full lg:grid" />
+      </div>
+
+      <!-- Calculadora fiscal -->
+      <div class="lg:sticky lg:top-28 lg:h-fit">
+        <div class="sticker overflow-hidden rounded-[2rem] bg-cream" data-reveal="up" data-calc>
+          <div class="bg-ink p-6 text-cream sm:p-8">
+            <p class="eyebrow text-gold">Calculadora de desgravación</p>
+            <p class="font-display mt-2 text-[clamp(1.7rem,3vw,2.4rem)] leading-[0.95] uppercase">¿Cuánto te cuesta de verdad?</p>
+          </div>
+
+          <div class="flex flex-col gap-6 p-6 sm:p-8">
+            <!-- Persona / empresa -->
+            <div class="grid grid-cols-2 rounded-full border-[3px] border-ink bg-white p-1" role="radiogroup" aria-label="Tipo de socio">
+              <button type="button" role="radio" aria-checked="true" class="calc-seg" data-type="persona">Particular</button>
+              <button type="button" role="radio" aria-checked="false" class="calc-seg" data-type="empresa">Empresa</button>
+            </div>
+
+            <!-- Cuota -->
+            <div>
+              <div class="flex items-baseline justify-between">
+                <label for="cuota" class="font-display text-lg uppercase">Tu cuota</label>
+                <p class="font-display text-3xl tabular-nums"><span data-out="cuota">{MEMBERSHIP.defaultAmount}</span> €<span class="text-base text-ink/50">/mes</span></p>
+              </div>
+              <div class="mt-3 flex flex-wrap gap-2">
+                {
+                  MEMBERSHIP.amounts.map((a) => (
+                    <button type="button" class="calc-chip" data-amount={a} aria-pressed={a === MEMBERSHIP.defaultAmount ? 'true' : 'false'}>
+                      {a} €
+                    </button>
+                  ))
+                }
+              </div>
+              <input id="cuota" type="range" min="3" max="150" step="1" value={MEMBERSHIP.defaultAmount} class="calc-range mt-5 w-full" data-range />
+            </div>
+
+            <label class="flex cursor-pointer items-center gap-3 select-none">
+              <input type="checkbox" class="peer sr-only" data-recurrent />
+              <span class="relative h-7 w-12 shrink-0 rounded-full border-[2.5px] border-ink bg-white transition-colors peer-checked:bg-lime peer-focus-visible:outline-3 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-ink after:absolute after:top-0.5 after:left-0.5 after:size-[18px] after:rounded-full after:bg-ink after:transition-transform peer-checked:after:translate-x-5"></span>
+              <span class="leading-tight font-semibold">Llevo 3 años o más colaborando con Delwende <span class="block text-sm font-medium text-ink/60">Deducción incrementada por fidelidad</span></span>
+            </label>
+
+            <!-- Resultado -->
+            <div class="rounded-[1.5rem] border-[3px] border-ink bg-gold p-5">
+              <div class="flex h-4 overflow-hidden rounded-full border-2 border-ink bg-cream" aria-hidden="true">
+                <div class="h-full bg-forest transition-[width] duration-500 ease-[var(--ease-out-expo)]" data-bar-back></div>
+                <div class="h-full flex-1 bg-coral"></div>
+              </div>
+              <dl class="mt-4 grid grid-cols-3 gap-3 text-center">
+                <div>
+                  <dt class="text-xs font-semibold tracking-wide uppercase opacity-70">Aportas al año</dt>
+                  <dd class="font-display mt-1 text-2xl tabular-nums"><span data-out="anual">120</span> €</dd>
+                </div>
+                <div>
+                  <dt class="text-xs font-semibold tracking-wide text-forest uppercase">Te devuelven</dt>
+                  <dd class="font-display mt-1 text-2xl text-forest tabular-nums"><span data-out="deduccion">96</span> €</dd>
+                </div>
+                <div>
+                  <dt class="text-xs font-semibold tracking-wide text-red uppercase">Te cuesta</dt>
+                  <dd class="font-display mt-1 text-2xl text-red tabular-nums"><span data-out="coste">24</span> €</dd>
+                </div>
+              </dl>
+              <p class="mt-4 text-center font-display text-lg leading-tight uppercase">
+                Tu cuota de <span data-out="cuota2">10</span> €/mes te sale por <span class="rounded bg-ink px-1.5 text-gold"><span data-out="mes">2,00</span> €/mes</span>
+              </p>
+            </div>
+
+            <a href={MEMBERSHIP.formUrl} class="btn btn-ink justify-center !py-4 !text-lg" data-todo>Quiero hacerme socio/a →</a>
+
+            <p class="text-xs leading-relaxed text-ink/60" data-calc-note>
+              Cálculo orientativo según la Ley 49/2002 de mecenazgo (porcentajes vigentes desde 2024). <strong>Particulares:</strong> 80 % de los primeros 250 € al año y 40 % del resto (45 % si en los dos años anteriores colaboraste con la misma entidad por un importe igual o mayor), con un límite del 10 % de la base liquidable. <strong>Empresas:</strong> 40 % (50 % con esa misma fidelidad), con un límite del 15 % de la base imponible. Las cuotas de socio desgravan como donativo. Necesitamos tu NIF para comunicarlo a Hacienda.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .calc-seg {
+    border-radius: 999px;
+    padding: 0.6rem 1rem 0.45rem;
+    font-family: var(--font-display);
+    text-transform: uppercase;
+    transition: background-color 0.2s, color 0.2s;
+  }
+  .calc-seg[aria-checked='true'] {
+    background: var(--color-ink);
+    color: var(--color-gold);
+  }
+  .calc-chip {
+    border: 2.5px solid var(--color-ink);
+    border-radius: 999px;
+    padding: 0.45rem 1rem 0.3rem;
+    background: white;
+    font-family: var(--font-display);
+    font-size: 1.05rem;
+    transition:
+      transform 0.25s var(--ease-bounce),
+      box-shadow 0.25s var(--ease-bounce),
+      background-color 0.2s;
+  }
+  .calc-chip[aria-pressed='true'] {
+    background: var(--color-gold);
+    transform: translate(-2px, -2px);
+    box-shadow: var(--shadow-hard-sm);
+  }
+  .calc-range {
+    appearance: none;
+    height: 10px;
+    border-radius: 999px;
+    border: 2.5px solid var(--color-ink);
+    background: linear-gradient(90deg, var(--color-gold) var(--p, 5%), white var(--p, 5%));
+  }
+  .calc-range::-webkit-slider-thumb {
+    appearance: none;
+    width: 28px;
+    height: 28px;
+    border-radius: 999px;
+    background: var(--color-ink);
+    border: 4px solid var(--color-gold);
+    box-shadow: 2px 2px 0 var(--color-ink);
+    cursor: grab;
+  }
+  .calc-range::-moz-range-thumb {
+    width: 22px;
+    height: 22px;
+    border-radius: 999px;
+    background: var(--color-ink);
+    border: 4px solid var(--color-gold);
+    cursor: grab;
+  }
+</style>
+
+<script>
+  import { gsap, reduceMotion } from '../scripts/motion';
+
+  const calc = document.querySelector<HTMLElement>('[data-calc]')!;
+  const range = calc.querySelector<HTMLInputElement>('[data-range]')!;
+  const recurrent = calc.querySelector<HTMLInputElement>('[data-recurrent]')!;
+  const chips = Array.from(calc.querySelectorAll<HTMLButtonElement>('[data-amount]'));
+  const segs = Array.from(calc.querySelectorAll<HTMLButtonElement>('[data-type]'));
+  const barBack = calc.querySelector<HTMLElement>('[data-bar-back]')!;
+  const out = (k: string) => calc.querySelector<HTMLElement>(`[data-out="${k}"]`)!;
+  const eur = (n: number, dec = 0) => n.toLocaleString('es-ES', { minimumFractionDigits: dec, maximumFractionDigits: dec });
+
+  let type: 'persona' | 'empresa' = 'persona';
+  const shown = { anual: 120, deduccion: 96, coste: 24, mes: 2 };
+
+  /** Deducción anual según la Ley 49/2002 (redacción del RDL 6/2023). */
+  function deduction(annual: number) {
+    if (type === 'empresa') return annual * (recurrent.checked ? 0.5 : 0.4);
+    return Math.min(annual, 250) * 0.8 + Math.max(0, annual - 250) * (recurrent.checked ? 0.45 : 0.4);
+  }
+
+  function update() {
+    const cuota = Number(range.value);
+    const anual = cuota * 12;
+    const ded = deduction(anual);
+    const target = { anual, deduccion: ded, coste: anual - ded, mes: (anual - ded) / 12 };
+
+    out('cuota').textContent = String(cuota);
+    out('cuota2').textContent = String(cuota);
+    range.style.setProperty('--p', `${((cuota - 3) / (150 - 3)) * 100}%`);
+    chips.forEach((c) => c.setAttribute('aria-pressed', String(Number(c.dataset.amount) === cuota)));
+    barBack.style.width = `${(ded / anual) * 100}%`;
+
+    const render = () => {
+      out('anual').textContent = eur(shown.anual);
+      out('deduccion').textContent = eur(shown.deduccion);
+      out('coste').textContent = eur(shown.coste);
+      out('mes').textContent = eur(shown.mes, 2);
+    };
+    if (reduceMotion) {
+      Object.assign(shown, target);
+      render();
+    } else gsap.to(shown, { ...target, duration: 0.6, ease: 'power3.out', overwrite: true, onUpdate: render });
+  }
+
+  range.addEventListener('input', update);
+  recurrent.addEventListener('change', update);
+  chips.forEach((c) =>
+    c.addEventListener('click', () => {
+      range.value = c.dataset.amount!;
+      update();
+    }),
+  );
+  segs.forEach((s) =>
+    s.addEventListener('click', () => {
+      type = s.dataset.type as typeof type;
+      segs.forEach((x) => x.setAttribute('aria-checked', String(x === s)));
+      update();
+    }),
+  );
+  update();
+
+  // El enlace al formulario aún no existe
+  calc.querySelector('[data-todo]')?.addEventListener('click', (e) => {
+    if ((e.currentTarget as HTMLAnchorElement).getAttribute('href') === '#') e.preventDefault();
+  });
+</script>

@@ -1,0 +1,88 @@
+---
+import { Image } from 'astro:assets';
+import Placeholder from './Placeholder.astro';
+import delwendeLogo from '../assets/partners/delwende.webp';
+import { ONGD } from '../data/delwende';
+import { SOCIAL } from '../data/event';
+
+const insta = SOCIAL.find((s) => s.handle === 'delwende_ongd')!;
+---
+
+<section id="delwende" class="relative overflow-hidden bg-cream px-4 py-28 sm:px-8 md:py-36" data-draft>
+  <div class="paper-texture !opacity-40"></div>
+  <div class="relative mx-auto max-w-7xl">
+    <div class="grid gap-12 lg:grid-cols-[1fr_1fr] lg:gap-20">
+      <div>
+        <p class="eyebrow text-forest" data-reveal="up">✦ Quiénes somos</p>
+        <h2 class="section-title mt-3 !text-[clamp(3rem,7.4vw,7rem)]" data-split>ONGD<br /><span class="text-pop [--pop:var(--color-lime)]">Delwende</span></h2>
+        <p class="font-display mt-6 text-2xl text-forest uppercase" data-reveal="up">{ONGD.tagline}</p>
+
+        <!-- Logo -->
+        <div class="sticker mt-8 flex items-center gap-5 rounded-[1.75rem] bg-white p-5 sm:p-6" data-reveal="up">
+          <Image src={delwendeLogo} alt="Delwende, al servicio de la vida" widths={[300, 600]} sizes="300px" class="h-auto w-56 sm:w-72" />
+          <span class="ml-auto hidden rounded-full border-2 border-dashed border-ink/40 px-3 py-1 text-xs font-semibold text-ink/50 sm:inline">Logo en alta pendiente</span>
+        </div>
+
+        <div class="mt-8 flex flex-col gap-4 text-lg leading-relaxed font-medium" data-reveal="up">
+          {ONGD.history.map((p) => <p>{p}</p>)}
+        </div>
+
+        <dl class="mt-10 grid grid-cols-3 gap-3" data-reveal="up">
+          {
+            ONGD.facts.map((f) => (
+              <div class="rounded-2xl border-[3px] border-ink bg-gold p-4">
+                <dt class="sr-only">{f.label}</dt>
+                <dd>
+                  <p class="font-display text-4xl leading-none sm:text-5xl">{f.value}</p>
+                  <p class="mt-1 text-sm leading-tight font-semibold">{f.label}</p>
+                </dd>
+              </div>
+            ))
+          }
+        </dl>
+      </div>
+
+      <!-- Collage de fotos -->
+      <div class="relative min-h-[560px] sm:min-h-[640px]">
+        <div class="absolute top-0 right-0 w-[72%] rotate-2" data-parallax="-12">
+          <Placeholder label={ONGD.photos[0]} class="aspect-[4/5] w-full bg-cream shadow-[var(--shadow-hard)]" />
+        </div>
+        <div class="absolute bottom-[6%] left-0 w-[58%] -rotate-3" data-parallax="10">
+          <Placeholder label={ONGD.photos[1]} class="aspect-[4/3] w-full bg-cream shadow-[var(--shadow-hard)]" />
+        </div>
+        <div class="absolute right-[6%] bottom-0 w-[38%] rotate-6" data-parallax="22">
+          <Placeholder label={ONGD.photos[2]} class="aspect-square w-full bg-cream shadow-[var(--shadow-hard)]" />
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-16 grid gap-6 md:grid-cols-[1.4fr_1fr]">
+      <div class="sticker rounded-[2rem] bg-ink p-7 text-cream sm:p-9" data-reveal="up">
+        <p class="eyebrow text-gold">Nuestra misión</p>
+        <p class="font-display mt-3 text-[clamp(1.6rem,3vw,2.4rem)] leading-[1.05] uppercase">{ONGD.mission}</p>
+      </div>
+      <div class="sticker flex flex-col justify-between gap-6 rounded-[2rem] bg-lime p-7 sm:p-9" data-reveal="up">
+        <div>
+          <p class="eyebrow">Nuestros valores</p>
+          <ul class="mt-4 flex flex-wrap gap-2">
+            {ONGD.values.map((v) => <li class="rounded-full border-2 border-ink bg-cream px-3.5 pt-1.5 pb-1 font-display uppercase">{v}</li>)}
+          </ul>
+        </div>
+        <a href={insta.url} target="_blank" rel="noopener" class="btn btn-cream self-start !text-base">Síguenos en {insta.label}</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  import { gsap, reduceMotion } from '../scripts/motion';
+  if (!reduceMotion) {
+    gsap.utils.toArray<HTMLElement>('#delwende [data-parallax]').forEach((el) => {
+      gsap.fromTo(
+        el,
+        { yPercent: -Number(el.dataset.parallax) },
+        { yPercent: Number(el.dataset.parallax), ease: 'none', scrollTrigger: { trigger: el, start: 'top bottom', end: 'bottom top', scrub: true } },
+      );
+    });
+  }
+</script>

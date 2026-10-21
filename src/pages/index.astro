@@ -6,10 +6,14 @@ import Marquee from '../components/Marquee.astro';
 import Plan from '../components/Plan.astro';
 import Horario from '../components/Horario.astro';
 import LineUp from '../components/LineUp.astro';
-import Causa from '../components/Causa.astro';
 import Lugar from '../components/Lugar.astro';
+import Causa from '../components/Causa.astro';
+import Delwende from '../components/Delwende.astro';
+import Proyecto from '../components/Proyecto.astro';
+import HazteSocio from '../components/HazteSocio.astro';
 import Patrocinadores from '../components/Patrocinadores.astro';
 import Footer from '../components/Footer.astro';
+import Recordatorio from '../components/Recordatorio.astro';
 ---
 
 <Layout>
@@ -20,11 +24,16 @@ import Footer from '../components/Footer.astro';
     <Plan />
     <Horario />
     <LineUp />
-    <Causa />
     <Lugar />
+    <Causa />
+    <!-- En borrador: solo visibles con ?borrador -->
+    <Delwende />
+    <Proyecto />
+    <HazteSocio />
     <Patrocinadores />
   </main>
   <Footer />
+  <Recordatorio />
 </Layout>
 
 <script>

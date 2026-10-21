@@ -1,0 +1,47 @@
+---
+/** Hueco para una foto o logo que aún no tenemos. */
+interface Props {
+  label: string;
+  kind?: 'foto' | 'logo';
+  class?: string;
+  dark?: boolean;
+}
+const { label, kind = 'foto', class: cls = '', dark = false } = Astro.props;
+---
+
+<figure
+  class:list={[
+    'relative grid place-items-center overflow-hidden rounded-[1.75rem] border-[3px] border-dashed text-center',
+    dark ? 'border-cream/35 bg-cream/5 text-cream/70' : 'border-ink/35 bg-ink/[0.04] text-ink/60',
+    cls,
+  ]}
+  data-placeholder={kind}
+>
+  <div
+    class:list={[
+      'absolute inset-0 [background-size:18px_18px]',
+      dark
+        ? '[background-image:repeating-linear-gradient(45deg,rgba(255,247,232,.06)_0_2px,transparent_2px_12px)]'
+        : '[background-image:repeating-linear-gradient(45deg,rgba(36,33,30,.06)_0_2px,transparent_2px_12px)]',
+    ]}
+    aria-hidden="true"
+  >
+  </div>
+  <figcaption class="relative flex flex-col items-center gap-2 px-5 py-6">
+    {
+      kind === 'foto' ? (
+        <svg viewBox="0 0 24 24" class="size-8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M4 7h3l2-3h6l2 3h3a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1Z" />
+          <circle cx="12" cy="13" r="4" />
+        </svg>
+      ) : (
+        <svg viewBox="0 0 24 24" class="size-8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="9" />
+          <path d="M8 12h8M12 8v8" />
+        </svg>
+      )
+    }
+    <span class="font-display text-sm tracking-[0.2em] uppercase">{kind}</span>
+    <span class="max-w-[22ch] text-sm leading-snug font-semibold">{label}</span>
+  </figcaption>
+</figure>
