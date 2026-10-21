@@ -1,113 +1,252 @@
 ---
+import { Image } from 'astro:assets';
+import delwende from '../assets/partners/delwende.webp';
+import donativo from '../assets/brand/badge-donativo.webp';
 import Placeholder from './Placeholder.astro';
-import { PROJECT_BUDGET, PROJECT_CHAPTERS, PROJECT_QUOTE, LOREM } from '../data/delwende';
 import { CAUSE } from '../data/event';
+import { PROJECT_MORE, DELWENDE_URLS } from '../data/delwende';
+
+const stats = [
+  { n: 85, suffix: '', label: 'jóvenes atendidas en el centro' },
+  { n: 15, to: 25, label: 'años: la edad de las alumnas' },
+  { n: 100, suffix: '%', label: 'de lo recaudado va al proyecto' },
+  { n: CAUSE.distanceKm, suffix: ' km', label: 'entre Castellón y Atakpamé' },
+];
+const chipColors = ['bg-gold', 'bg-coral', 'bg-lime', 'bg-teal', 'bg-pink', 'bg-amber'];
 ---
 
-<section id="proyecto" class="relative overflow-hidden bg-night text-cream" data-draft data-project>
-  <div class="grain pointer-events-none absolute inset-0"></div>
-
-  <div class="relative mx-auto max-w-7xl px-4 pt-28 sm:px-8 md:pt-36">
-    <div class="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+<section id="proyecto" class="relative overflow-hidden bg-gold px-4 py-28 sm:px-8 md:py-36">
+  <div class="paper-texture !opacity-35"></div>
+  <div class="relative mx-auto max-w-7xl">
+    <div class="grid gap-12 lg:grid-cols-[1.25fr_0.75fr] lg:items-end">
       <div>
-        <p class="eyebrow text-gold" data-reveal="up">✦ El proyecto en detalle</p>
-        <h2 class="section-title mt-3" data-split>Atakpamé<br /><span class="text-gold">paso a paso</span></h2>
+        <p class="eyebrow" data-reveal="up">El proyecto</p>
+        <p class="mt-6 font-display text-[clamp(2rem,4.6vw,4.2rem)] leading-[1.02] uppercase" data-words>
+          Todo lo recaudado irá destinado al proyecto de la ONGD Delwende: el Centro de Promoción Social de la Mujer en Atakpamé (Togo).
+        </p>
       </div>
-      <p class="max-w-md text-lg leading-snug text-cream/75" data-reveal="up">{CAUSE.project} · {CAUSE.place}. {LOREM.short}</p>
+      <div class="relative flex flex-col items-start gap-6 lg:items-end">
+        <div class="relative w-44 sm:w-52" data-donativo>
+          <Image src={donativo} alt="Donativo: 2 euros" widths={[300, 600]} sizes="210px" class="h-auto w-full drop-shadow-[6px_6px_0_rgba(36,33,30,.9)]" />
+        </div>
+        <div class="sticker rounded-2xl bg-cream px-5 py-4" data-reveal="up">
+          <Image src={delwende} alt="Delwende, al servicio de la vida" widths={[300, 600]} sizes="260px" class="h-auto w-56 sm:w-64" />
+        </div>
+      </div>
     </div>
-  </div>
 
-  <!-- Capítulos: scroll horizontal fijado en escritorio, carrusel en móvil -->
-  <div class="relative mt-14 md:mt-20" data-chapters-pin>
-    <div
-      class="no-scrollbar flex snap-x snap-mandatory gap-5 overflow-x-auto px-4 pb-6 sm:px-8 md:w-max md:snap-none md:overflow-visible md:pb-0 md:pl-[max(2rem,calc((100vw-80rem)/2+2rem))] md:pr-[20vw]"
-      data-chapters
-      data-lenis-prevent-touch
-    >
-      {
-        PROJECT_CHAPTERS.map((c) => (
-          <article class="w-[84vw] shrink-0 snap-center sm:w-[60vw] md:w-[min(46vw,620px)]" data-chapter>
-            <Placeholder dark label={c.photo} class="aspect-[16/10] w-full" />
-            <p class="eyebrow mt-6 text-gold">{c.kicker}</p>
-            <h3 class="font-display mt-2 text-[clamp(1.8rem,3vw,2.6rem)] leading-[0.95] uppercase">{c.title}</h3>
-            <p class="mt-3 max-w-lg text-lg leading-snug text-cream/70">{c.text}</p>
-          </article>
-        ))
-      }
-    </div>
-    <div class="mx-auto mt-6 hidden h-1 max-w-7xl overflow-hidden rounded-full bg-cream/10 md:mx-8 md:block xl:mx-auto">
-      <div class="h-full origin-left scale-x-0 bg-[linear-gradient(90deg,#8cc63f,#f5b50b,#f87341)]" data-chapters-bar></div>
-    </div>
-  </div>
+    <div class="mt-16 grid gap-10 lg:grid-cols-2 lg:gap-16">
+      <div class="sticker relative rounded-[2rem] bg-cream p-7 sm:p-10" data-reveal="up">
+        <h3 class="font-display text-3xl leading-none uppercase sm:text-4xl">{CAUSE.project}</h3>
+        <p class="mt-1 font-display text-xl text-forest uppercase">{CAUSE.place}</p>
+        <p class="mt-5 text-lg leading-snug font-semibold sm:text-xl">
+          {CAUSE.intro} Allí reciben alfabetización y formación profesional en costura y peluquería, además de educación sanitaria, cultural y sobre gestión de cooperativas.
+        </p>
+        <p class="mt-4 text-lg leading-snug font-semibold sm:text-xl">
+          El centro atiende a <strong class="font-black">85 jóvenes de entre 15 y 25 años</strong>, ayudándolas a adquirir conocimientos y habilidades que puedan abrirles nuevas oportunidades.
+        </p>
+        <ul class="mt-7 flex flex-wrap gap-2.5" aria-label="Formación que reciben">
+          {
+            CAUSE.learn.map((l, i) => (
+              <li class={`rounded-full border-[2.5px] border-ink px-4 pt-2 pb-1.5 font-display text-base uppercase shadow-[var(--shadow-hard-sm)] ${chipColors[i % chipColors.length]}`} data-chip>
+                {l}
+              </li>
+            ))
+          }
+        </ul>
+        <div class="mt-8 flex flex-wrap items-center gap-4">
+          <button type="button" class="btn btn-ink" data-more-open>Leer más sobre el proyecto</button>
+          <a href="#socio" data-scroll class="font-display text-lg uppercase underline decoration-[3px] underline-offset-4 decoration-coral hover:text-coral">Hazte socio/a →</a>
+        </div>
+      </div>
 
-  <div class="relative mx-auto grid max-w-7xl gap-6 px-4 py-24 sm:px-8 md:grid-cols-2 md:py-32">
-    <!-- A qué se destina -->
-    <div class="rounded-[2rem] border border-cream/15 bg-cream/[0.04] p-7 sm:p-9" data-reveal="up">
-      <p class="eyebrow text-gold">¿A qué se destina?</p>
-      <p class="mt-2 text-cream/60">Reparto del presupuesto del proyecto · datos pendientes</p>
-      <ul class="mt-7 flex flex-col gap-5">
-        {
-          PROJECT_BUDGET.map((b, i) => (
-            <li>
-              <div class="flex items-baseline justify-between gap-4">
-                <span class="font-semibold">{b.label}</span>
-                <span class="font-display text-xl text-gold">{b.pct}</span>
+      <div class="flex flex-col gap-8">
+        <dl class="grid grid-cols-2 gap-4 sm:gap-5">
+          {
+            stats.map((s) => (
+              <div class="sticker rounded-[1.5rem] bg-ink p-5 text-cream sm:p-6" data-stat>
+                <dt class="sr-only">{s.label}</dt>
+                <dd>
+                  <p class="font-display text-[clamp(2.4rem,5vw,3.8rem)] leading-none text-gold tabular-nums">
+                    <span data-count={s.n}>{s.n.toLocaleString('es-ES')}</span>{s.to && <>–<span data-count={s.to}>{s.to}</span></>}{s.suffix}
+                  </p>
+                  <p class="mt-2 text-base leading-tight font-semibold text-cream/80">{s.label}</p>
+                </dd>
               </div>
-              <div class="mt-2 h-3 overflow-hidden rounded-full bg-cream/10">
-                <div
-                  class="h-full w-full origin-left rounded-full [background-image:repeating-linear-gradient(45deg,rgba(245,181,11,.55)_0_6px,rgba(245,181,11,.25)_6px_12px)]"
-                  style={`transform: scaleX(${0.25 + ((PROJECT_BUDGET.length - i) / PROJECT_BUDGET.length) * 0.5})`}
-                  data-budget-bar
-                />
-              </div>
-            </li>
-          ))
-        }
-      </ul>
-    </div>
+            ))
+          }
+        </dl>
 
-    <!-- Testimonio -->
-    <figure class="relative flex flex-col justify-between gap-8 overflow-hidden rounded-[2rem] bg-gold p-7 text-ink sm:p-9" data-reveal="up">
-      <span class="font-display absolute -top-6 right-4 text-[11rem] leading-none text-ink/10" aria-hidden="true">“</span>
-      <blockquote class="font-display relative text-[clamp(1.5rem,2.6vw,2.2rem)] leading-[1.1] uppercase">{PROJECT_QUOTE.text}</blockquote>
-      <figcaption class="relative flex items-center gap-4">
-        <Placeholder label="Retrato" class="size-16 shrink-0 !rounded-full [&_figcaption]:hidden" />
-        <span>
-          <span class="block font-display text-lg uppercase">{PROJECT_QUOTE.author}</span>
-          <span class="text-sm font-semibold opacity-70">{PROJECT_QUOTE.role}</span>
-        </span>
-      </figcaption>
-    </figure>
+        <!-- Ruta Castellón → Atakpamé -->
+        <div class="sticker relative overflow-hidden rounded-[2rem] bg-cream p-6 sm:p-8" data-reveal="up">
+          <svg viewBox="0 0 400 170" class="h-auto w-full" aria-labelledby="ruta-title" role="img">
+            <title id="ruta-title">De Castellón a Atakpamé (Togo): 3.611 km</title>
+            <path d="M40 120 C 120 -10, 280 -10, 360 120" fill="none" stroke="#24211e" stroke-opacity=".15" stroke-width="4" stroke-dasharray="2 10" stroke-linecap="round"></path>
+            <path d="M40 120 C 120 -10, 280 -10, 360 120" fill="none" stroke="#f7363a" stroke-width="5" stroke-linecap="round" data-route></path>
+            <circle cx="40" cy="120" r="10" fill="#24211e"></circle>
+            <circle cx="360" cy="120" r="10" fill="#1d8462"></circle>
+            <circle cx="360" cy="120" r="10" fill="none" stroke="#1d8462" stroke-width="3" class="origin-[360px_120px] animate-pulse-ring"></circle>
+            <g data-heart>
+              <path d="M0 -6 C -6 -14 -18 -8 -12 2 L0 12 L12 2 C18 -8 6 -14 0 -6Z" fill="#f7363a" stroke="#24211e" stroke-width="2.5"></path>
+            </g>
+            <text x="40" y="152" text-anchor="middle" font-family="Chau Philomene One" font-size="18" fill="#24211e">CASTELLÓN</text>
+            <text x="360" y="152" text-anchor="middle" font-family="Chau Philomene One" font-size="18" fill="#1d8462">ATAKPAMÉ</text>
+          </svg>
+          <p class="mt-2 text-center text-lg font-semibold">Tu tarde de fiesta aquí, una oportunidad allí.</p>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
-<script>
-  import { gsap, reduceMotion } from '../scripts/motion';
+<dialog class="more m-0 h-full max-h-none w-full max-w-none bg-transparent p-0 backdrop:bg-transparent" aria-labelledby="more-title" data-more>
+  <div class="absolute inset-0 bg-ink/55" data-more-backdrop></div>
+  <article
+    class="absolute inset-x-0 bottom-0 mx-auto max-h-[90svh] w-full max-w-2xl overflow-y-auto overscroll-contain rounded-t-[2rem] border-[3px] border-b-0 border-ink bg-cream sm:inset-y-0 sm:my-auto sm:h-fit sm:rounded-[2rem] sm:border-b-[3px] sm:shadow-[10px_10px_0_0_#24211e]"
+    data-more-sheet
+    data-lenis-prevent
+  >
+    <div class="sticky top-0 z-10 flex items-start justify-between gap-4 border-b-[3px] border-ink bg-gold px-6 pt-6 pb-5 sm:px-9">
+      <div>
+        <p class="eyebrow">{PROJECT_MORE.place}</p>
+        <h2 id="more-title" class="font-display mt-1 text-[clamp(1.9rem,4vw,2.6rem)] leading-[0.95] uppercase">{PROJECT_MORE.title}</h2>
+      </div>
+      <button type="button" class="grid size-11 shrink-0 place-items-center rounded-full border-[3px] border-ink bg-cream shadow-[var(--shadow-hard-sm)]" aria-label="Cerrar" data-more-close>
+        <svg viewBox="0 0 24 24" class="size-5" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"></path></svg>
+      </button>
+    </div>
+    <div class="px-6 pt-6 pb-[calc(2rem+env(safe-area-inset-bottom))] sm:px-9">
+      <Placeholder label={PROJECT_MORE.photo} class="aspect-[16/9] w-full" />
+      <div class="mt-6 flex flex-col gap-4 text-lg leading-relaxed font-medium">
+        {PROJECT_MORE.paragraphs.map((p) => <p>{p}</p>)}
+      </div>
+      <dl class="mt-7 grid grid-cols-3 gap-3">
+        {
+          PROJECT_MORE.highlights.map((h) => (
+            <div class="rounded-2xl border-[2.5px] border-ink bg-white p-3.5">
+              <dt class="sr-only">{h.label}</dt>
+              <dd>
+                <p class="font-display text-2xl leading-none text-coral sm:text-3xl">{h.value}</p>
+                <p class="mt-1 text-sm leading-tight font-semibold">{h.label}</p>
+              </dd>
+            </div>
+          ))
+        }
+      </dl>
+      <div class="mt-8 flex flex-wrap gap-3">
+        <a href="#socio" class="btn btn-gold" data-more-socio>Quiero que siga todo el año</a>
+        <a href={DELWENDE_URLS.project} target="_blank" rel="noopener" class="btn btn-cream">Ver en delwende.es ↗</a>
+      </div>
+    </div>
+  </article>
+</dialog>
 
-  const visible = document.documentElement.classList.contains('show-drafts');
-  const mm = gsap.matchMedia();
-  if (visible) mm.add('(min-width: 768px) and (prefers-reduced-motion: no-preference)', () => {
-    const track = document.querySelector<HTMLElement>('[data-chapters]')!;
-    const distance = () => track.scrollWidth - window.innerWidth;
-    gsap.to(track, {
-      x: () => -distance(),
-      ease: 'none',
-      scrollTrigger: {
-        trigger: '[data-chapters-pin]',
-        start: 'top 12%',
-        end: () => `+=${distance()}`,
-        pin: true,
-        refreshPriority: 1,
-        scrub: 0.6,
-        invalidateOnRefresh: true,
-        onUpdate: (self) => gsap.set('[data-chapters-bar]', { scaleX: self.progress }),
-      },
-    });
-  });
+<style>
+  .more:not([open]) {
+    display: none;
+  }
+</style>
+
+<script>
+  import { gsap, SplitText, lenis, scrollToTarget, reduceMotion } from '../scripts/motion';
 
   if (!reduceMotion) {
-    gsap.utils.toArray<HTMLElement>('[data-budget-bar]').forEach((bar) => {
-      gsap.from(bar, { scaleX: 0, duration: 1.4, ease: 'expo.out', scrollTrigger: { trigger: bar, start: 'top 90%', once: true } });
+    // Texto que se “enciende” palabra a palabra al hacer scroll
+    const words = new SplitText('[data-words]', { type: 'words' });
+    gsap.fromTo(
+      words.words,
+      { opacity: 0.15 },
+      { opacity: 1, stagger: 0.1, ease: 'none', scrollTrigger: { trigger: '[data-words]', start: 'top 80%', end: 'bottom 45%', scrub: true } },
+    );
+
+    gsap.from('[data-donativo]', {
+      scale: 0,
+      rotate: -200,
+      duration: 1.2,
+      ease: 'back.out(1.8)',
+      scrollTrigger: { trigger: '[data-donativo]', start: 'top 90%', once: true },
     });
+
+    gsap.from('[data-chip]', {
+      scale: 0,
+      rotate: () => gsap.utils.random(-25, 25),
+      duration: 0.7,
+      stagger: 0.08,
+      ease: 'back.out(2.5)',
+      scrollTrigger: { trigger: '[data-chip]', start: 'top 92%', once: true },
+    });
+
+    gsap.from('[data-stat]', {
+      y: 60,
+      opacity: 0,
+      duration: 0.8,
+      stagger: 0.1,
+      ease: 'back.out(1.6)',
+      scrollTrigger: { trigger: '[data-stat]', start: 'top 88%', once: true },
+    });
+
+    // Contadores
+    document.querySelectorAll<HTMLElement>('[data-count]').forEach((el) => {
+      const target = Number(el.dataset.count);
+      const obj = { v: 0 };
+      el.textContent = '0';
+      gsap.to(obj, {
+        v: target,
+        duration: 2,
+        ease: 'power3.out',
+        scrollTrigger: { trigger: el, start: 'top 92%', once: true },
+        onUpdate: () => (el.textContent = Math.round(obj.v).toLocaleString('es-ES')),
+      });
+    });
+
+    // Ruta con corazón viajando
+    const route = document.querySelector<SVGPathElement>('[data-route]')!;
+    const heart = document.querySelector<SVGGElement>('[data-heart]')!;
+    const len = route.getTotalLength();
+    gsap.set(route, { strokeDasharray: len, strokeDashoffset: len });
+    const progress = { t: 0 };
+    const placeHeart = () => {
+      const p = route.getPointAtLength(progress.t * len);
+      heart.setAttribute('transform', `translate(${p.x} ${p.y})`);
+    };
+    placeHeart();
+    gsap
+      .timeline({ scrollTrigger: { trigger: route, start: 'top 85%', end: 'bottom 40%', scrub: 0.6 } })
+      .to(route, { strokeDashoffset: 0, ease: 'none' }, 0)
+      .to(progress, { t: 1, ease: 'none', onUpdate: placeHeart }, 0);
   }
+
+  /* ---------- Modal «Leer más» ---------- */
+  const more = document.querySelector<HTMLDialogElement>('[data-more]')!;
+  const moreSheet = more.querySelector<HTMLElement>('[data-more-sheet]')!;
+  const moreBackdrop = more.querySelector<HTMLElement>('[data-more-backdrop]')!;
+  const isMobile = () => window.matchMedia('(max-width: 639px)').matches;
+  function openMore() {
+    more.showModal();
+    lenis?.stop();
+    if (reduceMotion) return;
+    gsap.fromTo(moreBackdrop, { opacity: 0 }, { opacity: 1, duration: 0.3 });
+    gsap.fromTo(moreSheet, isMobile() ? { yPercent: 100 } : { yPercent: 5, opacity: 0 }, { yPercent: 0, opacity: 1, duration: 0.5, ease: 'expo.out' });
+  }
+  function closeMore(then?: () => void) {
+    const done = () => {
+      more.close();
+      lenis?.start();
+      then?.();
+    };
+    if (reduceMotion) return done();
+    gsap.to(moreBackdrop, { opacity: 0, duration: 0.25 });
+    gsap.to(moreSheet, { ...(isMobile() ? { yPercent: 100 } : { yPercent: 5, opacity: 0 }), duration: 0.3, ease: 'power2.in', onComplete: done });
+  }
+  document.querySelector('[data-more-open]')?.addEventListener('click', openMore);
+  more.querySelector('[data-more-close]')!.addEventListener('click', () => closeMore());
+  moreBackdrop.addEventListener('click', () => closeMore());
+  more.addEventListener('cancel', (e) => {
+    e.preventDefault();
+    closeMore();
+  });
+  more.querySelector('[data-more-socio]')!.addEventListener('click', (e) => {
+    e.preventDefault();
+    closeMore(() => scrollToTarget('#socio'));
+  });
 </script>

@@ -1,7 +1,7 @@
 import type { APIRoute } from 'astro';
-import { buildIcs, DEFAULT_ALARMS } from '../lib/ics';
+import { buildIcs } from '../lib/ics';
 
 export const GET: APIRoute = () =>
-  new Response(buildIcs(DEFAULT_ALARMS), {
+  new Response(buildIcs(), {
     headers: { 'Content-Type': 'text/calendar; charset=utf-8' },
   });

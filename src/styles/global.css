@@ -294,11 +294,6 @@
   }
 }
 
-/* Contenido en borrador: oculto salvo que se entre con ?borrador */
-html:not(.show-drafts) [data-draft] {
-  display: none !important;
-}
-
 /* Estado inicial de elementos que GSAP anima (evita parpadeos). Si no hay JS o se
    prefiere menos movimiento, todo queda visible. */
 html.js-anim [data-reveal] {

@@ -1,26 +1,10 @@
 import { EVENT, VENUE } from '../data/event';
 
-/** Avisos que se pueden elegir en el recordatorio (máx. 2, lo que admite el calendario del iPhone). */
-export const ALARMS = [
-  { key: '1s', trigger: '-P7D', label: '1 semana antes', when: 'Vie 23 oct' },
-  { key: '1d', trigger: '-P1D', label: 'El día antes', when: 'Jue 29 · 17:15' },
-  { key: '2h', trigger: '-PT2H', label: '2 horas antes', when: 'Vie 30 · 15:15' },
-  { key: '30m', trigger: '-PT30M', label: '30 min antes', when: 'Vie 30 · 16:45' },
-] as const;
-
-export type AlarmKey = (typeof ALARMS)[number]['key'];
-
-export const DEFAULT_ALARMS: AlarmKey[] = ['1d', '2h'];
-
-/** Todas las combinaciones de 1 o 2 avisos, en el orden de ALARMS. */
-export function alarmVariants(): AlarmKey[][] {
-  const keys = ALARMS.map((a) => a.key);
-  const out: AlarmKey[][] = keys.map((k) => [k]);
-  keys.forEach((a, i) => keys.slice(i + 1).forEach((b) => out.push([a, b])));
-  return out;
-}
-
-export const variantSlug = (keys: AlarmKey[]) => keys.join('-');
+// Avisos del evento en el calendario: el día antes y 2 horas antes
+const ALARMS = [
+  { trigger: '-P1D', label: 'mañana' },
+  { trigger: '-PT2H', label: 'en 2 horas' },
+];
 
 const escape = (s: string) => s.replace(/\\/g, '\\\\').replace(/;/g, '\\;').replace(/,/g, '\\,').replace(/\n/g, '\\n');
 
@@ -40,7 +24,7 @@ function fold(line: string) {
   return parts.join('\r\n ');
 }
 
-export function buildIcs(alarms: readonly AlarmKey[]) {
+export function buildIcs() {
   const description = [
     'Festival solidario a beneficio de la ONGD Delwende.',
     '17:15 Bienvenida · 17:45 Bingo musical · 19:00 Sinbikini · 20:00 Rifa · 20:30 Rodhel Show DJ · 22:30 Final.',
@@ -69,10 +53,7 @@ export function buildIcs(alarms: readonly AlarmKey[]) {
     `DESCRIPTION:${escape(description)}`,
     'STATUS:CONFIRMED',
     'TRANSP:OPAQUE',
-    ...alarms.flatMap((key) => {
-      const a = ALARMS.find((x) => x.key === key)!;
-      return ['BEGIN:VALARM', 'ACTION:DISPLAY', `DESCRIPTION:${escape(`DELWENFEST · ${a.label}`)}`, `TRIGGER:${a.trigger}`, 'END:VALARM'];
-    }),
+    ...ALARMS.flatMap((a) => ['BEGIN:VALARM', 'ACTION:DISPLAY', `DESCRIPTION:${escape(`DELWENFEST ${a.label}`)}`, `TRIGGER:${a.trigger}`, 'END:VALARM']),
     'END:VEVENT',
     'END:VCALENDAR',
   ];

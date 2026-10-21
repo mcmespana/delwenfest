@@ -6,10 +6,10 @@ import fest from '../assets/brand/fest.webp';
 const links = [
   { href: '#plan', label: 'El plan' },
   { href: '#horario', label: 'Horario' },
-  { href: '#causa', label: 'La causa' },
   { href: '#lugar', label: 'Lugar' },
-  { href: '#delwende', label: 'Delwende', draft: true },
-  { href: '#socio', label: 'Hazte socio', draft: true },
+  { href: '#proyecto', label: 'El proyecto' },
+  { href: '#delwende', label: 'Delwende' },
+  { href: '#socio', label: 'Hazte socio' },
   { href: '#colaboradores', label: 'Colaboradores' },
 ];
 ---
@@ -36,7 +36,7 @@ const links = [
     <ul class="hidden items-center gap-0.5 xl:flex">
       {
         links.map((l) => (
-          <li data-draft={l.draft ? '' : undefined}>
+          <li>
             <a
               href={l.href}
               data-scroll
@@ -84,7 +84,7 @@ const links = [
   <ul class="relative flex flex-col gap-2 [counter-reset:menu]">
     {
       links.map((l) => (
-        <li class="overflow-hidden [counter-increment:menu]" data-draft={l.draft ? '' : undefined}>
+        <li class="overflow-hidden [counter-increment:menu]">
           <a
             href={l.href}
             data-scroll

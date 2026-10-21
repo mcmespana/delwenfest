@@ -1,55 +1,63 @@
 /*
- * Contenido de las secciones de Delwende (ONGD, proyecto y hazte socio).
- * TODO: todo lo marcado como LOREM o FOTO es provisional hasta recibir los textos e
- * imágenes definitivos de Delwende. Estas secciones solo se ven entrando con ?borrador.
+ * Información oficial de Delwende. Fuentes: delwende.es (identidad, proyecto de
+ * Atakpamé, hazte socio) e Informe de Transparencia de Fundación Lealtad (mayo de
+ * 2025, cuentas auditadas de 2023).
  */
 
-export const LOREM = {
-  short: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-  medium:
-    'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer vitae justo eget magna fermentum iaculis eu non diam. Phasellus vestibulum lorem sed risus ultricies tristique.',
-  long: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
+export const DELWENDE_URLS = {
+  web: 'https://delwende.es/',
+  identity: 'https://delwende.es/identidad/',
+  project: 'https://delwende.es/proyectos/centro-de-promocion-social-de-la-mujer-en-atakpame-togo/',
+  member: 'https://delwende.es/colabora/hazte-socio/',
 };
 
 export const ONGD = {
   tagline: 'Al servicio de la vida',
-  history: [LOREM.long, LOREM.medium],
-  mission: LOREM.medium,
-  facts: [
-    { value: '00', label: 'años de trayectoria' },
-    { value: '00', label: 'proyectos en marcha' },
-    { value: '00', label: 'países' },
+  origin:
+    'Delwende nace en 1997 a iniciativa de personas vinculadas a las Hermanas de Nuestra Señora de la Consolación, para colaborar en proyectos educativos y sanitarios de cooperación al desarrollo y de acción social.',
+  mission:
+    'Ser cauce «Al servicio de la Vida» cooperando al desarrollo integral de las personas más vulnerables, para procurar su progreso y que sean agentes de su propio cambio y de transformación social.',
+  how: 'Se gestiona íntegramente con voluntariado y trabaja con las delegaciones de las Hermanas de la Consolación en España. Sobre el terreno, los proyectos los llevan a cabo las propias Hermanas.',
+  areas: [
+    { title: 'Cooperación al desarrollo', text: 'Educación, alfabetización, nutrición y salud en África, Latinoamérica y Asia.' },
+    { title: 'Emergencias', text: 'Apoyo a poblaciones que sufren las consecuencias de catástrofes naturales.' },
+    { title: 'Acción social', text: 'En España, sobre todo con mujeres en situación de vulnerabilidad y menores.' },
   ],
-  values: ['Lorem', 'Ipsum dolor', 'Sit amet', 'Consectetur'],
-  photos: ['Equipo de Delwende', 'Comunidad en Togo', 'Voluntariado'],
+  // Fundación Lealtad, cuentas auditadas de 2023
+  facts: [
+    { value: '12.717', label: 'personas beneficiarias' },
+    { value: '1.813', label: 'socios y socias' },
+    { value: '224', label: 'voluntarios' },
+    { value: '94,4 %', label: 'del gasto va a la misión' },
+  ],
+  photos: ['Delwende en el terreno', 'Voluntariado de Delwende'],
 };
 
-export const PROJECT_CHAPTERS = [
-  { kicker: '01 · El contexto', title: 'Atakpamé, Togo', text: LOREM.medium, photo: 'Atakpamé / entorno del centro' },
-  { kicker: '02 · El centro', title: 'Centro de Promoción Social de la Mujer', text: LOREM.medium, photo: 'Fachada o aulas del centro' },
-  { kicker: '03 · La formación', title: 'Alfabetización, costura y peluquería', text: LOREM.medium, photo: 'Taller de costura' },
-  { kicker: '04 · Las alumnas', title: '85 jóvenes de 15 a 25 años', text: LOREM.medium, photo: 'Alumnas del centro' },
-  { kicker: '05 · El futuro', title: 'Cooperativas y nuevas oportunidades', text: LOREM.medium, photo: 'Cooperativa / salida laboral' },
-];
-
-export const PROJECT_BUDGET = [
-  { label: 'Partida 1 · Lorem ipsum', pct: 'XX %' },
-  { label: 'Partida 2 · Dolor sit amet', pct: 'XX %' },
-  { label: 'Partida 3 · Consectetur', pct: 'XX %' },
-  { label: 'Partida 4 · Adipiscing elit', pct: 'XX %' },
-];
-
-export const PROJECT_QUOTE = {
-  text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer vitae justo eget magna fermentum iaculis.',
-  author: 'Nombre Apellido',
-  role: 'Alumna del centro · Atakpamé',
+/** Contenido ampliado para el modal «Leer más» del proyecto. */
+export const PROJECT_MORE = {
+  title: 'Centro de Promoción Social de la Mujer',
+  place: 'Atakpamé · Togo',
+  paragraphs: [
+    'El centro, que lleva el nombre de María Rosa Molas —fundadora de las Hermanas de la Consolación—, acompaña la formación integral de adolescentes y mujeres jóvenes que nunca pudieron ir a la escuela.',
+    'Durante tres años, las alumnas aprenden a leer y escribir y se forman en un oficio, peluquería o costura, además de recibir educación sanitaria, cultural y sobre gestión de cooperativas. Es una oportunidad real para ganarse la vida y construir su propio futuro.',
+    'Delwende está unida a este proyecto desde sus orígenes: en 1999 ayudó a adquirir el terreno donde se construyó el centro, y hoy colabora con su mantenimiento. Lo gestionan sobre el terreno las Hermanas de la Consolación.',
+  ],
+  highlights: [
+    { value: '1999', label: 'Delwende ayuda a comprar el terreno' },
+    { value: '3 años', label: 'de formación por alumna' },
+    { value: '2 oficios', label: 'peluquería y costura' },
+  ],
+  photo: 'Alumnas del centro de Atakpamé',
 };
 
 export const MEMBERSHIP = {
-  intro: LOREM.medium,
-  perks: [LOREM.short, 'Sed do eiusmod tempor incididunt ut labore.', 'Ut enim ad minim veniam, quis nostrud.'],
-  // TODO: enlace al formulario real de alta de socios/as de Delwende
-  formUrl: '#',
+  intro:
+    'El DelwenFest dura una tarde. Si te haces socio o socia, tu ayuda llega a proyectos como el de Atakpamé todo el año. Y además desgrava.',
+  perks: [
+    'Delwende está acogida a la Ley 49/2002 de mecenazgo: tu cuota desgrava en la renta.',
+    'Para aplicar la deducción solo hace falta tu NIF al darte de alta.',
+    'Tu cuota sostiene los proyectos de Delwende en África, Latinoamérica, Asia y España.',
+  ],
   amounts: [5, 10, 15, 25, 50],
   defaultAmount: 10,
 };

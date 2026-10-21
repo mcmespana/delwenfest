@@ -1,5 +1,5 @@
 // Service worker del DELWENFEST: la web (horario, dirección…) sigue disponible sin cobertura.
-const CACHE = 'delwenfest-v2';
+const CACHE = 'delwenfest-v3';
 const CORE = ['/', '/manifest.webmanifest', '/favicon.svg', '/icons/icon-192.png', '/delwenfest.ics'];
 
 self.addEventListener('install', (event) => {
