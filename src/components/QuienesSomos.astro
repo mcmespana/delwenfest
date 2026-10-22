@@ -1,0 +1,65 @@
+---
+import Placeholder from './Placeholder.astro';
+import { SOCIAL } from '../data/event';
+
+const mcm = SOCIAL.find((s) => s.handle === 'mcmcastellon')!;
+// Metodología Design for Change
+const dfc = [
+  { step: 'Siente', text: 'Miramos realidades sociales de nuestro entorno sobre las que teníamos algo que decir.' },
+  { step: 'Imagina', text: 'Semanas de diálogo para decidir cómo podíamos participar.' },
+  { step: 'Actúa', text: 'Recuperar la fiesta de Delwende en Castellón, que se perdió hace unos años.' },
+  { step: 'Comparte', text: 'Acercar la cooperación internacional y Delwende a la gente joven.' },
+];
+const colors = ['bg-coral', 'bg-gold', 'bg-lime', 'bg-teal'];
+---
+
+<section id="quienes" class="relative overflow-hidden bg-mint px-4 py-28 sm:px-8 md:py-36">
+  <div class="paper-texture"></div>
+  <div class="relative mx-auto max-w-7xl">
+    <div class="grid gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:gap-20">
+      <div>
+        <p class="eyebrow text-forest" data-reveal="up">Quiénes somos</p>
+        <h2 class="section-title mt-3 !text-[clamp(3rem,7.4vw,7rem)]" data-split>
+          Grupo<br /><span class="text-pop [--pop:var(--color-gold)]">COM Nefeli</span>
+        </h2>
+
+        <p class="mt-8 text-lg leading-relaxed font-medium sm:text-xl" data-reveal="up">
+          Somos el grupo COM Nefeli y pertenecemos a
+          <a href={mcm.url} target="_blank" rel="noopener" class="font-bold underline decoration-coral decoration-[3px] underline-offset-4 hover:text-coral">MCM Castellón ({mcm.label})</a>.
+          Tenemos 16 y 17 años y llevamos muchos años formando parte de la Familia Consolación.
+        </p>
+        <p class="mt-4 text-lg leading-relaxed font-medium sm:text-xl" data-reveal="up">
+          El año pasado nos propusieron hacer un proyecto <strong>DFC (Design for Change)</strong>: analizamos diferentes realidades sociales y situaciones de nuestro entorno sobre las que
+          teníamos algo que decir, y descubrimos cómo podíamos participar.
+        </p>
+        <p class="mt-4 text-lg leading-relaxed font-medium sm:text-xl" data-reveal="up">
+          Tras varias semanas de diálogo decidimos sensibilizar a nuestro entorno sobre la cooperación internacional y el papel de la ONGD Delwende, de nuestra Familia Consolación, que
+          necesita ampliar su base de socios y acercarse a la gente más joven. ¿Cómo? <strong>Recuperando la fiesta de la ONG que se hacía en Castellón</strong> y que se perdió hace unos
+          años. Así nace el DelwenFest.
+        </p>
+      </div>
+
+      <div class="relative grid grid-cols-5 gap-4 self-start" data-reveal="up">
+        <Placeholder label="Foto del grupo COM Nefeli" class="col-span-5 aspect-[4/3] w-full -rotate-1 bg-cream shadow-[var(--shadow-hard)]" />
+        <Placeholder label="Foto del proyecto DFC" class="col-span-3 col-start-3 -mt-14 aspect-[4/3] w-full rotate-2 bg-cream shadow-[var(--shadow-hard)]" />
+      </div>
+    </div>
+
+    <div class="sticker mt-12 rounded-[1.5rem] bg-cream p-4 sm:p-5" data-reveal="up">
+      <p class="eyebrow text-ink/60">Nuestro proyecto Design for Change</p>
+      <ol class="mt-3 grid grid-cols-2 gap-x-4 gap-y-3 lg:grid-cols-4">
+        {
+          dfc.map((d, i) => (
+            <li class="flex items-start gap-2.5">
+              <span class={`font-display grid size-7 shrink-0 place-items-center rounded-full border-2 border-ink text-sm ${colors[i]}`}>{i + 1}</span>
+              <span class="leading-tight">
+                <span class="block font-display text-lg uppercase">{d.step}</span>
+                <span class="block text-sm font-medium text-ink/70">{d.text}</span>
+              </span>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </div>
+</section>

@@ -28,6 +28,7 @@ import planetFootball from '../assets/sponsors/planet-football.webp';
 import ramirez from '../assets/sponsors/ramirez.webp';
 import sinbikiniLogo from '../assets/sponsors/sinbikini.webp';
 import stylor from '../assets/sponsors/stylor.webp';
+import adsuara from '../assets/sponsors/adsuara.webp';
 import vertigoBowling from '../assets/sponsors/vertigo-bowling.webp';
 import vertigoPark from '../assets/sponsors/vertigo-park.webp';
 import vjump from '../assets/sponsors/vjump.webp';
@@ -51,7 +52,7 @@ export const EVENT = {
   end: '2026-10-30T22:30:00+01:00',
   timeLabel: '17:15 – 22:30',
   donation: '2 €',
-  url: 'https://delwenfest.movimientoconsolacion.com',
+  url: import.meta.env.SITE.replace(/\/$/, ''),
 } as const;
 
 export const VENUE = {
@@ -249,9 +250,16 @@ export const ACTIVITIES: Activity[] = [
 /*  Colaboradores                                                      */
 /* ------------------------------------------------------------------ */
 
-export type Sponsor = { name: string; kind: string; logo: ImageMetadata; bg: string; dark?: boolean };
+export type Sponsor = { name: string; kind: string; logo: ImageMetadata; bg: string; dark?: boolean; instagram?: string };
 
 export const SPONSORS: Sponsor[] = [
+  {
+    name: 'Panadería Pastelería Adsuara',
+    kind: 'Panadería y pastelería',
+    logo: adsuara,
+    bg: '#f5b50b',
+    instagram: 'https://www.instagram.com/panaderiaadsuara/',
+  },
   { name: 'Vertigo Bowling Estepark', kind: 'Bowling', logo: vertigoBowling, bg: '#2f6bd8' },
   { name: 'Planet Football Indoor', kind: 'Fútbol indoor', logo: planetFootball, bg: '#f7363a' },
   { name: 'Sinbikini', kind: 'Fresh music · Mediterranean beach', logo: sinbikiniLogo, bg: '#ffae34' },

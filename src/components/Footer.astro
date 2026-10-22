@@ -5,6 +5,7 @@ import fest from '../assets/brand/fest.webp';
 import mcm from '../assets/partners/mcm.webp';
 import delwende from '../assets/partners/delwende.webp';
 import { INSTITUTIONS, SOCIAL, EVENT } from '../data/event';
+import { DELWENDE_URLS } from '../data/delwende';
 ---
 
 <footer class="relative overflow-hidden bg-ink px-4 pt-24 pb-10 text-cream sm:px-8">
@@ -38,6 +39,7 @@ import { INSTITUTIONS, SOCIAL, EVENT } from '../data/event';
             ))
           }
         </ul>
+        <a href={DELWENDE_URLS.member} target="_blank" rel="noopener" class="mt-5 inline-block font-display text-lg uppercase underline decoration-[3px] underline-offset-4">Hazte socio/a de Delwende <svg viewBox="0 0 24 24" class="inline size-[0.9em] -translate-y-px" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"></path></svg></a>
       </div>
     </div>
 
@@ -63,7 +65,7 @@ import { INSTITUTIONS, SOCIAL, EVENT } from '../data/event';
 
     <div class="mt-10 flex flex-col items-center justify-between gap-3 border-t border-cream/15 pt-6 text-sm text-cream/60 sm:flex-row">
       <p>DELWENFEST · {EVENT.weekday} 30 de octubre de 2026 · Consolación Castellón</p>
-      <p>Hecho con ♥ por MCM Castellón</p>
+      <p>Hecho con <svg viewBox="0 0 24 24" class="inline size-[1em] -translate-y-px text-red" fill="currentColor" aria-label="cariño"><path d="M12 21s-7.5-4.6-9.6-9.2C.9 8.4 3 4.5 6.8 4.5c2.1 0 3.6 1.2 4.2 2.5.6-1.3 2.1-2.5 4.2-2.5 3.8 0 5.9 3.9 4.4 7.3C19.5 16.4 12 21 12 21Z"></path></svg> por MCM Castellón</p>
     </div>
   </div>
 </footer>

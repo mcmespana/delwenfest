@@ -1,0 +1,425 @@
+---
+import { ALARMS, DEFAULT_ALARMS } from '../lib/ics';
+import { CALENDAR, DIRECTIONS, EVENT, VENUE } from '../data/event';
+
+const outlook =
+  'https://outlook.live.com/calendar/0/action/compose?rru=addevent&allday=false' +
+  `&subject=${encodeURIComponent('DELWENFEST · Festival solidario Delwende')}` +
+  '&startdt=2026-10-30T16:15:00Z&enddt=2026-10-30T21:30:00Z' +
+  `&location=${encodeURIComponent(`${VENUE.name}, ${VENUE.street}, ${VENUE.city}`)}` +
+  `&body=${encodeURIComponent(`${VENUE.entrance} (${VENUE.entranceHint}). ${EVENT.url}`)}`;
+
+const whatsappText = [
+  '🎉 *DELWENFEST* · Festival solidario Delwende',
+  '📅 Viernes 30 de octubre · 17:15 – 22:30',
+  `📍 ${VENUE.name} (${VENUE.street})`,
+  `🚪 ${VENUE.entrance}, ${VENUE.entranceHint}`,
+  `🗺️ ${DIRECTIONS.google}`,
+  `ℹ️ ${EVENT.url}`,
+].join('\n');
+const whatsapp = `https://wa.me/?text=${encodeURIComponent(whatsappText)}`;
+---
+
+<!-- Botón flotante -->
+<button
+  type="button"
+  class="fixed right-4 bottom-[calc(1rem+env(safe-area-inset-bottom))] z-40 flex items-center gap-2.5 rounded-full border-[3px] border-ink bg-ink py-3 pr-5 pl-3.5 font-display text-base tracking-wide text-gold uppercase shadow-[4px_4px_0_0_#f5b50b] sm:right-6 sm:bottom-6"
+  data-remind
+  data-remind-fab
+  style="transform: translateY(160%)"
+  aria-label="Guardar un recordatorio del DELWENFEST"
+>
+  <span class="grid size-8 place-items-center rounded-full bg-gold text-ink" data-bell>
+    <svg viewBox="0 0 24 24" class="size-[18px]" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 1 1 12 0c0 7 3 9 3 9H3s3-2 3-9"></path><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"></path></svg>
+  </span>
+  Recuérdamelo
+</button>
+
+<dialog
+  class="remind m-0 h-full max-h-none w-full max-w-none bg-transparent p-0 backdrop:bg-transparent"
+  aria-labelledby="remind-title"
+  data-remind-dialog
+>
+  <div class="absolute inset-0 bg-ink/55" data-remind-backdrop></div>
+  <div
+    class="absolute inset-x-0 bottom-0 mx-auto flex max-h-[90dvh] w-full will-change-transform max-w-lg flex-col overflow-hidden rounded-t-[2rem] border-[3px] border-b-0 border-ink bg-cream sm:inset-y-0 sm:my-auto sm:h-fit sm:rounded-[2rem] sm:border-b-[3px] sm:shadow-[10px_10px_0_0_#24211e]"
+    data-remind-sheet
+  >
+    <!-- Asa para arrastrar (móvil) -->
+    <div class="flex justify-center pt-3 pb-1 sm:hidden" data-remind-handle>
+      <span class="h-1.5 w-12 rounded-full bg-ink/25"></span>
+    </div>
+
+    <div class="overflow-y-auto overscroll-contain px-5 pt-3 pb-[calc(1.5rem+env(safe-area-inset-bottom))] sm:px-7 sm:pt-7" data-lenis-prevent>
+      <header class="flex items-start justify-between gap-4">
+        <div>
+          <p class="eyebrow text-coral">Recordatorio</p>
+          <h2 id="remind-title" class="font-display mt-1 text-[2.4rem] leading-[0.9] uppercase">Que no se<br />te pase</h2>
+        </div>
+        <button type="button" class="grid size-11 shrink-0 place-items-center rounded-full border-[3px] border-ink bg-cream shadow-[var(--shadow-hard-sm)]" aria-label="Cerrar" data-remind-close>
+          <svg viewBox="0 0 24 24" class="size-5" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"></path></svg>
+        </button>
+      </header>
+
+      <!-- Entrada tipo ticket -->
+      <div class="relative mt-5 flex overflow-hidden rounded-2xl bg-ink text-cream">
+        <div class="flex flex-1 flex-col justify-center gap-1 p-4">
+          <p class="font-display text-xl leading-none tracking-wide text-gold uppercase">Delwenfest</p>
+          <p class="text-[0.95rem] font-semibold">Viernes 30 oct · 17:15 – 22:30</p>
+          <p class="text-sm text-cream/65">{VENUE.entrance} · {VENUE.entranceHint}</p>
+        </div>
+        <div class="relative grid w-20 place-items-center border-l-2 border-dashed border-cream/30 bg-gold text-ink">
+          <span class="absolute -top-3 -left-3 size-6 rounded-full bg-cream"></span>
+          <span class="absolute -bottom-3 -left-3 size-6 rounded-full bg-cream"></span>
+          <p class="text-center font-display leading-none uppercase"><span class="block text-3xl">30</span><span class="text-sm">oct</span></p>
+        </div>
+      </div>
+
+      <!-- Avisos -->
+      <fieldset class="mt-6">
+        <legend class="font-display text-lg uppercase">¿Cuándo te avisamos?</legend>
+        <p class="text-sm text-ink/60">Elige hasta 2 avisos (lo que guarda el iPhone).</p>
+        <div class="mt-3 grid grid-cols-2 gap-2.5">
+          {
+            ALARMS.map((a) => (
+              <label class="group relative cursor-pointer">
+                <input type="checkbox" value={a.key} class="peer sr-only" checked={DEFAULT_ALARMS.includes(a.key)} data-alarm />
+                <span class="flex h-full flex-col rounded-2xl border-[2.5px] border-ink bg-white px-3.5 pt-3 pb-2.5 transition-all duration-200 peer-checked:-translate-y-0.5 peer-checked:bg-gold peer-checked:shadow-[var(--shadow-hard-sm)] peer-focus-visible:outline-3 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-ink">
+                  <span class="font-display text-[1.05rem] leading-tight uppercase">{a.label}</span>
+                  <span class="text-[0.8rem] text-ink/60">{a.when}</span>
+                </span>
+                <span class="absolute top-2.5 right-2.5 grid size-5 scale-0 place-items-center rounded-full bg-ink text-gold transition-transform duration-300 ease-[var(--ease-bounce)] peer-checked:scale-100">
+                  <svg viewBox="0 0 24 24" class="size-3" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L20 7" /></svg>
+                </span>
+              </label>
+            ))
+          }
+        </div>
+      </fieldset>
+
+      <!-- Calendarios -->
+      <div class="mt-6 flex flex-col gap-2.5" data-cal-list>
+        <a href={`/recordatorio/${DEFAULT_ALARMS.join('-')}.ics`} class="cal-btn" data-cal="apple" data-ics-link>
+          <svg viewBox="0 0 24 24" class="size-6" fill="currentColor" aria-hidden="true"><path d="M16.37 12.65c-.02-2.2 1.8-3.26 1.88-3.31-1.03-1.5-2.62-1.7-3.18-1.73-1.35-.14-2.64.8-3.33.8-.69 0-1.74-.78-2.86-.76-1.47.02-2.83.86-3.59 2.17-1.53 2.66-.39 6.6 1.1 8.76.73 1.06 1.6 2.24 2.73 2.2 1.1-.05 1.51-.71 2.84-.71 1.32 0 1.7.71 2.86.69 1.18-.02 1.93-1.07 2.65-2.13.84-1.22 1.18-2.41 1.2-2.47-.03-.01-2.3-.88-2.3-3.5ZM14.2 6.17c.6-.73 1.01-1.75.9-2.76-.87.04-1.92.58-2.54 1.31-.56.64-1.05 1.68-.92 2.67.97.08 1.96-.49 2.56-1.22Z"></path></svg>
+          <span class="flex-1"><span class="block">iPhone · Mac</span><span class="cal-sub">Con los avisos que has elegido</span></span>
+          <span class="cal-arrow">→</span>
+        </a>
+        <a href={CALENDAR.google} target="_blank" rel="noopener" class="cal-btn" data-cal="google">
+          <svg viewBox="0 0 24 24" class="size-6" aria-hidden="true"><rect x="3" y="4" width="18" height="17" rx="3" fill="#fff" stroke="currentColor" stroke-width="2"></rect><path d="M3 9h18" stroke="currentColor" stroke-width="2"></path><text x="12" y="18.5" text-anchor="middle" font-size="8" font-weight="900" fill="#2f6bd8" font-family="Arial">30</text></svg>
+          <span class="flex-1"><span class="block">Google Calendar</span><span class="cal-sub">Android · usa tus avisos de Google</span></span>
+          <span class="cal-arrow">→</span>
+        </a>
+        <a href={outlook} target="_blank" rel="noopener" class="cal-btn" data-cal="outlook">
+          <svg viewBox="0 0 24 24" class="size-6" aria-hidden="true"><rect x="2" y="5" width="12" height="14" rx="2" fill="#2f6bd8"></rect><ellipse cx="8" cy="12" rx="3" ry="3.6" fill="none" stroke="#fff" stroke-width="2"></ellipse><path d="M14 7h7v10h-7" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"></path></svg>
+          <span class="flex-1"><span class="block">Outlook</span><span class="cal-sub">Outlook.com · Hotmail</span></span>
+          <span class="cal-arrow">→</span>
+        </a>
+      </div>
+
+      <!-- Otras formas -->
+      <div class="mt-6 grid grid-cols-2 gap-2.5">
+        <a href={whatsapp} target="_blank" rel="noopener" class="share-btn bg-[#25d366]">
+          <svg viewBox="0 0 24 24" class="size-6" fill="currentColor" aria-hidden="true"><path d="M12.04 2a9.9 9.9 0 0 0-8.5 14.96L2 22l5.2-1.5A9.93 9.93 0 1 0 12.04 2Zm5.8 14.12c-.25.69-1.45 1.32-2 1.36-.53.05-1.03.24-3.47-.72-2.93-1.16-4.79-4.16-4.94-4.35-.14-.2-1.18-1.57-1.18-3s.75-2.13 1.02-2.42c.26-.29.57-.36.77-.36h.55c.17 0 .41-.06.64.49.24.58.82 2 .89 2.15.07.14.12.31.02.5-.1.2-.14.31-.29.48-.14.17-.3.38-.43.51-.14.14-.29.3-.13.59.17.29.74 1.22 1.58 1.97 1.09.97 2 1.27 2.29 1.41.29.15.46.12.62-.07.17-.2.72-.84.91-1.13.2-.29.39-.24.65-.14.27.1 1.68.79 1.97.94.29.14.48.22.55.34.07.12.07.7-.18 1.38Z"></path></svg>
+          <span>Envíatelo<br /><span class="text-xs font-sans font-semibold normal-case opacity-80">por WhatsApp</span></span>
+        </a>
+        <button type="button" class="share-btn bg-sky text-cream" data-share>
+          <svg viewBox="0 0 24 24" class="size-6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v13M7 8l5-5 5 5"></path><path d="M5 13v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6"></path></svg>
+          <span>Compártelo<br /><span class="text-xs font-sans font-semibold normal-case opacity-80">con tu gente</span></span>
+        </button>
+      </div>
+
+      <!-- Instalar como app -->
+      <div class="mt-6 hidden rounded-2xl border-[2.5px] border-dashed border-ink/40 p-4" data-install>
+        <div class="flex items-center gap-3.5">
+          <img src="/icons/icon-192.png" alt="" width="48" height="48" class="size-12 rounded-xl border-2 border-ink" />
+          <div class="flex-1">
+            <p class="font-display text-lg leading-tight uppercase">Llévalo en el móvil</p>
+            <p class="text-sm leading-snug text-ink/65">Horario y dirección a mano, incluso sin cobertura.</p>
+          </div>
+          <button type="button" class="btn btn-ink hidden !px-4 !py-2.5 !text-sm" data-install-btn>Instalar</button>
+        </div>
+        <p class="mt-3 hidden text-sm leading-snug" data-install-ios>
+          En Safari pulsa
+          <svg viewBox="0 0 24 24" class="inline size-4 -translate-y-0.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-label="Compartir"><path d="M12 3v13M7 8l5-5 5 5"></path><path d="M5 13v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6"></path></svg>
+          <strong>Compartir</strong> y luego <strong>«Añadir a pantalla de inicio»</strong>.
+        </p>
+      </div>
+    </div>
+
+    <!-- Aviso de confirmación -->
+    <p
+      class="pointer-events-none absolute inset-x-5 bottom-[calc(1.25rem+env(safe-area-inset-bottom))] rounded-full border-[3px] border-ink bg-lime px-5 pt-3 pb-2.5 text-center font-display uppercase opacity-0 shadow-[var(--shadow-hard-sm)]"
+      role="status"
+      aria-live="polite"
+      data-toast
+      style="transform: translateY(150%)"
+    >
+    </p>
+  </div>
+</dialog>
+
+<style>
+  .remind:not([open]) {
+    display: none;
+  }
+  .cal-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    border: 2.5px solid var(--color-ink);
+    border-radius: 1.1rem;
+    background: white;
+    padding: 0.8rem 1rem;
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    line-height: 1.1;
+    text-transform: uppercase;
+    transition:
+      transform 0.25s var(--ease-bounce),
+      box-shadow 0.25s var(--ease-bounce),
+      background-color 0.2s;
+  }
+  .cal-btn:hover,
+  .cal-btn[data-primary='true'] {
+    transform: translate(-2px, -2px);
+    box-shadow: var(--shadow-hard-sm);
+  }
+  .cal-btn[data-primary='true'] {
+    order: -1;
+    background: var(--color-gold);
+  }
+  [data-cal-list][data-compact='true'] {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+  [data-cal-list][data-compact='true'] .cal-btn[data-primary='true'] {
+    grid-column: 1 / -1;
+    padding: 1.05rem 1.1rem;
+    font-size: 1.25rem;
+  }
+  [data-cal-list][data-compact='true'] .cal-btn:not([data-primary='true']) {
+    gap: 0.5rem;
+    padding: 0.55rem 0.75rem;
+    font-size: 0.9rem;
+  }
+  [data-cal-list][data-compact='true'] .cal-btn:not([data-primary='true']) :is(.cal-sub, .cal-arrow) {
+    display: none;
+  }
+  [data-cal-list][data-compact='true'] .cal-btn:not([data-primary='true']) svg {
+    width: 1.1rem;
+    height: 1.1rem;
+  }
+  .cal-sub {
+    display: block;
+    margin-top: 0.15rem;
+    font-family: var(--font-sans);
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: none;
+    opacity: 0.6;
+  }
+  .cal-arrow {
+    font-size: 1.3rem;
+    transition: transform 0.25s var(--ease-bounce);
+  }
+  .cal-btn:hover .cal-arrow {
+    transform: translateX(4px);
+  }
+  .share-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    border: 2.5px solid var(--color-ink);
+    border-radius: 1.1rem;
+    padding: 0.85rem 1rem;
+    text-align: left;
+    font-family: var(--font-display);
+    font-size: 1.05rem;
+    line-height: 1.05;
+    text-transform: uppercase;
+    box-shadow: var(--shadow-hard-sm);
+    transition: transform 0.25s var(--ease-bounce);
+  }
+  .share-btn:hover {
+    transform: translate(-2px, -2px);
+  }
+</style>
+
+<script>
+  import { gsap, ScrollTrigger, lenis, reduceMotion } from '../scripts/motion';
+
+  const dialog = document.querySelector<HTMLDialogElement>('[data-remind-dialog]')!;
+  const sheet = dialog.querySelector<HTMLElement>('[data-remind-sheet]')!;
+  const backdrop = dialog.querySelector<HTMLElement>('[data-remind-backdrop]')!;
+  const fab = document.querySelector<HTMLElement>('[data-remind-fab]')!;
+  const toast = dialog.querySelector<HTMLElement>('[data-toast]')!;
+  const icsLink = dialog.querySelector<HTMLAnchorElement>('[data-ics-link]')!;
+  const checks = Array.from(dialog.querySelectorAll<HTMLInputElement>('[data-alarm]'));
+  const mobile = () => window.matchMedia('(max-width: 639px)').matches;
+
+  /* ---------- Plataforma: destacamos el calendario que toca ---------- */
+  const ua = navigator.userAgent;
+  const isIOS = /iPad|iPhone|iPod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  const isMac = /Macintosh/.test(ua) && !isIOS;
+  const isAndroid = /Android/i.test(ua);
+  const primary = isIOS || isMac ? 'apple' : isAndroid ? 'google' : null;
+  if (primary) dialog.querySelector<HTMLElement>(`[data-cal="${primary}"]`)!.dataset.primary = 'true';
+  // En iPhone el calendario de Apple manda; Google y Outlook quedan en pequeño
+  if (isIOS) dialog.querySelector<HTMLElement>('[data-cal-list]')!.dataset.compact = 'true';
+
+  /* ---------- Avisos elegidos (máx. 2, mín. 1) ---------- */
+  let order = checks.filter((c) => c.checked).map((c) => c.value);
+  function syncIcs() {
+    const keys = checks.filter((c) => c.checked).map((c) => c.value); // ya en orden canónico
+    icsLink.href = `/recordatorio/${keys.join('-')}.ics`;
+  }
+  checks.forEach((c) =>
+    c.addEventListener('change', () => {
+      if (c.checked) {
+        order.push(c.value);
+        if (order.length > 2) {
+          const drop = order.shift()!;
+          checks.find((x) => x.value === drop)!.checked = false;
+        }
+      } else if (order.length === 1) {
+        c.checked = true; // siempre al menos un aviso
+        return;
+      } else {
+        order = order.filter((v) => v !== c.value);
+      }
+      syncIcs();
+    }),
+  );
+  syncIcs();
+
+  /* ---------- Toast ---------- */
+  gsap.set(toast, { y: 0, yPercent: 150 });
+  let toastTl: gsap.core.Timeline | null = null;
+  function showToast(text: string) {
+    toast.textContent = text;
+    toastTl?.kill();
+    toastTl = gsap
+      .timeline()
+      .to(toast, { yPercent: 0, y: 0, opacity: 1, duration: 0.5, ease: 'back.out(2)' })
+      .to(toast, { yPercent: 150, opacity: 0, duration: 0.4, ease: 'power2.in' }, '+=2.2');
+  }
+
+  dialog.querySelectorAll<HTMLAnchorElement>('[data-cal]').forEach((a) =>
+    a.addEventListener('click', () => setTimeout(() => showToast('¡Listo! Revisa tu calendario'), 600)),
+  );
+
+  /* ---------- Compartir ---------- */
+  dialog.querySelector('[data-share]')?.addEventListener('click', async () => {
+    const data = {
+      title: 'DELWENFEST · 30 de octubre',
+      text: 'Festival solidario de la ONGD Delwende en Consolación Castellón. Viernes 30 de octubre, de 17:15 a 22:30.',
+      url: location.origin,
+    };
+    try {
+      if (navigator.share) await navigator.share(data);
+      else {
+        await navigator.clipboard.writeText(`${data.text} ${data.url}`);
+        showToast('Enlace copiado');
+      }
+    } catch {
+      /* cancelado por el usuario */
+    }
+  });
+
+  /* ---------- Instalar como app (PWA) ---------- */
+  type InstallPrompt = Event & { prompt: () => Promise<void>; userChoice: Promise<{ outcome: string }> };
+  const standalone = window.matchMedia('(display-mode: standalone)').matches || (navigator as unknown as { standalone?: boolean }).standalone;
+  const installBox = dialog.querySelector<HTMLElement>('[data-install]')!;
+  const installBtn = dialog.querySelector<HTMLButtonElement>('[data-install-btn]')!;
+  let deferred: InstallPrompt | null = null;
+  if (!standalone) {
+    if (isIOS) {
+      installBox.classList.remove('hidden');
+      dialog.querySelector('[data-install-ios]')!.classList.remove('hidden');
+    }
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferred = e as InstallPrompt;
+      installBox.classList.remove('hidden');
+      installBtn.classList.remove('hidden');
+    });
+    installBtn.addEventListener('click', async () => {
+      if (!deferred) return;
+      await deferred.prompt();
+      const { outcome } = await deferred.userChoice;
+      if (outcome === 'accepted') {
+        installBox.classList.add('hidden');
+        showToast('¡Instalada!');
+      }
+      deferred = null;
+    });
+  }
+
+  /* ---------- Abrir / cerrar ---------- */
+  // Bloqueamos el scroll de la página de fondo: en iPhone, si se mueve, la barra
+  // de Safari cambia de tamaño y la hoja va a saltos.
+  const root = document.documentElement;
+  function lockScroll(lock: boolean) {
+    root.style.overflow = lock ? 'hidden' : '';
+    document.body.style.overflow = lock ? 'hidden' : '';
+    lock ? lenis?.stop() : lenis?.start();
+  }
+
+  function open() {
+    if (dialog.open) return;
+    dialog.showModal();
+    lockScroll(true);
+    if (reduceMotion) return;
+    gsap.fromTo(backdrop, { opacity: 0 }, { opacity: 1, duration: 0.3, ease: 'none' });
+    gsap.fromTo(
+      sheet,
+      mobile() ? { yPercent: 100, opacity: 1 } : { yPercent: 6, opacity: 0 },
+      { yPercent: 0, opacity: 1, duration: 0.55, ease: 'power4.out', force3D: true },
+    );
+  }
+
+  let closing = false;
+  function close() {
+    if (!dialog.open || closing) return;
+    closing = true;
+    const done = () => {
+      dialog.close();
+      lockScroll(false);
+      closing = false;
+    };
+    if (reduceMotion) return done();
+    gsap.to(backdrop, { opacity: 0, duration: 0.25, ease: 'none' });
+    gsap.to(sheet, { ...(mobile() ? { yPercent: 100 } : { yPercent: 6, opacity: 0 }), duration: 0.32, ease: 'power3.in', force3D: true, onComplete: done });
+  }
+
+  document.querySelectorAll('[data-remind]').forEach((b) => b.addEventListener('click', open));
+  dialog.querySelector('[data-remind-close]')!.addEventListener('click', close);
+  backdrop.addEventListener('click', close);
+  dialog.addEventListener('cancel', (e) => {
+    e.preventDefault();
+    close();
+  });
+
+  /* ---------- Botón flotante ---------- */
+  gsap.set(fab, { y: 0, yPercent: reduceMotion ? 0 : 160 });
+  if (!reduceMotion) {
+    let shown = false;
+    ScrollTrigger.create({
+      trigger: '[data-hero]',
+      start: 'bottom 60%',
+      endTrigger: 'footer',
+      end: 'top bottom',
+      onToggle(self) {
+        if (self.isActive === shown) return;
+        shown = self.isActive;
+        gsap.to(fab, { yPercent: shown ? 0 : 160, duration: 0.6, ease: shown ? 'back.out(1.8)' : 'power3.in' });
+      },
+    });
+    // La campana se mueve cada pocos segundos
+    gsap.timeline({ repeat: -1, repeatDelay: 4 }).to(fab.querySelector('[data-bell]'), {
+      keyframes: { rotate: [0, -18, 16, -12, 8, 0] },
+      duration: 0.9,
+      ease: 'none',
+    });
+  }
+</script>

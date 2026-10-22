@@ -9,8 +9,6 @@ import bingo from '../assets/illus/bingo.webp';
 import ticket from '../assets/illus/ticket.webp';
 import confeti from '../assets/illus/confeti.webp';
 import regalo from '../assets/illus/regalo.webp';
-import bebidas from '../assets/illus/bebidas.webp';
-import toro from '../assets/illus/toro.webp';
 import { EVENT } from '../data/event';
 
 // depth: cuánto reacciona al ratón y al scroll; pos: clases de colocación
@@ -21,37 +19,27 @@ const stickers = [
   { src: ticket, alt: 'Ticket de la rifa', depth: 0.8, pos: 'right-[3%] top-[16%] w-[22vw] sm:right-[7%] sm:top-[21%] sm:w-[10vw]', rot: 14 },
   { src: confeti, alt: 'Lanzador de confeti', depth: 1.2, pos: 'right-[2%] bottom-[16%] w-[20vw] sm:right-[3%] sm:bottom-[24%] sm:w-[10vw]', rot: 8 },
   { src: regalo, alt: 'Regalo', depth: 0.7, pos: 'hidden sm:block right-[17%] bottom-[6%] w-[6.5vw]', rot: -6 },
-  { src: bebidas, alt: 'Bebidas', depth: 0.5, pos: 'hidden md:block right-[24%] top-[13%] w-[4.5vw]', rot: 10 },
-  { src: toro, alt: 'Toro mecánico', depth: 0.4, pos: 'hidden lg:block left-[22%] top-[11%] w-[6vw]', rot: -4 },
 ];
 ---
 
-<section id="top" class="grain relative isolate flex min-h-[100svh] items-center justify-center overflow-hidden bg-mint" data-hero>
+<section id="top" class="relative isolate flex min-h-[100svh] items-center justify-center overflow-hidden bg-mint bg-[radial-gradient(60%_50%_at_10%_0%,rgba(140,198,63,.35),transparent),radial-gradient(55%_50%_at_100%_100%,rgba(247,54,58,.22),transparent),radial-gradient(45%_40%_at_55%_45%,rgba(245,181,11,.28),transparent)]" data-hero>
   <div class="paper-texture"></div>
-
-  <!-- Manchas de color -->
-  <div class="pointer-events-none absolute inset-0 -z-10 overflow-hidden" aria-hidden="true">
-    <div class="absolute -top-[20%] -left-[10%] size-[60vmax] rounded-full bg-[radial-gradient(circle,rgba(140,198,63,.55),transparent_60%)] blur-2xl" data-blob></div>
-    <div class="absolute -right-[15%] -bottom-[25%] size-[65vmax] rounded-full bg-[radial-gradient(circle,rgba(247,54,58,.38),transparent_60%)] blur-2xl" data-blob></div>
-    <div class="absolute top-[30%] left-[35%] size-[45vmax] rounded-full bg-[radial-gradient(circle,rgba(245,181,11,.45),transparent_60%)] blur-2xl" data-blob></div>
-    <div class="absolute -top-[10%] right-[5%] size-[35vmax] rounded-full bg-[radial-gradient(circle,rgba(31,179,176,.35),transparent_60%)] blur-2xl" data-blob></div>
-  </div>
 
   <!-- Rayos de sol retro -->
   <div
-    class="pointer-events-none absolute top-1/2 left-1/2 -z-10 aspect-square w-[220vmax] -translate-x-1/2 -translate-y-1/2 [mask-image:radial-gradient(circle,black_8%,transparent_42%)]"
+    class="pointer-events-none absolute inset-0 -z-10 bg-[repeating-conic-gradient(from_0deg_at_50%_45%,rgba(255,255,255,.42)_0deg_7deg,transparent_7deg_15deg)] [mask-image:radial-gradient(circle_at_50%_45%,black_10%,transparent_75%)]"
     aria-hidden="true"
+    data-rays
   >
-    <div class="size-full animate-spin-slow bg-[repeating-conic-gradient(from_0deg,rgba(255,255,255,.42)_0deg_7deg,transparent_7deg_15deg)]" data-rays></div>
   </div>
 
   <!-- Pegatinas flotantes -->
   <div class="pointer-events-none absolute inset-0" aria-hidden="true">
     {
-      stickers.map((s, i) => (
+      stickers.map((s) => (
         <div class={`absolute ${s.pos}`} data-sticker data-depth={s.depth}>
           <div data-sticker-scroll>
-          <div class="animate-float" style={`animation-delay:${-i * 0.9}s; animation-duration:${5 + (i % 3)}s`}>
+          <div>
             <Image
               src={s.src}
               alt=""
@@ -90,7 +78,7 @@ const stickers = [
         </span>
       </span>
       <span class="absolute -top-[16%] -right-[3%] block w-[17%] sm:-top-[22%] sm:-right-[6%] sm:w-[15%]" data-badge>
-        <Image src={badge} alt="" widths={[200, 400]} sizes="15vw" loading="eager" class="animate-wiggle h-auto w-full drop-shadow-[4px_6px_0_rgba(36,33,30,.25)]" />
+        <Image src={badge} alt="" widths={[200, 400]} sizes="15vw" loading="eager" class="h-auto w-full drop-shadow-[4px_6px_0_rgba(36,33,30,.25)]" />
       </span>
     </h1>
 
@@ -124,36 +112,17 @@ const stickers = [
       <p class="font-display hidden text-[clamp(1.6rem,4vw,2.6rem)] uppercase" data-cd-live></p>
     </div>
 
-    <div class="mt-8 flex flex-wrap items-center justify-center gap-3 sm:mt-10 sm:gap-4" data-hero-ctas>
-      <a href="#horario" data-scroll class="btn btn-gold">
-        Ver horario
-        <svg viewBox="0 0 24 24" class="size-5" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12l7 7 7-7"></path></svg>
-      </a>
-      <a href="#lugar" data-scroll class="btn btn-cream">
-        Cómo llegar
-        <svg viewBox="0 0 24 24" class="size-5" fill="currentColor" aria-hidden="true"
-          ><path d="M12 2a7 7 0 0 0-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 0 0-7-7Zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5Z"></path></svg
-        >
+    <div class="mt-8 flex justify-center sm:mt-10" data-hero-ctas>
+      <a href="#plan" data-scroll class="btn btn-gold group !px-7 !py-4 !text-lg">
+        Descúbrelo todo
+        <svg viewBox="0 0 24 24" class="size-5 transition-transform duration-300 group-hover:translate-y-1" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12l7 7 7-7"></path></svg>
       </a>
     </div>
   </div>
 
-  <a
-    href="#plan"
-    data-scroll
-    class="absolute bottom-5 left-1/2 z-10 hidden -translate-x-1/2 flex-col items-center gap-2 sm:flex"
-    aria-label="Bajar a ver el plan"
-    data-scroll-hint
-  >
-    <span class="font-display text-xs tracking-[0.3em] uppercase">Scroll</span>
-    <span class="relative h-10 w-6 rounded-full border-[3px] border-ink">
-      <span class="absolute top-1.5 left-1/2 h-2 w-1 -translate-x-1/2 animate-bounce rounded-full bg-ink"></span>
-    </span>
-  </a>
 </section>
 
 <script>
-  import confetti from 'canvas-confetti';
   import { gsap, SplitText, reduceMotion, finePointer } from '../scripts/motion';
 
   const hero = document.querySelector<HTMLElement>('[data-hero]')!;
@@ -185,7 +154,7 @@ const stickers = [
       cd.querySelector('[data-cd-label]')!.textContent = live ? 'Ahora mismo' : '30 · 10 · 2026';
       const liveEl = cd.querySelector<HTMLElement>('[data-cd-live]')!;
       liveEl.classList.remove('hidden');
-      liveEl.textContent = live ? '¡Estamos de fiesta! 🎉' : '¡Gracias por sumar!';
+      liveEl.textContent = live ? '¡Estamos de fiesta!' : '¡Gracias por sumar!';
       if (!live) window.clearInterval(timer);
       return;
     }
@@ -218,38 +187,12 @@ const stickers = [
       .from('[data-hero-pill]', { y: -120, rotate: -8, opacity: 0, duration: 1.1, ease: 'elastic.out(1,0.6)' }, 0.1)
       .from(delwenEl, { xPercent: -130, rotate: -14, scale: 0.6, opacity: 0, duration: 1.2, ease: 'back.out(1.5)' }, 0.25)
       .from(festEl, { yPercent: -260, rotate: 18, opacity: 0, duration: 0.9, ease: 'bounce.out' }, 0.55)
-      .add(() => {
-        // Pequeño “temblor” al aterrizar FEST + confeti
-        gsap.fromTo('[data-wordmark]', { x: -6 }, { x: 0, duration: 0.5, ease: 'elastic.out(1.2,0.25)' });
-        const colors = ['#8cc63f', '#f5b50b', '#f87341', '#f7363a', '#1fb3b0', '#2f6bd8'];
-        confetti({ particleCount: 70, spread: 70, angle: 60, origin: { x: 0, y: 0.75 }, colors, scalar: 1.1, disableForReducedMotion: true });
-        confetti({ particleCount: 70, spread: 70, angle: 120, origin: { x: 1, y: 0.75 }, colors, scalar: 1.1, disableForReducedMotion: true });
-      }, 1.25)
       .from('[data-badge]', { scale: 0, rotate: -180, duration: 1, ease: 'back.out(2)' }, 1.0)
       .from(tagline.words, { yPercent: 110, duration: 0.8, stagger: 0.03 }, 1.0)
       .from(stickers, { scale: 0, rotate: () => gsap.utils.random(-60, 60), duration: 1, stagger: 0.07, ease: 'back.out(2)' }, 0.7)
       .from('[data-cd-box]', { y: 40, rotateX: -90, opacity: 0, duration: 0.8, stagger: 0.08, ease: 'back.out(1.8)' }, 1.2)
       .from('[data-cd-label]', { opacity: 0, y: 10, duration: 0.6 }, 1.2)
-      .from('[data-hero-ctas] > *', { y: 30, opacity: 0, duration: 0.7, stagger: 0.1, ease: 'back.out(2)' }, 1.4)
-      .from('[data-scroll-hint]', { opacity: 0, duration: 0.8 }, 1.8);
-
-    // Respiración continua del logotipo
-    gsap.to('[data-wordmark] > span:nth-child(2)', { y: -8, rotate: -0.6, duration: 2.6, ease: 'sine.inOut', yoyo: true, repeat: -1, delay: 2 });
-
-    // Manchas de color a la deriva
-    gsap.utils.toArray<HTMLElement>('[data-blob]', hero).forEach((b, i) => {
-      gsap.to(b, {
-        x: () => gsap.utils.random(-120, 120),
-        y: () => gsap.utils.random(-90, 90),
-        scale: () => gsap.utils.random(0.85, 1.2),
-        duration: gsap.utils.random(7, 11),
-        ease: 'sine.inOut',
-        repeat: -1,
-        yoyo: true,
-        repeatRefresh: true,
-        delay: i * 0.4,
-      });
-    });
+      .from('[data-hero-ctas] > *', { y: 30, opacity: 0, duration: 0.7, stagger: 0.1, ease: 'back.out(2)' }, 1.4);
 
     // Parallax con el ratón
     if (finePointer) {

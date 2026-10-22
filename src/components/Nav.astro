@@ -6,8 +6,10 @@ import fest from '../assets/brand/fest.webp';
 const links = [
   { href: '#plan', label: 'El plan' },
   { href: '#horario', label: 'Horario' },
-  { href: '#causa', label: 'La causa' },
   { href: '#lugar', label: 'Lugar' },
+  { href: '#proyecto', label: 'El proyecto' },
+  { href: '#quienes', label: 'Delwende' },
+  { href: '#socio', label: 'Hazte socio' },
   { href: '#colaboradores', label: 'Colaboradores' },
 ];
 ---
@@ -31,7 +33,7 @@ const links = [
       </span>
     </a>
 
-    <ul class="hidden items-center gap-1 lg:flex">
+    <ul class="hidden items-center gap-0.5 xl:flex">
       {
         links.map((l) => (
           <li>
@@ -39,7 +41,7 @@ const links = [
               href={l.href}
               data-scroll
               data-navlink={l.href.slice(1)}
-              class="font-display relative rounded-full px-4 py-2 text-[0.95rem] tracking-wide uppercase transition-colors hover:bg-ink hover:text-cream data-[active=true]:bg-gold"
+              class="font-display relative rounded-full px-3.5 py-2 text-[0.95rem] tracking-wide uppercase transition-colors hover:bg-ink hover:text-cream data-[active=true]:bg-gold"
             >
               {l.label}
             </a>
@@ -58,7 +60,7 @@ const links = [
       </a>
       <button
         type="button"
-        class="sticker relative grid size-11 place-items-center rounded-full bg-gold !shadow-[var(--shadow-hard-sm)] lg:hidden"
+        class="sticker relative grid size-11 place-items-center rounded-full bg-gold !shadow-[var(--shadow-hard-sm)] xl:hidden"
         aria-label="Abrir menú"
         aria-expanded="false"
         aria-controls="menu-movil"
@@ -74,22 +76,22 @@ const links = [
 
 <div
   id="menu-movil"
-  class="invisible fixed inset-0 z-40 flex flex-col justify-center bg-ink px-8 text-cream lg:hidden"
+  class="invisible fixed inset-0 z-40 flex flex-col justify-center bg-ink px-8 text-cream xl:hidden"
   data-menu
   aria-hidden="true"
 >
   <div class="paper-texture !opacity-10"></div>
-  <ul class="relative flex flex-col gap-2">
+  <ul class="relative flex flex-col gap-2 [counter-reset:menu]">
     {
-      links.map((l, i) => (
-        <li class="overflow-hidden">
+      links.map((l) => (
+        <li class="overflow-hidden [counter-increment:menu]">
           <a
             href={l.href}
             data-scroll
             data-menu-link
             class="font-display block py-1 text-[clamp(2.6rem,12vw,4.5rem)] leading-none uppercase transition-colors hover:text-gold"
           >
-            <span class="mr-3 align-top text-base text-gold">0{i + 1}</span>
+            <span class="mr-3 align-top text-base text-gold before:content-[counter(menu,decimal-leading-zero)]" />
             {l.label}
           </a>
         </li>

@@ -8,10 +8,10 @@ import { SPONSORS } from '../data/event';
   <div class="relative mx-auto max-w-7xl px-4 sm:px-8">
     <div class="grid items-center gap-14 lg:grid-cols-2">
       <div>
-        <p class="eyebrow text-coral" data-reveal="up">✦ {SPONSORS.length} colaboradores</p>
+        <p class="eyebrow text-coral" data-reveal="up">{SPONSORS.length} colaboradores</p>
         <h2 class="section-title mt-3" data-split>Gracias a<br /><span class="text-pop [--pop:var(--color-gold)]">quienes suman</span></h2>
         <p class="mt-6 max-w-md text-lg leading-snug font-semibold sm:text-xl" data-reveal="up">
-          Negocios y entidades de Castellón que hacen posible el DelwenFest. Desliza la baraja para descubrirlos uno a uno.
+          Han colaborado con donativos y regalos para la rifa y los premios, o con donativos en especie para la fiesta: comida, la actuación gratuita de Sinbikini, precios especiales… Desliza la baraja para descubrirlos uno a uno.
         </p>
         <div class="mt-8 flex items-center gap-4" data-reveal="up">
           <button type="button" class="sticker grid size-14 place-items-center rounded-full bg-cream !shadow-[var(--shadow-hard-sm)] transition-transform hover:-translate-y-0.5" aria-label="Colaborador anterior" data-prev>
@@ -34,11 +34,22 @@ import { SPONSORS } from '../data/event';
                     <div class="absolute -top-16 -right-16 size-48 rounded-full bg-white/15" />
                     <div class="absolute -bottom-20 -left-10 size-56 rounded-full bg-black/10" />
                     <div class="relative grid flex-1 place-items-center rounded-[1.5rem] border-[3px] border-ink bg-white p-6 shadow-[var(--shadow-hard-sm)]">
-                      <Image src={s.logo} alt={`Logo de ${s.name}`} widths={[200, 400]} sizes="260px" class="max-h-44 w-auto max-w-full object-contain" loading="lazy" />
+                      <Image src={s.logo} alt={`Logo de ${s.name}`} widths={[200, 400]} sizes="260px" class="h-44 w-full object-contain" loading="lazy" />
                     </div>
                     <div class={`relative mt-5 ${s.dark ? 'text-cream' : 'text-ink'}`}>
                       <p class="font-display text-[1.7rem] leading-[0.95] uppercase">{s.name}</p>
                       <p class="mt-1 font-semibold opacity-80">{s.kind}</p>
+                      {s.instagram && (
+                        <a
+                          href={s.instagram}
+                          target="_blank"
+                          rel="noopener"
+                          class="mt-3 inline-flex items-center gap-1.5 rounded-full border-2 border-current bg-white/85 px-3 pt-1.5 pb-1 font-display text-sm text-ink uppercase"
+                        >
+                          <svg viewBox="0 0 24 24" class="size-4" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" /><circle cx="12" cy="12" r="4" /><circle cx="17.5" cy="6.5" r="1" fill="currentColor" /></svg>
+                          Instagram
+                        </a>
+                      )}
                     </div>
                   </article>
                 </div>
@@ -51,14 +62,14 @@ import { SPONSORS } from '../data/event';
   </div>
 
   <!-- Cinta infinita con todos los logos -->
-  <div class="relative mt-24 flex flex-col gap-5" aria-hidden="true">
+  <div class="relative mt-20 flex flex-col gap-2" aria-hidden="true">
     {
       [1, -1].map((dir) => (
-        <div class="overflow-hidden" data-logo-row data-dir={dir}>
+        <div class="overflow-hidden py-3" data-logo-row data-dir={dir}>
           <div class="flex w-max gap-5" data-logo-track>
-            {[...SPONSORS, ...SPONSORS].map((s) => (
-              <div class="sticker grid h-24 w-44 shrink-0 place-items-center rounded-2xl bg-white p-4 !shadow-[var(--shadow-hard-sm)] sm:h-28 sm:w-52">
-                <Image src={s.logo} alt="" widths={[200, 400]} sizes="200px" class="max-h-full w-auto max-w-full object-contain" loading="lazy" />
+            {[...(dir > 0 ? SPONSORS : [...SPONSORS].reverse()), ...(dir > 0 ? SPONSORS : [...SPONSORS].reverse())].map((s) => (
+              <div class="sticker flex h-24 w-44 shrink-0 items-center justify-center rounded-2xl bg-white p-3 !shadow-[var(--shadow-hard-sm)] sm:h-28 sm:w-52">
+                <Image src={s.logo} alt="" widths={[200, 400]} sizes="200px" class="h-full w-full object-contain" loading="lazy" />
               </div>
             ))}
           </div>

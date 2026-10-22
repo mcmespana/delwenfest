@@ -10,12 +10,11 @@ import micro from '../assets/illus/micro.webp';
     <div class="absolute top-0 left-1/4 h-[120%] w-40 origin-top rotate-[18deg] bg-[linear-gradient(180deg,rgba(245,181,11,.35),transparent_70%)] blur-xl" data-beam></div>
     <div class="absolute top-0 right-1/4 h-[120%] w-40 origin-top -rotate-[18deg] bg-[linear-gradient(180deg,rgba(142,92,240,.4),transparent_70%)] blur-xl" data-beam></div>
     <div class="absolute top-0 left-1/2 h-[120%] w-32 origin-top bg-[linear-gradient(180deg,rgba(31,179,176,.3),transparent_70%)] blur-xl" data-beam></div>
-    <div class="absolute inset-0 bg-[radial-gradient(circle_at_var(--mx,50%)_var(--my,50%),rgba(255,255,255,.08),transparent_35%)]" data-spot></div>
   </div>
 
   <div class="relative mx-auto max-w-7xl">
     <div class="text-center">
-      <p class="eyebrow text-gold" data-reveal="up">✦ Música en directo</p>
+      <p class="eyebrow text-gold" data-reveal="up">Música en directo</p>
       <h2 class="section-title mt-3" data-split>Line&#8209;up</h2>
     </div>
 
@@ -29,11 +28,12 @@ import micro from '../assets/illus/micro.webp';
         <div class="relative mx-auto mt-6 w-[78%] max-w-sm">
           <Image src={sinbikini} alt="Sinbikini · Fresh music based on Mediterranean beach" widths={[400, 800]} sizes="(min-width: 768px) 30vw, 70vw" class="h-auto w-full transition-transform duration-700 ease-[var(--ease-bounce)] group-hover:rotate-[8deg] group-hover:scale-105" />
         </div>
-        <Image src={micro} alt="" widths={[200, 400]} sizes="160px" class="pointer-events-none absolute -right-6 -bottom-6 w-36 rotate-12 opacity-90 sm:w-44" data-act-deco />
+        <Image src={micro} alt="" widths={[200, 400]} sizes="160px" class="pointer-events-none absolute -right-5 -bottom-5 w-28 rotate-12 opacity-90 sm:w-32" data-act-deco />
         <h3 class="font-display mt-6 text-5xl uppercase sm:text-6xl">Sinbikini</h3>
-        <p class="mt-2 max-w-sm text-lg font-semibold">Fresh music based on Mediterranean beach. Música en directo para encender la noche.</p>
-        <div class="mt-6 flex h-10 items-end gap-1.5" aria-hidden="true">
-          {Array.from({ length: 18 }).map((_, i) => <span class="w-full origin-bottom rounded-t-sm bg-ink" style={`height:${30 + ((i * 37) % 70)}%`} data-eq />)}
+        <p class="mt-2 max-w-sm pr-16 text-lg font-semibold sm:pr-20">Fresh music based on Mediterranean beach. Música en directo para encender la noche.</p>
+        <div class="relative mt-6 h-12 overflow-hidden pr-24 sm:pr-28" aria-hidden="true">
+          <svg viewBox="0 0 200 40" preserveAspectRatio="none" class="wave absolute inset-y-0 left-0 h-full w-[200%] text-ink/25" style="animation-duration:7s"><path d="M0 20 Q 25 2 50 20 T 100 20 T 150 20 T 200 20 T 250 20 T 300 20 T 350 20 T 400 20" fill="none" stroke="currentColor" stroke-width="3" vector-effect="non-scaling-stroke" /></svg>
+          <svg viewBox="0 0 200 40" preserveAspectRatio="none" class="wave absolute inset-y-0 left-0 h-full w-[200%] text-ink" style="animation-duration:4.5s"><path d="M0 20 Q 12.5 34 25 20 T 50 20 T 75 20 T 100 20 T 125 20 T 150 20 T 175 20 T 200 20 T 225 20 T 250 20 T 275 20 T 300 20 T 325 20 T 350 20 T 375 20 T 400 20" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" vector-effect="non-scaling-stroke" /></svg>
         </div>
       </article>
 
@@ -45,7 +45,7 @@ import micro from '../assets/illus/micro.webp';
         </div>
         <div class="relative mx-auto mt-6 grid aspect-square w-[72%] max-w-xs place-items-center">
           <!-- Vinilo girando -->
-          <div class="absolute inset-0 rounded-full bg-[repeating-radial-gradient(circle,#1a1816_0_2px,#2b2825_2px_5px)] shadow-[0_20px_60px_rgba(0,0,0,.45)]" data-vinyl>
+          <div class="absolute inset-0 rounded-full bg-[repeating-radial-gradient(circle,#1a1816_0_2px,#2b2825_2px_5px)] shadow-[0_20px_60px_rgba(0,0,0,.45)] animate-spin [animation-duration:3.2s]" data-vinyl>
             <div class="absolute inset-[34%] rounded-full bg-[conic-gradient(#f5b50b,#f87341,#f7363a,#8cc63f,#f5b50b)]"></div>
             <div class="absolute inset-[47%] rounded-full bg-ink"></div>
             <div class="absolute inset-0 rounded-full bg-[conic-gradient(from_30deg,transparent_0deg,rgba(255,255,255,.14)_40deg,transparent_80deg,transparent_180deg,rgba(255,255,255,.1)_220deg,transparent_260deg)]"></div>
@@ -54,8 +54,15 @@ import micro from '../assets/illus/micro.webp';
         </div>
         <h3 class="font-display mt-6 text-5xl uppercase sm:text-6xl">Rodhel Show <span class="text-gold">DJ</span></h3>
         <p class="mt-2 max-w-sm text-lg font-semibold">A los platos desde las 20:30 hasta el cierre a las 22:30. Nadie se queda sentado.</p>
-        <div class="mt-6 flex h-10 items-end gap-1.5" aria-hidden="true">
-          {Array.from({ length: 18 }).map((_, i) => <span class="w-full origin-bottom rounded-t-sm bg-cream" style={`height:${30 + ((i * 53) % 70)}%`} data-eq />)}
+        <div class="mt-6 flex h-12 items-end gap-1" aria-hidden="true">
+          {
+            Array.from({ length: 28 }).map((_, i) => (
+              <span
+                class="eq h-full flex-1 origin-bottom rounded-full bg-gradient-to-t from-gold to-cream"
+                style={`animation-duration:${(0.9 + ((i * 37) % 9) / 10).toFixed(2)}s;animation-delay:-${((i * 0.29) % 1.7).toFixed(2)}s`}
+              />
+            ))
+          }
         </div>
       </article>
     </div>
@@ -63,17 +70,9 @@ import micro from '../assets/illus/micro.webp';
 </section>
 
 <script>
-  import { gsap, finePointer, reduceMotion } from '../scripts/motion';
+  import { gsap, reduceMotion } from '../scripts/motion';
 
-  const section = document.querySelector<HTMLElement>('[data-lineup]')!;
   if (!reduceMotion) {
-    gsap.to('[data-vinyl]', { rotate: 360, duration: 3.2, ease: 'none', repeat: -1 });
-    gsap.utils.toArray<HTMLElement>('[data-eq]').forEach((bar) => {
-      gsap.to(bar, { scaleY: () => gsap.utils.random(0.15, 1), duration: () => gsap.utils.random(0.18, 0.4), ease: 'sine.inOut', repeat: -1, yoyo: true, repeatRefresh: true });
-    });
-    gsap.utils.toArray<HTMLElement>('[data-beam]').forEach((b, i) => {
-      gsap.to(b, { rotate: i === 2 ? 12 : `${i ? '+' : '-'}=24`, duration: 3 + i, ease: 'sine.inOut', yoyo: true, repeat: -1 });
-    });
     gsap.from('[data-act]', {
       y: 140,
       rotate: (i: number) => (i ? 7 : -7),
@@ -83,12 +82,43 @@ import micro from '../assets/illus/micro.webp';
       ease: 'back.out(1.3)',
       scrollTrigger: { trigger: '[data-act]', start: 'top 85%', once: true },
     });
-    if (finePointer) {
-      section.addEventListener('pointermove', (e) => {
-        const r = section.getBoundingClientRect();
-        section.style.setProperty('--mx', `${e.clientX - r.left}px`);
-        section.style.setProperty('--my', `${e.clientY - r.top}px`);
-      });
-    }
   }
 </script>
+
+<style>
+  /* Sinbikini: ola continua */
+  .wave {
+    animation: wave linear infinite;
+  }
+  @keyframes wave {
+    to {
+      transform: translateX(-50%);
+    }
+  }
+  /* Rodhel Show: ecualizador de DJ */
+  .eq {
+    animation: eq ease-in-out infinite alternate;
+    transform: scaleY(0.15);
+  }
+  @keyframes eq {
+    0% {
+      transform: scaleY(0.15);
+    }
+    45% {
+      transform: scaleY(0.75);
+    }
+    100% {
+      transform: scaleY(1);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .wave,
+    .eq,
+    [data-vinyl] {
+      animation: none !important;
+    }
+    .eq {
+      transform: scaleY(0.6);
+    }
+  }
+</style>

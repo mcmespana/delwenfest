@@ -59,6 +59,11 @@ const jsonLd = {
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
     <meta name="theme-color" content="#b4cec5" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="DelwenFest" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="sitemap" href="/sitemap-index.xml" />
@@ -70,6 +75,8 @@ const jsonLd = {
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={ogImage} />
+    <meta property="og:image:secure_url" content={ogImage} />
+    <meta property="og:image:type" content="image/jpeg" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta property="og:image:alt" content="DELWENFEST · 30 de octubre de 2026 · Consolación Castellón" />
@@ -81,10 +88,10 @@ const jsonLd = {
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
 
     <script is:inline>
-      // Solo ocultamos lo animable si hay JS y movimiento permitido. Si el bundle no
-      // llega a arrancar en 4 s, lo mostramos todo igualmente.
       (function () {
         var d = document.documentElement;
+        // Solo ocultamos lo animable si hay JS y movimiento permitido. Si el bundle no
+        // llega a arrancar en 4 s, lo mostramos todo igualmente.
         if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
         d.classList.add('js-anim');
         setTimeout(function () {
@@ -95,5 +102,10 @@ const jsonLd = {
   </head>
   <body>
     <slot />
+    <script>
+      if (import.meta.env.PROD && 'serviceWorker' in navigator) {
+        window.addEventListener('load', () => navigator.serviceWorker.register('/sw.js').catch(() => {}));
+      }
+    </script>
   </body>
 </html>

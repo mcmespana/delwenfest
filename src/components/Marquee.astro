@@ -12,7 +12,7 @@ const row = [...words, ...words];
             {row.map((w, i) => (
               <span class="font-display flex items-center px-4 text-[clamp(1.6rem,4vw,3.2rem)] leading-none uppercase sm:px-6">
                 <span class={i % 3 === 0 ? 'text-gold' : i % 3 === 1 ? 'text-cream' : 'text-lime'}>{w}</span>
-                <span class="ml-8 text-coral sm:ml-12">✦</span>
+                <span class="ml-8 text-[0.5em] text-coral sm:ml-12">●</span>
               </span>
             ))}
           </div>
@@ -28,7 +28,7 @@ const row = [...words, ...words];
             {row.map((w) => (
               <span class="font-condensed flex items-center px-4 text-[clamp(1.4rem,3vw,2.4rem)] leading-none tracking-wide uppercase sm:px-6">
                 {w}
-                <span class="ml-8 text-red sm:ml-12">●</span>
+                <span class="ml-8 text-[0.5em] text-red sm:ml-12">●</span>
               </span>
             ))}
           </div>
@@ -43,22 +43,12 @@ const row = [...words, ...words];
   import { gsap, ScrollTrigger, reduceMotion } from '../scripts/motion';
 
   if (!reduceMotion) {
-    const tweens = gsap.utils.toArray<HTMLElement>('[data-marquee]').map((m) => {
+    gsap.utils.toArray<HTMLElement>('[data-marquee]').forEach((m) => {
       const dir = Number(m.dataset.dir);
       const track = m.querySelector('[data-track]')!;
-      return gsap.fromTo(track, { xPercent: dir > 0 ? 0 : -50 }, { xPercent: dir > 0 ? -50 : 0, duration: 38, ease: 'none', repeat: -1 });
-    });
-    // La velocidad reacciona al scroll y cambia de sentido al subir
-    let current = 1;
-    ScrollTrigger.create({
-      onUpdate(self) {
-        const v = gsap.utils.clamp(-6, 6, self.getVelocity() / 250);
-        const target = (self.direction || 1) * (1 + Math.abs(v));
-        if (Math.abs(target - current) < 0.05) return;
-        current = target;
-        tweens.forEach((t) => gsap.to(t, { timeScale: target, duration: 0.3, overwrite: true }));
-        gsap.to(tweens, { timeScale: self.direction || 1, duration: 1.2, delay: 0.3, overwrite: false });
-      },
+      const tween = gsap.fromTo(track, { xPercent: dir > 0 ? 0 : -50 }, { xPercent: dir > 0 ? -50 : 0, duration: 38, ease: 'none', repeat: -1 });
+      // Solo se mueve mientras está a la vista
+      ScrollTrigger.create({ trigger: m, start: 'top bottom', end: 'bottom top', onToggle: (self) => (self.isActive ? tween.play() : tween.pause()) });
     });
   }
 </script>

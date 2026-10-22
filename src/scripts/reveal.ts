@@ -4,9 +4,11 @@ import { gsap, ScrollTrigger, SplitText, reduceMotion } from './motion';
 if (!reduceMotion) {
   document.fonts.ready.then(() => {
     gsap.utils.toArray<HTMLElement>('[data-split]').forEach((el) => {
-      const split = new SplitText(el, { type: 'lines,chars', mask: 'lines', linesClass: 'pb-[0.06em]' });
+      // Sin máscara: así no se recortan las tildes de las mayúsculas (Ó, Á…)
+      const split = new SplitText(el, { type: 'chars' });
       gsap.from(split.chars, {
-        yPercent: 110,
+        yPercent: 70,
+        opacity: 0,
         rotate: 8,
         duration: 0.9,
         stagger: 0.025,
