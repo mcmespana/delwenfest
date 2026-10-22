@@ -1,5 +1,7 @@
 ---
-import Placeholder from './Placeholder.astro';
+import { Image } from 'astro:assets';
+import grupo from '../assets/photos/nefeli-grupo.webp';
+import navidad from '../assets/photos/nefeli-navidad.webp';
 import { SOCIAL } from '../data/event';
 
 const mcm = SOCIAL.find((s) => s.handle === 'mcmcastellon')!;
@@ -40,8 +42,8 @@ const colors = ['bg-coral', 'bg-gold', 'bg-lime', 'bg-teal'];
       </div>
 
       <div class="relative grid grid-cols-5 gap-4 self-start" data-reveal="up">
-        <Placeholder label="Foto del grupo COM Nefeli" class="col-span-5 aspect-[4/3] w-full -rotate-1 bg-cream shadow-[var(--shadow-hard)]" />
-        <Placeholder label="Foto del proyecto DFC" class="col-span-3 col-start-3 -mt-14 aspect-[4/3] w-full rotate-2 bg-cream shadow-[var(--shadow-hard)]" />
+        <Image src={navidad} alt="Jóvenes del grupo con huchas solidarias en la calle, en Navidad" widths={[500, 800, 1200]} sizes="(min-width: 1024px) 40vw, 92vw" class="sticker col-span-5 aspect-[4/3] w-full -rotate-1 rounded-[1.75rem] object-cover" />
+        <Image src={grupo} alt="El grupo COM Nefeli con las camisetas del proyecto" widths={[400, 600, 900]} sizes="(min-width: 1024px) 24vw, 55vw" class="sticker col-span-3 col-start-3 -mt-14 aspect-[4/3] w-full rotate-2 rounded-[1.75rem] object-cover" />
       </div>
     </div>
 
