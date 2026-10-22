@@ -10,7 +10,7 @@ import { VENUE, DIRECTIONS, EVENT } from '../data/event';
     <div class="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
       <div>
         <p class="eyebrow text-forest" data-reveal="up">¿Dónde y cuándo?</p>
-        <h2 class="section-title mt-3" data-split>Nos vemos<br />en Consola</h2>
+        <h2 class="section-title mt-3" data-split>Consolación<br />Castellón</h2>
       </div>
       <div class="relative w-36 shrink-0 self-end sm:w-48" data-reveal="pop">
         <Image src={badge} alt="Consolación Castellón" widths={[300, 500]} sizes="200px" class="animate-wiggle h-auto w-full drop-shadow-[5px_6px_0_rgba(36,33,30,.3)]" />
@@ -26,7 +26,7 @@ import { VENUE, DIRECTIONS, EVENT } from '../data/event';
         </div>
 
         <div class="sticker relative overflow-hidden rounded-[2rem] bg-ink p-7 text-cream sm:p-8" data-reveal="up">
-          <p class="eyebrow text-gold">⚠ Ojo con la entrada</p>
+          <p class="eyebrow text-gold">Ojo con la entrada</p>
           <p class="font-display mt-2 text-[clamp(1.8rem,3.2vw,2.5rem)] leading-[0.95] uppercase">{VENUE.entrance}</p>
           <p class="mt-2 text-lg font-semibold text-cream/80">({VENUE.entranceHint})</p>
           <svg viewBox="0 0 100 60" class="absolute -right-2 -bottom-1 w-28 text-gold" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" data-arrow>
@@ -141,7 +141,18 @@ import { VENUE, DIRECTIONS, EVENT } from '../data/event';
     const school: [number, number] = [n('schoolLat'), n('schoolLng')];
     const shop: [number, number] = [n('shopLat'), n('shopLng')];
 
-    const map = L.map(el, { scrollWheelZoom: false, zoomControl: true, attributionControl: true }).setView([39.9935, -0.036], 14);
+    // Se puede hacer zoom (botones, doble toque o pellizco) pero no arrastrar,
+    // para que deslizar sobre el mapa siga haciendo scroll en la página
+    const map = L.map(el, {
+      dragging: false,
+      scrollWheelZoom: false,
+      touchZoom: 'center',
+      doubleClickZoom: 'center',
+      boxZoom: false,
+      keyboard: false,
+      zoomControl: true,
+      attributionControl: true,
+    }).setView([39.9935, -0.036], 14);
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 19,
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',

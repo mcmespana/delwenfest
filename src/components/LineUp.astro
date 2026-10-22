@@ -28,11 +28,12 @@ import micro from '../assets/illus/micro.webp';
         <div class="relative mx-auto mt-6 w-[78%] max-w-sm">
           <Image src={sinbikini} alt="Sinbikini · Fresh music based on Mediterranean beach" widths={[400, 800]} sizes="(min-width: 768px) 30vw, 70vw" class="h-auto w-full transition-transform duration-700 ease-[var(--ease-bounce)] group-hover:rotate-[8deg] group-hover:scale-105" />
         </div>
-        <Image src={micro} alt="" widths={[200, 400]} sizes="160px" class="pointer-events-none absolute -right-6 -bottom-6 w-36 rotate-12 opacity-90 sm:w-44" data-act-deco />
+        <Image src={micro} alt="" widths={[200, 400]} sizes="160px" class="pointer-events-none absolute -right-5 -bottom-5 w-28 rotate-12 opacity-90 sm:w-32" data-act-deco />
         <h3 class="font-display mt-6 text-5xl uppercase sm:text-6xl">Sinbikini</h3>
-        <p class="mt-2 max-w-sm text-lg font-semibold">Fresh music based on Mediterranean beach. Música en directo para encender la noche.</p>
-        <div class="mt-6 flex h-10 items-end gap-1.5" aria-hidden="true">
-          {Array.from({ length: 18 }).map((_, i) => <span class="w-full origin-bottom rounded-t-sm bg-ink" style={`height:${30 + ((i * 37) % 70)}%`} data-eq style={`animation-delay:${-((i * 0.137) % 1).toFixed(2)}s; animation-duration:${(0.5 + ((i * 7) % 5) / 10).toFixed(2)}s`} />)}
+        <p class="mt-2 max-w-sm pr-16 text-lg font-semibold sm:pr-20">Fresh music based on Mediterranean beach. Música en directo para encender la noche.</p>
+        <div class="relative mt-6 h-12 overflow-hidden pr-24 sm:pr-28" aria-hidden="true">
+          <svg viewBox="0 0 200 40" preserveAspectRatio="none" class="wave absolute inset-y-0 left-0 h-full w-[200%] text-ink/25" style="animation-duration:7s"><path d="M0 20 Q 25 2 50 20 T 100 20 T 150 20 T 200 20 T 250 20 T 300 20 T 350 20 T 400 20" fill="none" stroke="currentColor" stroke-width="3" vector-effect="non-scaling-stroke" /></svg>
+          <svg viewBox="0 0 200 40" preserveAspectRatio="none" class="wave absolute inset-y-0 left-0 h-full w-[200%] text-ink" style="animation-duration:4.5s"><path d="M0 20 Q 12.5 34 25 20 T 50 20 T 75 20 T 100 20 T 125 20 T 150 20 T 175 20 T 200 20 T 225 20 T 250 20 T 275 20 T 300 20 T 325 20 T 350 20 T 375 20 T 400 20" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" vector-effect="non-scaling-stroke" /></svg>
         </div>
       </article>
 
@@ -53,8 +54,15 @@ import micro from '../assets/illus/micro.webp';
         </div>
         <h3 class="font-display mt-6 text-5xl uppercase sm:text-6xl">Rodhel Show <span class="text-gold">DJ</span></h3>
         <p class="mt-2 max-w-sm text-lg font-semibold">A los platos desde las 20:30 hasta el cierre a las 22:30. Nadie se queda sentado.</p>
-        <div class="mt-6 flex h-10 items-end gap-1.5" aria-hidden="true">
-          {Array.from({ length: 18 }).map((_, i) => <span class="w-full origin-bottom rounded-t-sm bg-cream" style={`height:${30 + ((i * 53) % 70)}%`} data-eq style={`animation-delay:${-((i * 0.137) % 1).toFixed(2)}s; animation-duration:${(0.5 + ((i * 7) % 5) / 10).toFixed(2)}s`} />)}
+        <div class="mt-6 flex h-12 items-end gap-1" aria-hidden="true">
+          {
+            Array.from({ length: 28 }).map((_, i) => (
+              <span
+                class="eq h-full flex-1 origin-bottom rounded-full bg-gradient-to-t from-gold to-cream"
+                style={`animation-duration:${(0.9 + ((i * 37) % 9) / 10).toFixed(2)}s;animation-delay:-${((i * 0.29) % 1.7).toFixed(2)}s`}
+              />
+            ))
+          }
         </div>
       </article>
     </div>
@@ -78,21 +86,39 @@ import micro from '../assets/illus/micro.webp';
 </script>
 
 <style>
-  [data-eq] {
-    animation: eq 0.6s ease-in-out infinite alternate;
+  /* Sinbikini: ola continua */
+  .wave {
+    animation: wave linear infinite;
+  }
+  @keyframes wave {
+    to {
+      transform: translateX(-50%);
+    }
+  }
+  /* Rodhel Show: ecualizador de DJ */
+  .eq {
+    animation: eq ease-in-out infinite alternate;
+    transform: scaleY(0.15);
   }
   @keyframes eq {
-    from {
-      transform: scaleY(0.2);
+    0% {
+      transform: scaleY(0.15);
     }
-    to {
+    45% {
+      transform: scaleY(0.75);
+    }
+    100% {
       transform: scaleY(1);
     }
   }
   @media (prefers-reduced-motion: reduce) {
-    [data-eq],
+    .wave,
+    .eq,
     [data-vinyl] {
       animation: none !important;
+    }
+    .eq {
+      transform: scaleY(0.6);
     }
   }
 </style>

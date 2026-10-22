@@ -154,7 +154,7 @@ const stickers = [
       cd.querySelector('[data-cd-label]')!.textContent = live ? 'Ahora mismo' : '30 · 10 · 2026';
       const liveEl = cd.querySelector<HTMLElement>('[data-cd-live]')!;
       liveEl.classList.remove('hidden');
-      liveEl.textContent = live ? '¡Estamos de fiesta! 🎉' : '¡Gracias por sumar!';
+      liveEl.textContent = live ? '¡Estamos de fiesta!' : '¡Gracias por sumar!';
       if (!live) window.clearInterval(timer);
       return;
     }

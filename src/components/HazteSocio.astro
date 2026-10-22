@@ -90,12 +90,15 @@ const steps = [
                   <dd class="font-display mt-1 text-2xl text-red tabular-nums"><span data-out="coste">24</span> €</dd>
                 </div>
               </dl>
-              <p class="mt-4 text-center font-display text-lg leading-tight uppercase">
-                Tu cuota de <span data-out="cuota2">10</span> €/mes te sale por <span class="rounded bg-ink px-1.5 text-gold"><span data-out="mes">2,00</span> €/mes</span>
+              <p class="mt-5 text-center font-display text-lg leading-tight uppercase">
+                Tu cuota de <span data-out="cuota2">10</span> € al mes te sale por
+                <span class="mt-2 block">
+                  <span class="inline-block -rotate-2 rounded-xl bg-ink px-4 pt-2 pb-1 text-[2.6rem] leading-none text-gold shadow-[4px_4px_0_0_#f7363a]"><span data-out="mes">2</span> € al mes</span>
+                </span>
               </p>
             </div>
 
-            <a href={DELWENDE_URLS.member} target="_blank" rel="noopener" class="btn btn-ink justify-center !py-4 !text-lg">Hazme socio/a en delwende.es ↗</a>
+            <a href={DELWENDE_URLS.member} target="_blank" rel="noopener" class="btn btn-ink justify-center !py-4 !text-lg">Hazme socio/a en delwende.es <svg viewBox="0 0 24 24" class="inline size-[0.9em] -translate-y-px" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"></path></svg></a>
 
             <p class="text-xs leading-relaxed text-ink/60">
               Cálculo orientativo para particulares según la Ley 49/2002 de mecenazgo: se deduce el 80 % de los primeros 250 € al año y el 40 % del resto, con el límite del 10 % de la base liquidable. Para empresas la deducción es distinta.
@@ -184,7 +187,8 @@ const steps = [
     out('anual').textContent = eur(anual);
     out('deduccion').textContent = eur(ded);
     out('coste').textContent = eur(anual - ded);
-    out('mes').textContent = eur((anual - ded) / 12, 2);
+    const mes = (anual - ded) / 12;
+    out('mes').textContent = eur(mes, Number.isInteger(Math.round(mes * 100) / 100) ? 0 : 2);
     range.style.setProperty('--p', `${((cuota - min) / (max - min)) * 100}%`);
     chips.forEach((c) => c.setAttribute('aria-pressed', String(Number(c.dataset.amount) === cuota)));
     barBack.style.width = `${(ded / anual) * 100}%`;

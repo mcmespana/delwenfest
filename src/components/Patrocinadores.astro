@@ -11,7 +11,7 @@ import { SPONSORS } from '../data/event';
         <p class="eyebrow text-coral" data-reveal="up">{SPONSORS.length} colaboradores</p>
         <h2 class="section-title mt-3" data-split>Gracias a<br /><span class="text-pop [--pop:var(--color-gold)]">quienes suman</span></h2>
         <p class="mt-6 max-w-md text-lg leading-snug font-semibold sm:text-xl" data-reveal="up">
-          Negocios y entidades de Castellón que hacen posible el DelwenFest. Desliza la baraja para descubrirlos uno a uno.
+          Han colaborado con donativos y regalos para la rifa y los premios, o con donativos en especie para la fiesta: comida, la actuación gratuita de Sinbikini, precios especiales… Desliza la baraja para descubrirlos uno a uno.
         </p>
         <div class="mt-8 flex items-center gap-4" data-reveal="up">
           <button type="button" class="sticker grid size-14 place-items-center rounded-full bg-cream !shadow-[var(--shadow-hard-sm)] transition-transform hover:-translate-y-0.5" aria-label="Colaborador anterior" data-prev>
@@ -51,10 +51,10 @@ import { SPONSORS } from '../data/event';
   </div>
 
   <!-- Cinta infinita con todos los logos -->
-  <div class="relative mt-24 flex flex-col gap-5" aria-hidden="true">
+  <div class="relative mt-20 flex flex-col gap-2" aria-hidden="true">
     {
       [1, -1].map((dir) => (
-        <div class="overflow-hidden" data-logo-row data-dir={dir}>
+        <div class="overflow-hidden py-3" data-logo-row data-dir={dir}>
           <div class="flex w-max gap-5" data-logo-track>
             {[...SPONSORS, ...SPONSORS].map((s) => (
               <div class="sticker grid h-24 w-44 shrink-0 place-items-center rounded-2xl bg-white p-4 !shadow-[var(--shadow-hard-sm)] sm:h-28 sm:w-52">
