@@ -2,7 +2,8 @@
 import { Image } from 'astro:assets';
 import delwende from '../assets/partners/delwende.webp';
 import donativo from '../assets/brand/badge-donativo.webp';
-import Placeholder from './Placeholder.astro';
+import peluqueria from '../assets/photos/peluqueria.webp';
+import costura from '../assets/photos/costura.webp';
 import { CAUSE } from '../data/event';
 import { PROJECT_MORE, DELWENDE_URLS } from '../data/delwende';
 
@@ -116,7 +117,10 @@ const chipColors = ['bg-gold', 'bg-coral', 'bg-lime', 'bg-teal', 'bg-pink', 'bg-
       </button>
     </div>
     <div class="px-6 pt-6 pb-[calc(2rem+env(safe-area-inset-bottom))] sm:px-9">
-      <Placeholder label={PROJECT_MORE.photo} class="aspect-[16/9] w-full" />
+      <div class="grid grid-cols-2 gap-3">
+        <Image src={peluqueria} alt={PROJECT_MORE.photos[0]} widths={[300, 500, 800]} sizes="(min-width: 640px) 330px, 45vw" class="aspect-[4/3] w-full rounded-2xl border-[3px] border-ink object-cover" />
+        <Image src={costura} alt={PROJECT_MORE.photos[1]} widths={[300, 500, 800]} sizes="(min-width: 640px) 330px, 45vw" class="aspect-[4/3] w-full rounded-2xl border-[3px] border-ink object-cover" />
+      </div>
       <div class="mt-6 flex flex-col gap-4 text-lg leading-relaxed font-medium">
         {PROJECT_MORE.paragraphs.map((p) => <p>{p}</p>)}
       </div>

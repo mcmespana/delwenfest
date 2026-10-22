@@ -1,6 +1,7 @@
 ---
 import { Image } from 'astro:assets';
-import Placeholder from './Placeholder.astro';
+import ninos from '../assets/photos/ninos.webp';
+import clase from '../assets/photos/clase.webp';
 import delwendeLogo from '../assets/partners/delwende.webp';
 import { ONGD, DELWENDE_URLS } from '../data/delwende';
 
@@ -33,8 +34,8 @@ const areaColors = ['bg-coral', 'bg-teal', 'bg-lime'];
           <p class="font-display mt-3 text-[clamp(1.4rem,2.4vw,1.9rem)] leading-[1.1] uppercase">{ONGD.mission}</p>
         </blockquote>
         <div class="grid grid-cols-2 gap-4" data-reveal="up">
-          <Placeholder label={ONGD.photos[0]} class="aspect-[4/5] w-full rotate-[-2deg]" />
-          <Placeholder label={ONGD.photos[1]} class="aspect-[4/5] w-full translate-y-6 rotate-[2deg]" />
+          <Image src={ninos} alt={ONGD.photos[0]} widths={[300, 500, 800]} sizes="(min-width: 1024px) 22vw, 45vw" class="sticker aspect-[4/5] w-full rotate-[-2deg] rounded-[1.75rem] object-cover" />
+          <Image src={clase} alt={ONGD.photos[1]} widths={[300, 500, 800]} sizes="(min-width: 1024px) 22vw, 45vw" class="sticker aspect-[4/5] w-full translate-y-6 rotate-[2deg] rounded-[1.75rem] object-cover object-[40%_50%]" />
         </div>
       </div>
     </div>

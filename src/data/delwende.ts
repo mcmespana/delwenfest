@@ -30,7 +30,7 @@ export const ONGD = {
     { value: '224', label: 'voluntarios' },
     { value: '94,4 %', label: 'del gasto va a la misión' },
   ],
-  photos: ['Delwende en el terreno', 'Voluntariado de Delwende'],
+  photos: ['Niños y niñas de la escuela, en Togo', 'Clase de alfabetización en el centro de Atakpamé'],
 };
 
 /** Contenido ampliado para el modal «Leer más» del proyecto. */
@@ -47,7 +47,7 @@ export const PROJECT_MORE = {
     { value: '3 años', label: 'de formación por alumna' },
     { value: '2 oficios', label: 'peluquería y costura' },
   ],
-  photo: 'Alumnas del centro de Atakpamé',
+  photos: ['Alumnas del centro aprendiendo peluquería', 'Alumnas del centro aprendiendo costura'],
 };
 
 export const MEMBERSHIP = {
