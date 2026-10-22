@@ -45,16 +45,21 @@ const colors = ['bg-coral', 'bg-gold', 'bg-lime', 'bg-teal'];
       </div>
     </div>
 
-    <ol class="mt-16 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-      {
-        dfc.map((d, i) => (
-          <li class={`sticker rounded-[1.75rem] p-6 ${colors[i]}`} data-reveal="up">
-            <span class="font-display text-sm tracking-[0.2em] uppercase opacity-70">Paso {i + 1}</span>
-            <p class="font-display mt-1 text-4xl uppercase">{d.step}</p>
-            <p class="mt-2 leading-snug font-semibold">{d.text}</p>
-          </li>
-        ))
-      }
-    </ol>
+    <div class="sticker mt-12 rounded-[1.5rem] bg-cream p-4 sm:p-5" data-reveal="up">
+      <p class="eyebrow text-ink/60">Nuestro proyecto Design for Change</p>
+      <ol class="mt-3 grid grid-cols-2 gap-x-4 gap-y-3 lg:grid-cols-4">
+        {
+          dfc.map((d, i) => (
+            <li class="flex items-start gap-2.5">
+              <span class={`font-display grid size-7 shrink-0 place-items-center rounded-full border-2 border-ink text-sm ${colors[i]}`}>{i + 1}</span>
+              <span class="leading-tight">
+                <span class="block font-display text-lg uppercase">{d.step}</span>
+                <span class="block text-sm font-medium text-ink/70">{d.text}</span>
+              </span>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
   </div>
 </section>
