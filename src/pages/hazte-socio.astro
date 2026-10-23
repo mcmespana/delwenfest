@@ -1,0 +1,465 @@
+---
+import { Image } from 'astro:assets';
+import Layout from '../layouts/Layout.astro';
+import Calculadora from '../components/socios/Calculadora.astro';
+import Ley49 from '../components/socios/Ley49.astro';
+import delwen from '../assets/brand/delwen.webp';
+import fest from '../assets/brand/fest.webp';
+import delwendeLogo from '../assets/partners/delwende.webp';
+import peluqueria from '../assets/photos/peluqueria.webp';
+import costura from '../assets/photos/costura.webp';
+import ninos from '../assets/photos/ninos.webp';
+import { DELWENDE_URLS, ONGD } from '../data/delwende';
+import { CAUSE } from '../data/event';
+
+const flecha =
+  '<svg viewBox="0 0 24 24" class="inline size-[0.9em] -translate-y-px" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"></path></svg>';
+---
+
+<Layout
+  title="Hazte socio/a de Delwende · DelwenFest"
+  description="Hazte socio/a de la ONGD Delwende desde el DelwenFest: déjanos tu teléfono y te llamamos, o date de alta ahora. Calcula cuánto te desgrava con la Ley 49/2002."
+>
+  <main class="socio-page relative overflow-hidden">
+    <!-- Cabecera -->
+    <section class="relative bg-gold px-4 pt-[max(1.25rem,env(safe-area-inset-top))] pb-14 sm:px-8">
+      <div class="paper-texture !opacity-35"></div>
+      <div class="relative mx-auto max-w-2xl">
+        <a href="/" class="flex h-11 w-fit items-center gap-1" aria-label="DelwenFest: ir a la web del festival">
+          <Image src={delwen} alt="" widths={[200, 400]} sizes="110px" class="h-full w-auto" loading="eager" />
+          <Image src={fest} alt="" widths={[100, 200]} sizes="64px" class="h-[92%] w-auto" loading="eager" />
+        </a>
+        <p class="eyebrow mt-8">ONGD Delwende · Al servicio de la vida</p>
+        <h1 class="section-title mt-2 !text-[clamp(3.6rem,17vw,7.5rem)]">Hazte<br /><span class="text-pop">socio/a</span></h1>
+        <p class="mt-6 text-xl leading-snug font-semibold">
+          El DelwenFest dura una tarde. Siendo socio/a, tu ayuda llega <strong>todo el año</strong> a proyectos como el {CAUSE.project} de Atakpamé (Togo).
+        </p>
+        <ul class="mt-6 flex flex-wrap gap-2">
+          <li class="hecho bg-lime">Desgrava hasta el 80 %</li>
+          <li class="hecho bg-cream">Solo con tu DNI</li>
+          <li class="hecho bg-coral">Desde 5 € al mes</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Acciones -->
+    <section id="apuntate" class="relative bg-mint px-4 pb-14 sm:px-8">
+      <div class="paper-texture"></div>
+      <div class="relative mx-auto -mt-8 max-w-2xl">
+        <div class="sticker overflow-hidden rounded-[2rem] bg-cream" data-acciones>
+          <!-- Menú -->
+          <div class="vista p-5 sm:p-7" data-vista="menu">
+            <h2 class="font-display text-[2rem] leading-none uppercase">¿Cómo lo hacemos?</h2>
+            <div class="mt-5 flex flex-col gap-3">
+              <button type="button" class="opcion bg-gold" data-ir="llamar">
+                <span class="opcion-ico">📞</span>
+                <span>
+                  <span class="opcion-tit">Llamadme la semana que viene</span>
+                  <span class="opcion-txt">Déjanos tu nombre y teléfono y te ayudamos a darte de alta sin prisas.</span>
+                </span>
+              </button>
+              <button type="button" class="opcion bg-lime" data-ir="web">
+                <span class="opcion-ico">✍️</span>
+                <span>
+                  <span class="opcion-tit">Me hago socio/a ahora</span>
+                  <span class="opcion-txt">En la web de Delwende, en unos minutos. Ten a mano tu DNI y tu cuenta bancaria.</span>
+                </span>
+              </button>
+              <button type="button" class="opcion bg-white" data-ir="ya">
+                <span class="opcion-ico">💛</span>
+                <span>
+                  <span class="opcion-tit">Ya soy socio/a de Delwende</span>
+                  <span class="opcion-txt">¡Gracias! Dínoslo y sumas al contador del DelwenFest.</span>
+                </span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Llamadme -->
+          <form class="vista p-5 sm:p-7" data-vista="llamar" hidden novalidate autocomplete="on">
+            <button type="button" class="volver" data-ir="menu">← Volver</button>
+            <h2 class="font-display mt-3 text-[2rem] leading-none uppercase">Te llamamos</h2>
+            <p class="mt-2 font-medium text-ink/70">La semana que viene te llamamos para resolver dudas y ayudarte con el alta.</p>
+            <div class="mt-5 flex flex-col gap-3.5">
+              <label class="campo-s"><span>Nombre y apellidos</span><input name="nombre" type="text" autocomplete="name" autocapitalize="words" enterkeyhint="next" required maxlength="120" /></label>
+              <label class="campo-s"><span>Teléfono</span><input name="telefono" type="tel" inputmode="tel" autocomplete="tel" enterkeyhint="next" required maxlength="20" placeholder="612 345 678" /></label>
+              <label class="campo-s"><span>¿Alguna duda o mejor hora para llamarte? <em>opcional</em></span><textarea name="nota" rows="2" maxlength="600"></textarea></label>
+              <label class="flex items-start gap-3 text-[0.95rem] leading-snug font-medium">
+                <input type="checkbox" name="acepto" required class="mt-0.5 size-6 shrink-0 accent-[#24211e]" />
+                <span>Acepto que el equipo del DelwenFest me llame para hablarme de hacerme socio/a de Delwende. Mis datos no se usarán para nada más.</span>
+              </label>
+              <p class="error hidden" data-error></p>
+              <button type="submit" class="btn btn-ink justify-center !py-4 !text-lg">Que me llamen</button>
+            </div>
+          </form>
+
+          <!-- Alta en la web -->
+          <div class="vista p-5 sm:p-7" data-vista="web" hidden>
+            <button type="button" class="volver" data-ir="menu">← Volver</button>
+            <h2 class="font-display mt-3 text-[2rem] leading-none uppercase">Alta en Delwende</h2>
+            <ol class="mt-4 flex flex-col gap-2 text-lg leading-snug font-medium">
+              <li><strong>1.</strong> Abre el formulario de Delwende y elige tu cuota.</li>
+              <li><strong>2.</strong> Pon tu DNI para que te desgrave.</li>
+              <li><strong>3.</strong> Vuelve aquí y confírmalo para sumar al contador.</li>
+            </ol>
+            <a href={DELWENDE_URLS.member} target="_blank" rel="noopener" class="btn btn-gold mt-5 w-full justify-center !py-4 !text-lg" data-abrir-web
+              >Abrir el formulario de Delwende <Fragment set:html={flecha} /></a
+            >
+            <button type="button" class="btn btn-ink mt-3 w-full justify-center !py-4 !text-lg" data-ir="confirmar">Ya me he hecho socio/a</button>
+          </div>
+
+          <!-- Confirmar alta -->
+          <form class="vista p-5 sm:p-7" data-vista="confirmar" hidden novalidate>
+            <button type="button" class="volver" data-ir="web">← Volver</button>
+            <h2 class="font-display mt-3 text-[2rem] leading-none uppercase">¿Seguro que ya está?</h2>
+            <p class="mt-2 font-medium text-ink/70">Confírmalo solo si has terminado el alta en la web de Delwende. Sumará 1 al contador del DelwenFest.</p>
+            <label class="campo-s mt-5"><span>Tu nombre <em>opcional</em></span><input name="nombre" type="text" autocomplete="name" autocapitalize="words" maxlength="120" /></label>
+            <p class="error hidden" data-error></p>
+            <div class="mt-5 grid gap-3">
+              <button type="submit" class="btn btn-ink justify-center !py-4 !text-lg">Sí, confirmado ✓</button>
+              <button type="button" class="btn btn-cream justify-center" data-ir="web">Todavía no</button>
+            </div>
+          </form>
+
+          <!-- Ya soy socio -->
+          <form class="vista p-5 sm:p-7" data-vista="ya" hidden novalidate>
+            <button type="button" class="volver" data-ir="menu">← Volver</button>
+            <h2 class="font-display mt-3 text-[2rem] leading-none uppercase">¡Gracias por estar!</h2>
+            <p class="mt-2 font-medium text-ink/70">Confírmalo y sumas 1 al contador de socios del DelwenFest.</p>
+            <label class="campo-s mt-5"><span>Tu nombre <em>opcional</em></span><input name="nombre" type="text" autocomplete="name" autocapitalize="words" maxlength="120" /></label>
+            <p class="error hidden" data-error></p>
+            <button type="submit" class="btn btn-ink mt-5 w-full justify-center !py-4 !text-lg">Sí, ya soy socio/a ✓</button>
+          </form>
+
+          <!-- Gracias / ya contestado -->
+          <div class="vista bg-ink p-6 text-center text-cream sm:p-8" data-vista="gracias" hidden>
+            <p class="text-6xl" aria-hidden="true">🎉</p>
+            <h2 class="font-display mt-3 text-[2.4rem] leading-none text-gold uppercase" data-gracias-titulo>¡Gracias!</h2>
+            <p class="mt-3 text-lg leading-snug font-medium text-cream/85" data-gracias-texto></p>
+            <button type="button" class="btn btn-gold mt-6 hidden justify-center" data-ir="web" data-mejorar>Ya me he hecho socio/a en la web</button>
+            <a href="#calculadora" class="mt-5 block font-display text-lg text-gold uppercase underline decoration-2 underline-offset-4">Mira cuánto te desgrava ↓</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Calculadora -->
+    <section id="calculadora" class="relative bg-cream px-4 py-14 sm:px-8">
+      <div class="paper-texture !opacity-40"></div>
+      <div class="relative mx-auto max-w-2xl">
+        <p class="eyebrow text-forest">Calculadora de desgravación</p>
+        <h2 class="section-title mt-2 !text-[clamp(2.6rem,11vw,4.5rem)]">¿Cuánto te<br />cuesta <span class="text-pop [--pop:var(--color-lime)]">de verdad?</span></h2>
+        <Calculadora id="web" class="mt-8" />
+      </div>
+    </section>
+
+    <!-- Ley 49/2002 -->
+    <section class="relative bg-teal px-4 py-14 sm:px-8">
+      <div class="paper-texture !opacity-30"></div>
+      <div class="relative mx-auto max-w-2xl">
+        <p class="eyebrow">Ley 49/2002 de mecenazgo</p>
+        <h2 class="section-title mt-2 !text-[clamp(2.6rem,11vw,4.5rem)]">Así <span class="text-pop [--pop:var(--color-gold)]">desgrava</span></h2>
+        <Ley49 class="mt-8" />
+      </div>
+    </section>
+
+    <!-- Delwende y el proyecto -->
+    <section class="relative bg-mint px-4 py-14 sm:px-8">
+      <div class="paper-texture"></div>
+      <div class="relative mx-auto max-w-2xl">
+        <div class="sticker inline-flex rounded-[1.5rem] bg-white px-5 py-4">
+          <Image src={delwendeLogo} alt="Delwende, al servicio de la vida" widths={[300, 600]} sizes="260px" class="h-auto w-56" />
+        </div>
+        <p class="mt-6 text-lg leading-relaxed font-medium">{ONGD.origin}</p>
+        <p class="mt-3 text-lg leading-relaxed font-medium">{ONGD.how}</p>
+        <div class="mt-8 grid grid-cols-2 gap-3">
+          <Image src={peluqueria} alt="Alumnas del centro de Atakpamé aprendiendo peluquería" widths={[300, 600]} sizes="(min-width: 672px) 330px, 46vw" class="sticker aspect-[4/3] w-full -rotate-1 rounded-[1.25rem] object-cover" />
+          <Image src={costura} alt="Alumnas del centro de Atakpamé aprendiendo costura" widths={[300, 600]} sizes="(min-width: 672px) 330px, 46vw" class="sticker aspect-[4/3] w-full rotate-1 rounded-[1.25rem] object-cover" />
+          <Image src={ninos} alt="Niños y niñas de la escuela, en Togo" widths={[400, 800]} sizes="(min-width: 672px) 672px, 92vw" class="sticker col-span-2 aspect-[16/9] w-full rounded-[1.25rem] object-cover" />
+        </div>
+        <p class="mt-6 text-lg leading-relaxed font-medium">
+          <strong>Lo que recaudamos en el DelwenFest va al {CAUSE.project}</strong>, en {CAUSE.place}: alfabetización y formación en costura y peluquería para jóvenes que no pudieron ir a la escuela.
+        </p>
+        <div class="mt-8 flex flex-col gap-3 sm:flex-row">
+          <a href="#apuntate" class="btn btn-ink justify-center">Quiero ser socio/a</a>
+          <a href={DELWENDE_URLS.web} target="_blank" rel="noopener" class="btn btn-cream justify-center">delwende.es <Fragment set:html={flecha} /></a>
+        </div>
+      </div>
+    </section>
+
+    <footer class="bg-ink px-4 py-8 pb-[calc(6rem+env(safe-area-inset-bottom))] text-center text-cream/70 sm:px-8">
+      <a href="/" class="font-display text-lg text-gold uppercase underline decoration-2 underline-offset-4">DelwenFest · MCM Castellón</a>
+      <p class="mt-2 text-sm">Festival solidario a beneficio de la ONGD Delwende</p>
+    </footer>
+
+    <!-- Botón fijo para volver a las opciones -->
+    <a href="#apuntate" class="barra-cta btn btn-gold fixed inset-x-4 bottom-[calc(1rem+env(safe-area-inset-bottom))] z-40 justify-center !py-4 !text-lg" data-cta-fija>Quiero ser socio/a</a>
+  </main>
+</Layout>
+
+<style is:global>
+  .socio-page .hecho {
+    padding: 0.5rem 0.95rem 0.35rem;
+    border: 2.5px solid var(--color-ink);
+    border-radius: 999px;
+    font-family: var(--font-display);
+    font-size: 1rem;
+    text-transform: uppercase;
+    box-shadow: var(--shadow-hard-sm);
+  }
+  .socio-page .vista[hidden] {
+    display: none;
+  }
+  .socio-page .vista {
+    animation: vista-entra 0.35s var(--ease-out-expo);
+  }
+  @keyframes vista-entra {
+    from {
+      opacity: 0;
+      transform: translateX(16px);
+    }
+  }
+  .socio-page .opcion {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.9rem;
+    width: 100%;
+    padding: 1rem 1.1rem;
+    border: 3px solid var(--color-ink);
+    border-radius: 1.4rem;
+    text-align: left;
+    box-shadow: var(--shadow-hard-sm);
+    touch-action: manipulation;
+    transition: transform 0.2s var(--ease-bounce);
+  }
+  .socio-page .opcion:active {
+    transform: translate(2px, 2px);
+    box-shadow: none;
+  }
+  .socio-page .opcion-ico {
+    font-size: 1.9rem;
+    line-height: 1;
+  }
+  .socio-page .opcion-tit {
+    display: block;
+    font-family: var(--font-display);
+    font-size: 1.4rem;
+    line-height: 1.02;
+    text-transform: uppercase;
+  }
+  .socio-page .opcion-txt {
+    display: block;
+    margin-top: 0.3rem;
+    font-weight: 500;
+    line-height: 1.3;
+    color: rgb(36 33 30 / 0.75);
+  }
+  .socio-page .volver {
+    font-family: var(--font-display);
+    text-transform: uppercase;
+    color: rgb(36 33 30 / 0.6);
+    padding: 0.3rem 0;
+  }
+  .socio-page .campo-s {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+  .socio-page .campo-s > span {
+    font-family: var(--font-display);
+    font-size: 0.95rem;
+    text-transform: uppercase;
+  }
+  .socio-page .campo-s em {
+    font-style: normal;
+    color: rgb(36 33 30 / 0.45);
+  }
+  .socio-page .campo-s :is(input, textarea) {
+    width: 100%;
+    min-height: 3.4rem;
+    padding: 0.6rem 1rem;
+    border: 3px solid var(--color-ink);
+    border-radius: 1rem;
+    background: white;
+    font-size: 1.15rem;
+    font-weight: 600;
+    outline: none;
+  }
+  .socio-page .campo-s :is(input, textarea):focus {
+    box-shadow: 4px 4px 0 var(--color-gold);
+  }
+  .socio-page .error {
+    padding: 0.7rem 1rem;
+    border: 2.5px solid var(--color-red);
+    border-radius: 1rem;
+    background: rgb(247 54 58 / 0.08);
+    color: var(--color-red);
+    font-weight: 700;
+  }
+  .socio-page .barra-cta {
+    transition: transform 0.4s var(--ease-bounce);
+  }
+  .socio-page .barra-cta[data-oculta='true'] {
+    transform: translateY(180%);
+  }
+  @media (min-width: 640px) {
+    .socio-page .barra-cta {
+      left: auto;
+      right: 1.5rem;
+    }
+  }
+</style>
+
+<script>
+  import confetti from 'canvas-confetti';
+
+  const caja = document.querySelector<HTMLElement>('[data-acciones]')!;
+  const vistas = Array.from(caja.querySelectorAll<HTMLElement>('[data-vista]'));
+  const CLAVE_ID = 'dwf_dispositivo';
+  const CLAVE_RESP = 'dwf_respuesta';
+
+  type Tipo = 'contactar' | 'alta_web' | 'ya_socio';
+
+  const guardado = (k: string) => {
+    try {
+      return localStorage.getItem(k);
+    } catch {
+      return null;
+    }
+  };
+  const guardar = (k: string, v: string) => {
+    try {
+      localStorage.setItem(k, v);
+    } catch {
+      /* modo privado */
+    }
+  };
+
+  /** Identificador de este móvil: así cada persona suma una sola vez. */
+  function dispositivo() {
+    let id = guardado(CLAVE_ID);
+    if (!id) {
+      id = crypto.randomUUID?.() ?? `${Date.now().toString(36)}-${Math.random().toString(36).slice(2)}-${Math.random().toString(36).slice(2)}`;
+      guardar(CLAVE_ID, id);
+    }
+    return id;
+  }
+
+  function ir(nombre: string) {
+    vistas.forEach((v) => (v.hidden = v.dataset.vista !== nombre));
+    caja.querySelector<HTMLElement>(`[data-vista="${nombre}"] input:not([type=checkbox])`)?.focus({ preventScroll: true });
+    const top = caja.getBoundingClientRect().top;
+    if (top < 0) caja.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+  caja.addEventListener('click', (e) => {
+    const b = (e.target as HTMLElement).closest<HTMLElement>('[data-ir]');
+    if (b) ir(b.dataset.ir!);
+  });
+
+  const TEXTOS: Record<Tipo, string> = {
+    contactar: 'Te llamaremos la semana que viene para ayudarte con el alta. ¡Gracias por sumarte!',
+    alta_web: 'Ya formas parte de Delwende. Gracias por hacer que la fiesta dure todo el año.',
+    ya_socio: 'Gracias por seguir sosteniendo a Delwende. ¡Ya cuentas en el marcador del DelwenFest!',
+  };
+
+  /** `modo`: «nuevo» (acaba de sumar), «mejora» (ya contaba y ahora se ha dado de alta) o «repetido». */
+  function gracias(tipo: Tipo, nombre: string, modo: 'nuevo' | 'mejora' | 'repetido') {
+    const saludo = `¡Gracias${nombre ? `, ${nombre.split(' ')[0]}` : ''}!`;
+    caja.querySelector('[data-gracias-titulo]')!.textContent = modo === 'repetido' ? '¡Ya nos habías contestado!' : saludo;
+    caja.querySelector('[data-gracias-texto]')!.textContent = {
+      nuevo: `${TEXTOS[tipo]} Acabas de sumar 1 al contador del DelwenFest.`,
+      mejora: `${TEXTOS[tipo]} (Ya contabas en el marcador desde antes.)`,
+      repetido: `${TEXTOS[tipo]} (Desde este móvil ya sumaste al contador, no contamos dos veces.)`,
+    }[modo];
+    caja.querySelector('[data-mejorar]')!.classList.toggle('hidden', tipo !== 'contactar');
+    ir('gracias');
+    if (modo !== 'repetido') {
+      const colors = ['#f7363a', '#f5b50b', '#8cc63f', '#1fb3b0', '#f87341', '#f0437a'];
+      confetti({ particleCount: 120, spread: 80, origin: { y: 0.7 }, colors });
+      setTimeout(() => confetti({ particleCount: 80, spread: 120, origin: { y: 0.6 }, colors }), 250);
+    }
+  }
+
+  async function enviar(form: HTMLFormElement, tipo: Tipo) {
+    const error = form.querySelector<HTMLElement>('[data-error]')!;
+    const boton = form.querySelector<HTMLButtonElement>('[type=submit]')!;
+    const fd = new FormData(form);
+    const datos = {
+      device: dispositivo(),
+      tipo,
+      nombre: String(fd.get('nombre') || ''),
+      telefono: String(fd.get('telefono') || ''),
+      nota: String(fd.get('nota') || ''),
+    };
+    error.classList.add('hidden');
+    boton.disabled = true;
+    try {
+      const res = await fetch('/api/qr', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(datos) });
+      const d = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(d.error || 'No se ha podido enviar');
+      const antes = guardado(CLAVE_RESP);
+      guardar(CLAVE_RESP, d.estado);
+      gracias(d.estado as Tipo, datos.nombre, d.nuevo ? 'nuevo' : antes && antes !== d.estado ? 'mejora' : 'repetido');
+    } catch (err) {
+      error.textContent = `${(err as Error).message}. Revisa la conexión e inténtalo otra vez.`;
+      error.classList.remove('hidden');
+    } finally {
+      boton.disabled = false;
+    }
+  }
+
+  const formLlamar = caja.querySelector<HTMLFormElement>('[data-vista="llamar"]')!;
+  formLlamar.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const error = formLlamar.querySelector<HTMLElement>('[data-error]')!;
+    const fd = new FormData(formLlamar);
+    let falta = '';
+    if (!String(fd.get('nombre') || '').trim()) falta = 'Falta tu nombre';
+    else if (String(fd.get('telefono') || '').replace(/\D/g, '').length < 9) falta = 'Revisa el teléfono';
+    else if (!fd.get('acepto')) falta = 'Marca la casilla para que podamos llamarte';
+    if (falta) {
+      error.textContent = falta;
+      error.classList.remove('hidden');
+      return;
+    }
+    enviar(formLlamar, 'contactar');
+  });
+  // Enter en nombre/teléfono pasa al siguiente campo
+  formLlamar.querySelectorAll<HTMLInputElement>('input[enterkeyhint=next]').forEach((input, i, todos) =>
+    input.addEventListener('keydown', (e) => {
+      if (e.key !== 'Enter') return;
+      e.preventDefault();
+      (todos[i + 1] ?? formLlamar.querySelector('textarea'))?.focus();
+    }),
+  );
+
+  for (const [vista, tipo] of [
+    ['confirmar', 'alta_web'],
+    ['ya', 'ya_socio'],
+  ] as const) {
+    const f = caja.querySelector<HTMLFormElement>(`[data-vista="${vista}"]`)!;
+    f.addEventListener('submit', (e) => {
+      e.preventDefault();
+      enviar(f, tipo);
+    });
+  }
+
+  // ¿Este móvil ya contestó? Primero lo guardado, luego lo confirma el servidor
+  const previa = guardado(CLAVE_RESP) as Tipo | null;
+  if (previa) gracias(previa, '', 'repetido');
+  fetch(`/api/qr?d=${encodeURIComponent(guardado(CLAVE_ID) ?? '')}`, { cache: 'no-store' })
+    .then((r) => (r.ok ? r.json() : null))
+    .then((d) => {
+      if (d?.estado && d.estado !== previa) {
+        guardar(CLAVE_RESP, d.estado);
+        gracias(d.estado, '', 'repetido');
+      }
+    })
+    .catch(() => {});
+
+  // Botón fijo: se esconde mientras se ven las opciones
+  const barra = document.querySelector<HTMLElement>('[data-cta-fija]')!;
+  new IntersectionObserver(([e]) => (barra.dataset.oculta = String(e.isIntersecting || e.boundingClientRect.top > 0)), { threshold: 0 }).observe(
+    document.getElementById('apuntate')!,
+  );
+</script>

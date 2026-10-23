@@ -1,5 +1,5 @@
 // Service worker del DELWENFEST: la web (horario, dirección…) sigue disponible sin cobertura.
-const CACHE = 'delwenfest-v3';
+const CACHE = 'delwenfest-v4';
 const CORE = ['/', '/manifest.webmanifest', '/favicon.svg', '/icons/icon-192.png', '/delwenfest.ics'];
 
 self.addEventListener('install', (event) => {
@@ -26,7 +26,10 @@ self.addEventListener('fetch', (event) => {
   const url = new URL(request.url);
   if (url.origin !== self.location.origin) return;
 
-  // Página: primero la red (siempre lo último), si no hay conexión la copia guardada
+  // El resto de páginas (hazte socio, equipo, contador) van siempre a la red
+  if (url.pathname !== '/' && request.mode === 'navigate') return;
+
+  // Portada: primero la red (siempre lo último), si no hay conexión la copia guardada
   if (request.mode === 'navigate') {
     event.respondWith(
       fetch(request)

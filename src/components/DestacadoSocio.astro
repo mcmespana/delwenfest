@@ -1,0 +1,124 @@
+---
+/**
+ * El día del festival, desde las 16:00, la portada empuja a /hazte-socio (la misma
+ * página del QR de la mesa): aviso al entrar y botón flotante en lugar de «Recuérdamelo».
+ * Para verlo antes de tiempo: /?socio=1
+ */
+import { EVENT } from '../data/event';
+---
+
+<div class="destacado" data-destacado data-desde={EVENT.socioDesde} hidden>
+  <a href="/hazte-socio" class="destacado-fab" data-destacado-fab>
+    <span class="grid size-8 place-items-center rounded-full bg-ink text-base" aria-hidden="true">💛</span>
+    Hazte socio/a
+  </a>
+
+  <div class="destacado-aviso" role="dialog" aria-labelledby="destacado-titulo" data-destacado-aviso hidden>
+    <p class="eyebrow text-coral">¡El DelwenFest ya está en marcha!</p>
+    <p id="destacado-titulo" class="font-display mt-1 text-[2rem] leading-[0.95] uppercase">¿Te haces socio/a de Delwende?</p>
+    <p class="mt-2 leading-snug font-medium text-ink/75">Que la fiesta dure todo el año: te llamamos o te das de alta en un minuto. Y desgrava.</p>
+    <div class="mt-4 flex flex-wrap gap-2.5">
+      <a href="/hazte-socio" class="btn btn-ink">Cómo hacerme socio/a →</a>
+      <button type="button" class="btn btn-cream" data-destacado-cerrar>Ahora no</button>
+    </div>
+  </div>
+</div>
+
+<style is:global>
+  html[data-socio='true'] [data-remind-fab] {
+    display: none !important;
+  }
+  .destacado[hidden],
+  .destacado-aviso[hidden] {
+    display: none;
+  }
+  .destacado-fab {
+    position: fixed;
+    right: 1rem;
+    bottom: calc(1rem + env(safe-area-inset-bottom));
+    z-index: 40;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.75rem 1.25rem 0.75rem 0.85rem;
+    border: 3px solid var(--color-ink);
+    border-radius: 999px;
+    background: var(--color-gold);
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    box-shadow: 4px 4px 0 0 var(--color-ink);
+    animation: destacado-latido 2.6s ease-in-out infinite;
+  }
+  @media (min-width: 640px) {
+    .destacado-fab {
+      right: 1.5rem;
+      bottom: 1.5rem;
+    }
+  }
+  @keyframes destacado-latido {
+    0%,
+    80%,
+    100% {
+      transform: scale(1);
+    }
+    86% {
+      transform: scale(1.08) rotate(-2deg);
+    }
+    92% {
+      transform: scale(0.98);
+    }
+  }
+  .destacado-aviso {
+    position: fixed;
+    left: 1rem;
+    right: 1rem;
+    bottom: calc(5.5rem + env(safe-area-inset-bottom));
+    z-index: 45;
+    max-width: 26rem;
+    margin-left: auto;
+    padding: 1.3rem 1.3rem 1.2rem;
+    border: 3px solid var(--color-ink);
+    border-radius: 1.75rem;
+    background: var(--color-cream);
+    box-shadow: 8px 8px 0 0 var(--color-ink);
+    animation: destacado-entra 0.6s var(--ease-bounce);
+  }
+  @media (min-width: 640px) {
+    .destacado-aviso {
+      right: 1.5rem;
+      bottom: 6.5rem;
+    }
+  }
+  @keyframes destacado-entra {
+    from {
+      opacity: 0;
+      transform: translateY(40px) scale(0.92);
+    }
+  }
+</style>
+
+<script>
+  const root = document.querySelector<HTMLElement>('[data-destacado]')!;
+  const forzado = new URLSearchParams(location.search).has('socio');
+  if (forzado || Date.now() >= Date.parse(root.dataset.desde!)) {
+    document.documentElement.dataset.socio = 'true';
+    root.hidden = false;
+    const aviso = root.querySelector<HTMLElement>('[data-destacado-aviso]')!;
+    let visto = false;
+    try {
+      visto = sessionStorage.getItem('dwf_destacado') === '1';
+    } catch {
+      /* sin almacenamiento: se enseña igual */
+    }
+    if (!visto || forzado) setTimeout(() => (aviso.hidden = false), 1200);
+    root.querySelector('[data-destacado-cerrar]')!.addEventListener('click', () => {
+      aviso.hidden = true;
+      try {
+        sessionStorage.setItem('dwf_destacado', '1');
+      } catch {
+        /* nada */
+      }
+    });
+  }
+</script>
