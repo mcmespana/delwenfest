@@ -1,0 +1,448 @@
+---
+import { Image } from 'astro:assets';
+import PanelLayout from '../layouts/PanelLayout.astro';
+import QrSocio from '../components/socios/QrSocio.astro';
+import delwen from '../assets/brand/delwen.webp';
+import fest from '../assets/brand/fest.webp';
+
+// Guirnalda de banderines a lo largo de una cuerda que cuelga
+const colores = ['#f7363a', '#f5b50b', '#8cc63f', '#1fb3b0', '#f87341', '#f0437a', '#2f6bd8', '#ffae34'];
+const N = 17;
+const banderines = Array.from({ length: N }, (_, i) => {
+  const x = 30 + (i * 1140) / (N - 1);
+  const u = (x - 600) / 600;
+  const y = 6 + 46 * (1 - u * u);
+  const giro = Math.atan((-92 * u) / 600) * (180 / Math.PI);
+  return { x, y, giro, color: colores[i % colores.length], retardo: (i % 5) * 0.35 };
+});
+---
+
+<PanelLayout title="Contador · DelwenFest" manifest="/contador.webmanifest" theme="#161412" bodyClass="contador">
+  <!-- Fondo animado: manchas de color, rayos que giran y grano -->
+  <div class="fondo" aria-hidden="true">
+    <div class="mancha m1"></div>
+    <div class="mancha m2"></div>
+    <div class="mancha m3"></div>
+    <div class="mancha m4"></div>
+    <div class="rayos" data-rayos></div>
+    <div class="grano"></div>
+    <div class="destello" data-destello></div>
+  </div>
+
+  <svg class="guirnalda" viewBox="0 0 1200 150" preserveAspectRatio="xMidYMin slice" aria-hidden="true">
+    <path d="M -20 0 Q 600 104 1220 0" fill="none" stroke="#fff7e8" stroke-opacity=".55" stroke-width="3"></path>
+    {
+      banderines.map((b) => (
+        <g transform={`translate(${b.x} ${b.y}) rotate(${b.giro})`}>
+          <path class="banderin" style={`animation-delay:-${b.retardo}s`} d="M -27 0 L 27 0 L 0 74 Z" fill={b.color} stroke="#fff7e8" stroke-width="5" stroke-linejoin="round" paint-order="stroke fill" />
+        </g>
+      ))
+    }
+  </svg>
+
+  <main class="escena" data-escena>
+    <div class="marca">
+      <Image src={delwen} alt="" widths={[300, 600]} sizes="220px" class="h-full w-auto" loading="eager" />
+      <Image src={fest} alt="" widths={[200, 400]} sizes="120px" class="h-[92%] w-auto" loading="eager" />
+    </div>
+    <h1 class="sr-only">Socios y socias de Delwende hoy</h1>
+    <div class="numero-caja" data-caja>
+      <span class="numero" data-numero aria-live="polite">0</span>
+    </div>
+    <p class="etiqueta" data-etiqueta>
+      <span>Socios hoy</span>
+    </p>
+    <p class="sub">¡Gracias por sumaros a Delwende!</p>
+  </main>
+
+  <!-- Capa de efectos -->
+  <div class="capa" data-fx></div>
+  <canvas class="capa" data-confeti></canvas>
+
+  <aside class="qr-esquina" data-qr hidden>
+    <QrSocio class="w-full" />
+    <p>Hazte socio/a</p>
+  </aside>
+
+  <span class="punto" data-punto title="Conexión"></span>
+
+  <!-- Mandos discretos: aparecen al tocar la pantalla -->
+  <div class="mandos" data-mandos>
+    <button type="button" data-accion="probar">🎉 Probar</button>
+    <button type="button" data-accion="pantalla">⛶ Pantalla completa</button>
+  </div>
+
+  <button type="button" class="aviso-sonido" data-aviso-sonido hidden>🔇 Toca para activar el sonido</button>
+
+  <!-- Arranque: hace falta un toque para poder sonar en iPad -->
+  <div class="inicio" data-inicio>
+    <div class="inicio-caja">
+      <p class="eyebrow text-gold">Pantalla del contador</p>
+      <button type="button" class="inicio-btn" data-empezar>
+        <span class="inicio-icono">▶</span>
+        Toca para empezar
+      </button>
+      <ul class="inicio-tips">
+        <li>Sube el volumen del iPad: sonará una campana con cada socio/a.</li>
+        <li>Ajustes → Pantalla y brillo → Bloqueo automático: <strong>Nunca</strong>.</li>
+        <li>Para verla sin barras: Compartir → <strong>Añadir a pantalla de inicio</strong> y ábrela desde el icono.</li>
+      </ul>
+    </div>
+  </div>
+</PanelLayout>
+
+<style is:global>
+  body.contador {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    background: var(--color-night);
+    color: var(--color-cream);
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+    touch-action: manipulation;
+  }
+
+  /* ---------- Fondo ---------- */
+  .contador .fondo {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+  }
+  .contador .mancha {
+    position: absolute;
+    width: 90vmax;
+    height: 90vmax;
+    border-radius: 50%;
+    will-change: transform;
+  }
+  .contador .m1 {
+    left: -35vmax;
+    top: -40vmax;
+    background: radial-gradient(closest-side, rgb(142 92 240 / 0.55), transparent);
+    animation: deriva1 26s ease-in-out infinite alternate;
+  }
+  .contador .m2 {
+    right: -40vmax;
+    bottom: -45vmax;
+    background: radial-gradient(closest-side, rgb(31 179 176 / 0.5), transparent);
+    animation: deriva2 31s ease-in-out infinite alternate;
+  }
+  .contador .m3 {
+    right: -30vmax;
+    top: -45vmax;
+    background: radial-gradient(closest-side, rgb(248 115 65 / 0.42), transparent);
+    animation: deriva3 23s ease-in-out infinite alternate;
+  }
+  .contador .m4 {
+    left: -30vmax;
+    bottom: -50vmax;
+    background: radial-gradient(closest-side, rgb(245 181 11 / 0.36), transparent);
+    animation: deriva4 35s ease-in-out infinite alternate;
+  }
+  @keyframes deriva1 {
+    to {
+      transform: translate3d(28vmax, 18vmax, 0) scale(1.15);
+    }
+  }
+  @keyframes deriva2 {
+    to {
+      transform: translate3d(-26vmax, -14vmax, 0) scale(0.9);
+    }
+  }
+  @keyframes deriva3 {
+    to {
+      transform: translate3d(-22vmax, 24vmax, 0) scale(1.1);
+    }
+  }
+  @keyframes deriva4 {
+    to {
+      transform: translate3d(30vmax, -20vmax, 0) scale(1.2);
+    }
+  }
+  .contador .rayos {
+    position: absolute;
+    left: 50%;
+    top: 54%;
+    width: 190vmax;
+    height: 190vmax;
+    margin: -95vmax 0 0 -95vmax;
+    border-radius: 50%;
+    background: repeating-conic-gradient(rgb(255 247 232 / 0.055) 0 7deg, transparent 7deg 20deg);
+    -webkit-mask-image: radial-gradient(closest-side, black 20%, transparent 85%);
+    mask-image: radial-gradient(closest-side, black 20%, transparent 85%);
+    animation: gira 120s linear infinite;
+    will-change: transform;
+  }
+  @keyframes gira {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  .contador .grano {
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E");
+    opacity: 0.1;
+    mix-blend-mode: overlay;
+  }
+  .contador .destello {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 50% 55%, rgb(255 247 232 / 0.5), transparent 60%);
+    opacity: 0;
+  }
+
+  /* ---------- Guirnalda ---------- */
+  .contador .guirnalda {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: clamp(70px, 13vh, 140px);
+    filter: drop-shadow(0 6px 0 rgb(0 0 0 / 0.35));
+  }
+  .contador .banderin {
+    transform-box: fill-box;
+    transform-origin: 50% 0;
+    animation: vaiven 3.4s ease-in-out infinite alternate;
+  }
+  @keyframes vaiven {
+    from {
+      transform: rotate(-5deg);
+    }
+    to {
+      transform: rotate(5deg);
+    }
+  }
+
+  /* ---------- Número ---------- */
+  .contador .escena {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: max(9vh, env(safe-area-inset-top)) 4vw max(4vh, env(safe-area-inset-bottom));
+    text-align: center;
+  }
+  .contador .marca {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    height: clamp(40px, 8vh, 84px);
+    filter: drop-shadow(4px 4px 0 rgb(0 0 0 / 0.35));
+  }
+  .contador .numero-caja {
+    --d: 1;
+    position: relative;
+    margin-top: 1vh;
+    line-height: 0.82;
+    perspective: 1200px;
+  }
+  .contador .numero {
+    display: inline-block;
+    font-family: var(--font-display);
+    font-size: min(54vh, calc(88vw / (var(--d) * 0.62 + 0.12)));
+    letter-spacing: -0.02em;
+    color: var(--color-cream);
+    font-variant-numeric: tabular-nums;
+    text-shadow:
+      0.03em 0.03em 0 var(--color-gold),
+      0.06em 0.06em 0 var(--color-coral),
+      0.09em 0.09em 0 var(--color-red),
+      0.13em 0.13em 0 rgb(0 0 0 / 0.35);
+    transform-origin: 50% 60%;
+    will-change: transform;
+  }
+  .contador .etiqueta {
+    margin-top: 3.5vh;
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 7.5vh, 5.6rem);
+    line-height: 1;
+    text-transform: uppercase;
+  }
+  .contador .etiqueta span {
+    display: inline-block;
+    padding: 0.18em 0.6em 0.08em;
+    border: 4px solid var(--color-ink);
+    border-radius: 999px;
+    background: var(--color-gold);
+    color: var(--color-ink);
+    box-shadow: 6px 6px 0 var(--color-ink);
+    transform: rotate(-2deg);
+  }
+  .contador .sub {
+    margin-top: 2.2vh;
+    font-family: var(--font-display);
+    font-size: clamp(1rem, 3vh, 2rem);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: rgb(255 247 232 / 0.7);
+  }
+
+  /* ---------- Capas de efectos ---------- */
+  .contador .capa {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    overflow: hidden;
+  }
+  .contador [data-fx] > * {
+    position: absolute;
+    will-change: transform, opacity;
+  }
+
+  .contador .qr-esquina {
+    position: absolute;
+    right: max(2vw, env(safe-area-inset-right));
+    bottom: max(2.5vh, env(safe-area-inset-bottom));
+    width: clamp(110px, 17vh, 190px);
+    padding: 10px 10px 6px;
+    border: 4px solid var(--color-ink);
+    border-radius: 20px;
+    background: var(--color-cream);
+    color: var(--color-ink);
+    box-shadow: 6px 6px 0 var(--color-gold);
+    text-align: center;
+    font-family: var(--font-display);
+    text-transform: uppercase;
+    font-size: clamp(0.8rem, 2vh, 1.15rem);
+  }
+  .contador .qr-esquina[hidden] {
+    display: none;
+  }
+
+  .contador .punto {
+    position: absolute;
+    left: max(14px, env(safe-area-inset-left));
+    bottom: max(14px, env(safe-area-inset-bottom));
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--color-lime);
+    opacity: 0.35;
+    transition: background-color 0.3s;
+  }
+  .contador .punto[data-mal='true'] {
+    background: var(--color-red);
+    opacity: 1;
+    animation: latido 1s ease-in-out infinite;
+  }
+  @keyframes latido {
+    50% {
+      transform: scale(1.8);
+    }
+  }
+
+  .contador .mandos {
+    position: absolute;
+    left: 50%;
+    bottom: max(16px, env(safe-area-inset-bottom));
+    display: flex;
+    gap: 10px;
+    transform: translate(-50%, 160%);
+    transition: transform 0.4s var(--ease-bounce);
+  }
+  .contador .mandos[data-visible='true'] {
+    transform: translate(-50%, 0);
+  }
+  .contador .mandos button,
+  .contador .aviso-sonido {
+    padding: 0.8rem 1.2rem 0.65rem;
+    border: 3px solid var(--color-ink);
+    border-radius: 999px;
+    background: var(--color-cream);
+    color: var(--color-ink);
+    font-family: var(--font-display);
+    font-size: 1.05rem;
+    text-transform: uppercase;
+    box-shadow: 4px 4px 0 var(--color-gold);
+  }
+  .contador .aviso-sonido {
+    position: absolute;
+    top: max(16px, env(safe-area-inset-top));
+    right: max(16px, env(safe-area-inset-right));
+    background: var(--color-red);
+    color: var(--color-cream);
+    box-shadow: 4px 4px 0 var(--color-ink);
+    animation: latido 1.4s ease-in-out infinite;
+  }
+  .contador .aviso-sonido[hidden] {
+    display: none;
+  }
+
+  /* ---------- Arranque ---------- */
+  .contador .inicio {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    padding: 24px;
+    background: rgb(22 20 18 / 0.88);
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
+  }
+  .contador .inicio[hidden] {
+    display: none;
+  }
+  .contador .inicio-caja {
+    display: flex;
+    max-width: 560px;
+    flex-direction: column;
+    align-items: center;
+    gap: 28px;
+    text-align: center;
+  }
+  .contador .inicio-btn {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding: 26px 40px 20px;
+    border: 4px solid var(--color-ink);
+    border-radius: 999px;
+    background: var(--color-gold);
+    color: var(--color-ink);
+    font-family: var(--font-display);
+    font-size: clamp(1.8rem, 4.5vw, 2.8rem);
+    text-transform: uppercase;
+    line-height: 1;
+    box-shadow: 8px 8px 0 var(--color-coral);
+    animation: flota 3s ease-in-out infinite;
+  }
+  @keyframes flota {
+    50% {
+      transform: translateY(-10px) rotate(-1.5deg);
+    }
+  }
+  .contador .inicio-icono {
+    display: grid;
+    width: 1.5em;
+    height: 1.5em;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--color-ink);
+    color: var(--color-gold);
+    font-size: 0.7em;
+    padding-left: 0.12em;
+  }
+  .contador .inicio-tips {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    font-size: 1.05rem;
+    line-height: 1.35;
+    color: rgb(255 247 232 / 0.75);
+  }
+  .contador .inicio-tips strong {
+    color: var(--color-gold);
+  }
+</style>
+
+<script>
+  import '../scripts/contador';
+</script>

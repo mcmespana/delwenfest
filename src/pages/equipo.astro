@@ -1,0 +1,559 @@
+---
+import { Image } from 'astro:assets';
+import PanelLayout from '../layouts/PanelLayout.astro';
+import Calculadora from '../components/socios/Calculadora.astro';
+import Ley49 from '../components/socios/Ley49.astro';
+import QrSocio from '../components/socios/QrSocio.astro';
+import delwen from '../assets/brand/delwen.webp';
+import fest from '../assets/brand/fest.webp';
+import { ESTADOS, ESTADO_DEFECTO, SONIDOS } from '../data/socios';
+
+const urlSocio = new URL('/hazte-socio', Astro.site);
+const icono = {
+  qr: '<path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4z"/><path d="M14 14h2v2h-2zM18 14h2M14 18h2M18 18h2v2M16 16h2v2"/>',
+  calc: '<rect x="5" y="3" width="14" height="18" rx="2.5"/><path d="M8.5 7h7M8.5 11h.01M12 11h.01M15.5 11h.01M8.5 14.5h.01M12 14.5h.01M15.5 14.5h.01M8.5 18h.01M12 18h3.5"/>',
+  ley: '<path d="M12 3v18M5 7h14M7 7l-3 7a3 3 0 0 0 6 0L7 7ZM17 7l-3 7a3 3 0 0 0 6 0l-3-7ZM8 21h8"/>',
+  tele: '<rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/>',
+};
+---
+
+<PanelLayout title="Socios · Equipo DelwenFest" manifest="/equipo.webmanifest" bodyClass="equipo">
+  <div class="paper-texture !fixed !opacity-40" aria-hidden="true"></div>
+
+  <!-- Barra superior -->
+  <header class="sticky top-0 z-30 border-b-[3px] border-ink bg-cream/95 px-3 pt-[max(0.6rem,env(safe-area-inset-top))] pb-2.5 backdrop-blur sm:px-5">
+    <div class="mx-auto flex max-w-[1280px] items-center gap-3">
+      <a href="/" class="flex h-9 shrink-0 items-center gap-1" aria-label="Ir a la web del DelwenFest">
+        <Image src={delwen} alt="" widths={[160, 320]} sizes="90px" class="h-full w-auto" loading="eager" />
+        <Image src={fest} alt="" widths={[100, 200]} sizes="52px" class="h-[92%] w-auto" loading="eager" />
+      </a>
+      <p class="font-display hidden text-lg leading-none uppercase md:block">Socios <span class="text-ink/45">· equipo</span></p>
+      <span class="ml-1 size-3 shrink-0 rounded-full bg-lime ring-2 ring-ink transition-colors data-[mal=true]:animate-pulse data-[mal=true]:bg-red" data-conexion title="Conexión"></span>
+
+      <nav class="ml-auto flex items-center gap-1.5 sm:gap-2" aria-label="Herramientas">
+        <button type="button" class="tool bg-gold" data-abrir="qr"><svg viewBox="0 0 24 24" set:html={icono.qr} /><span>QR</span></button>
+        <button type="button" class="tool bg-lime" data-abrir="calc"><svg viewBox="0 0 24 24" set:html={icono.calc} /><span>Calculadora</span></button>
+        <button type="button" class="tool bg-teal" data-abrir="ley"><svg viewBox="0 0 24 24" set:html={icono.ley} /><span>Ley 49/2002</span></button>
+        <a href="/contador" target="_blank" class="tool bg-white" aria-label="Abrir la pantalla del contador"><svg viewBox="0 0 24 24" set:html={icono.tele} /><span class="hidden xl:inline">Contador</span></a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="panel relative mx-auto grid max-w-[1280px] gap-4 px-3 pt-4 pb-[calc(6rem+env(safe-area-inset-bottom))] sm:px-5 lg:gap-5">
+    <!-- Formulario rápido -->
+    <section class="[grid-area:form] sticker rounded-[1.75rem] bg-cream p-4 sm:p-5" aria-labelledby="t-form">
+      <h2 id="t-form" class="font-display text-2xl leading-none uppercase">Apuntar socio/a</h2>
+      <form class="mt-3.5 flex flex-col gap-3" data-form autocomplete="off" novalidate>
+        <div class="grid gap-3 md:grid-cols-[1fr_15rem]">
+          <label class="campo">
+            <span>Nombre</span>
+            <input name="nombre" type="text" enterkeyhint="next" autocapitalize="words" autocorrect="off" spellcheck="false" placeholder="Nombre y apellido" maxlength="120" data-nombre />
+          </label>
+          <label class="campo">
+            <span>Teléfono <em>opcional</em></span>
+            <input name="telefono" type="tel" inputmode="tel" enterkeyhint="next" autocomplete="off" placeholder="612 345 678" maxlength="20" data-telefono />
+          </label>
+        </div>
+        <fieldset class="flex flex-wrap gap-2" data-estados>
+          <legend class="sr-only">Estado</legend>
+          {
+            ESTADOS.map((e) => (
+              <label class="chip-estado">
+                <input type="radio" name="estado" value={e.id} class="peer sr-only" checked={e.id === ESTADO_DEFECTO} />
+                <span style={`--chip:${e.color}`}>{e.short}</span>
+              </label>
+            ))
+          }
+        </fieldset>
+        <div class="grid gap-3 md:grid-cols-[1fr_auto]">
+          <label class="campo">
+            <span>Nota <em>opcional</em></span>
+            <input name="nota" type="text" enterkeyhint="send" autocapitalize="sentences" placeholder="Dudas, cuándo llamar, cuota que piensa poner…" maxlength="600" data-nota />
+          </label>
+          <button type="submit" class="btn btn-ink self-end justify-center !h-[3.6rem] !px-8 !text-xl">Apuntar <span aria-hidden="true">↵</span></button>
+        </div>
+      </form>
+    </section>
+
+    <!-- Contador -->
+    <section class="[grid-area:contador] sticker flex flex-col rounded-[1.75rem] bg-ink p-5 text-cream" aria-labelledby="t-cont">
+      <div class="flex items-start justify-between gap-3">
+        <h2 id="t-cont" class="eyebrow text-gold">Socios hoy</h2>
+        <p class="text-right text-sm leading-tight font-semibold text-cream/60" data-ultimo></p>
+      </div>
+      <div class="flex items-end gap-4 lg:flex-col lg:items-start lg:gap-0">
+        <p class="font-display text-[clamp(5rem,13vw,8.5rem)] leading-[0.85] text-gold tabular-nums" data-total>–</p>
+        <p class="pb-2 leading-snug font-semibold text-cream/80 lg:pt-2 lg:pb-0" data-desglose>&nbsp;</p>
+      </div>
+      <div class="mt-4 grid grid-cols-2 gap-2.5">
+        <button type="button" class="btn justify-center bg-lime !px-3 !py-3.5 !text-base text-ink !shadow-[3px_3px_0_0_#f5b50b]" data-ya-socio>+1 ya era socio/a</button>
+        <button type="button" class="btn justify-center bg-cream !px-3 !py-3.5 !text-base text-ink !shadow-[3px_3px_0_0_#f5b50b]" data-abrir="numero">Modificar número</button>
+      </div>
+    </section>
+
+    <!-- Lista -->
+    <section class="[grid-area:lista] sticker min-w-0 rounded-[1.75rem] bg-cream p-4 sm:p-5" aria-labelledby="t-lista">
+      <div class="flex flex-wrap items-center gap-3">
+        <h2 id="t-lista" class="font-display text-2xl leading-none uppercase">Apuntados <span class="text-ink/45" data-cuenta></span></h2>
+        <a href="/api/socios.csv" class="ml-auto font-display text-sm uppercase underline decoration-coral decoration-2 underline-offset-4" download>Descargar CSV</a>
+      </div>
+      <div class="mt-3 flex flex-wrap items-center gap-2">
+        <input type="search" placeholder="Buscar nombre, teléfono o nota" class="h-11 min-w-0 flex-1 basis-56 rounded-full border-[2.5px] border-ink bg-white px-4 font-semibold outline-none" data-buscar />
+        <div class="flex gap-1.5" role="group" aria-label="Filtrar" data-filtros>
+          <button type="button" class="filtro" aria-pressed="true" data-filtro="todos">Todos</button>
+          <button type="button" class="filtro" aria-pressed="false" data-filtro="contactar">Por llamar</button>
+          <button type="button" class="filtro" aria-pressed="false" data-filtro="qr">Desde QR</button>
+        </div>
+      </div>
+      <ul class="mt-4 flex flex-col gap-2.5" data-lista></ul>
+      <p class="mt-6 hidden text-center font-semibold text-ink/50" data-vacio>Aún no hay nadie apuntado. ¡A por el primero!</p>
+    </section>
+
+    <!-- Ajustes del contador -->
+    <section class="[grid-area:ajustes] sticker self-start rounded-[1.75rem] bg-white p-4 sm:p-5" aria-labelledby="t-sonido">
+      <h2 id="t-sonido" class="font-display text-xl leading-none uppercase">Sonido del contador</h2>
+      <p class="mt-1 text-sm font-medium text-ink/60">Suena en las pantallas del contador con cada socio/a nuevo. ▶ lo escuchas aquí.</p>
+      <ul class="mt-3 flex flex-col gap-1.5" data-sonidos>
+        {
+          SONIDOS.map((s) => (
+            <li class="flex items-center gap-2">
+              <label class="sonido flex-1">
+                <input type="radio" name="sonido" value={s.id} class="peer sr-only" />
+                <span class="flex flex-col rounded-2xl border-[2.5px] border-ink/20 px-3.5 py-2 peer-checked:border-ink peer-checked:bg-gold peer-checked:shadow-[var(--shadow-hard-sm)]">
+                  <span class="font-display text-base leading-tight uppercase">{s.nombre}</span>
+                  <span class="text-sm leading-tight font-medium text-ink/60">{s.desc}</span>
+                </span>
+              </label>
+              <button type="button" class="grid size-11 shrink-0 place-items-center rounded-full border-[2.5px] border-ink bg-cream" aria-label={`Escuchar ${s.nombre}`} data-escuchar={s.id}>
+                <svg viewBox="0 0 24 24" class="size-4 translate-x-px" fill="currentColor" aria-hidden="true"><path d="M7 4.5v15l13-7.5z" /></svg>
+              </button>
+            </li>
+          ))
+        }
+      </ul>
+      <button type="button" class="btn btn-gold mt-4 w-full justify-center !text-base" data-probar>🎉 Probar en el contador</button>
+      <label class="mt-4 flex cursor-pointer items-center justify-between gap-3">
+        <span class="leading-tight font-semibold">Mostrar el QR en la pantalla del contador</span>
+        <input type="checkbox" class="peer sr-only" data-qr-contador />
+        <span class="interruptor shrink-0" aria-hidden="true"></span>
+      </label>
+    </section>
+  </main>
+
+  <!-- Aviso flotante -->
+  <div
+    class="pointer-events-none fixed inset-x-0 bottom-[calc(1rem+env(safe-area-inset-bottom))] z-50 flex justify-center px-4"
+    aria-live="polite"
+  >
+    <div class="tostada pointer-events-auto flex items-center gap-3 rounded-full border-[3px] border-ink bg-ink py-2 pr-2 pl-5 text-cream shadow-[4px_4px_0_0_#f5b50b]" data-tostada hidden>
+      <span class="font-semibold" data-tostada-texto></span>
+      <button type="button" class="rounded-full bg-gold px-4 py-2 font-display text-sm text-ink uppercase" data-deshacer>Deshacer</button>
+    </div>
+  </div>
+
+  <!-- ===================== Hojas ===================== -->
+  <dialog class="hoja" data-hoja="qr" aria-labelledby="h-qr">
+    <div class="hoja-caja max-w-xl text-center">
+      <header class="hoja-cab bg-gold">
+        <h2 id="h-qr" class="font-display text-[1.9rem] leading-none uppercase">Escanea y hazte socio/a</h2>
+        <button type="button" class="cerrar" data-cerrar aria-label="Cerrar">✕</button>
+      </header>
+      <div class="hoja-cuerpo">
+        <QrSocio class="mx-auto w-[min(62vh,100%)] rounded-3xl border-[3px] border-ink" />
+        <p class="font-display mt-4 text-xl break-all lowercase">{urlSocio.host}{urlSocio.pathname}</p>
+        <p class="mt-1 font-medium text-ink/60">Info de Delwende, calculadora y botones para dejar sus datos o darse de alta.</p>
+      </div>
+    </div>
+  </dialog>
+
+  <dialog class="hoja" data-hoja="calc" aria-labelledby="h-calc">
+    <div class="hoja-caja max-w-2xl lg:max-w-5xl">
+      <header class="hoja-cab bg-lime">
+        <div>
+          <p class="eyebrow">Ley de mecenazgo</p>
+          <h2 id="h-calc" class="font-display text-[1.9rem] leading-none uppercase">¿Cuánto te cuesta de verdad?</h2>
+        </div>
+        <button type="button" class="cerrar" data-cerrar aria-label="Cerrar">✕</button>
+      </header>
+      <div class="hoja-cuerpo"><Calculadora id="eq" /></div>
+    </div>
+  </dialog>
+
+  <dialog class="hoja" data-hoja="ley" aria-labelledby="h-ley">
+    <div class="hoja-caja max-w-2xl lg:max-w-5xl">
+      <header class="hoja-cab bg-teal">
+        <div>
+          <p class="eyebrow">Para explicarlo en la mesa</p>
+          <h2 id="h-ley" class="font-display text-[1.9rem] leading-none uppercase">Así desgrava (Ley 49/2002)</h2>
+        </div>
+        <button type="button" class="cerrar" data-cerrar aria-label="Cerrar">✕</button>
+      </header>
+      <div class="hoja-cuerpo">
+        <Ley49 />
+        <button type="button" class="btn btn-ink mt-5 w-full justify-center" data-abrir="calc">Abrir la calculadora</button>
+      </div>
+    </div>
+  </dialog>
+
+  <dialog class="hoja" data-hoja="numero" aria-labelledby="h-num">
+    <form class="hoja-caja max-w-md" data-form-numero>
+      <header class="hoja-cab bg-cream">
+        <h2 id="h-num" class="font-display text-[1.9rem] leading-none uppercase">Modificar número</h2>
+        <button type="button" class="cerrar" data-cerrar aria-label="Cerrar">✕</button>
+      </header>
+      <div class="hoja-cuerpo">
+        <p class="font-medium text-ink/70">Es el número que verán las pantallas. Lo que apuntéis después se sumará encima.</p>
+        <div class="mt-5 flex items-center justify-center gap-3">
+          <button type="button" class="paso-num" data-num-paso="-1" aria-label="Uno menos">−</button>
+          <input type="text" inputmode="numeric" pattern="[0-9]*" class="font-display h-24 w-40 rounded-3xl border-[3px] border-ink bg-white text-center text-6xl tabular-nums outline-none" data-num aria-label="Número de socios" />
+          <button type="button" class="paso-num" data-num-paso="1" aria-label="Uno más">+</button>
+        </div>
+        <p class="mt-3 text-center text-sm font-semibold text-ink/55" data-num-info></p>
+        <button type="submit" class="btn btn-ink mt-5 w-full justify-center !py-4 !text-lg">Guardar número</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog class="hoja" data-hoja="editar" aria-labelledby="h-edit">
+    <form class="hoja-caja max-w-xl" data-form-editar autocomplete="off">
+      <header class="hoja-cab bg-gold">
+        <div>
+          <p class="eyebrow" data-edit-meta></p>
+          <h2 id="h-edit" class="font-display text-[1.9rem] leading-none uppercase">Editar</h2>
+        </div>
+        <button type="button" class="cerrar" data-cerrar aria-label="Cerrar">✕</button>
+      </header>
+      <div class="hoja-cuerpo flex flex-col gap-3">
+        <label class="campo"><span>Nombre</span><input name="nombre" type="text" autocapitalize="words" autocorrect="off" spellcheck="false" maxlength="120" /></label>
+        <label class="campo"><span>Teléfono</span><input name="telefono" type="tel" inputmode="tel" maxlength="20" /></label>
+        <fieldset class="flex flex-wrap gap-2">
+          <legend class="mb-1.5 text-sm font-semibold text-ink/60">Estado</legend>
+          {
+            ESTADOS.map((e) => (
+              <label class="chip-estado">
+                <input type="radio" name="estado" value={e.id} class="peer sr-only" />
+                <span style={`--chip:${e.color}`}>{e.label}</span>
+              </label>
+            ))
+          }
+        </fieldset>
+        <label class="campo"><span>Nota</span><textarea name="nota" rows="3" maxlength="600"></textarea></label>
+        <div class="mt-2 flex flex-wrap gap-3">
+          <button type="submit" class="btn btn-ink flex-1 justify-center !py-4 !text-lg">Guardar</button>
+          <button type="button" class="btn justify-center bg-cream !py-4 !text-base text-red" data-borrar>Borrar</button>
+        </div>
+      </div>
+    </form>
+  </dialog>
+</PanelLayout>
+
+<style is:global>
+  body.equipo {
+    background: var(--color-mint);
+    -webkit-tap-highlight-color: transparent;
+  }
+  .equipo .panel {
+    grid-template-areas: 'contador' 'form' 'lista' 'ajustes';
+  }
+  @media (min-width: 1024px) {
+    .equipo .panel {
+      grid-template-columns: minmax(0, 1fr) 360px;
+      grid-template-areas: 'form contador' 'lista ajustes';
+      align-items: start;
+    }
+  }
+
+  .equipo .tool {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    height: 2.75rem;
+    padding: 0 0.85rem;
+    border: 2.5px solid var(--color-ink);
+    border-radius: 999px;
+    font-family: var(--font-display);
+    font-size: 0.95rem;
+    text-transform: uppercase;
+    box-shadow: var(--shadow-hard-sm);
+    touch-action: manipulation;
+  }
+  .equipo .tool:active {
+    transform: translate(2px, 2px);
+    box-shadow: none;
+  }
+  .equipo .tool svg {
+    width: 1.3rem;
+    height: 1.3rem;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2.4;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  @media (max-width: 767px) {
+    .equipo .tool span {
+      display: none;
+    }
+    .equipo .tool {
+      width: 2.75rem;
+      padding: 0;
+      justify-content: center;
+    }
+  }
+
+  .equipo .campo {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+  .equipo .campo > span {
+    font-family: var(--font-display);
+    font-size: 0.85rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .equipo .campo em {
+    font-style: normal;
+    color: rgb(36 33 30 / 0.45);
+  }
+  .equipo .campo :is(input, textarea) {
+    width: 100%;
+    min-height: 3.6rem;
+    padding: 0.6rem 1rem;
+    border: 3px solid var(--color-ink);
+    border-radius: 1.1rem;
+    background: white;
+    font-size: 1.3rem;
+    font-weight: 600;
+    outline: none;
+    transition: box-shadow 0.2s;
+  }
+  .equipo .campo :is(input, textarea):focus {
+    box-shadow: 4px 4px 0 var(--color-gold);
+  }
+  .equipo .campo input::placeholder {
+    color: rgb(36 33 30 / 0.3);
+    font-weight: 500;
+  }
+  .equipo .campo[data-error='true'] input {
+    border-color: var(--color-red);
+    animation: sacude 0.35s;
+  }
+  @keyframes sacude {
+    25% {
+      transform: translateX(-6px);
+    }
+    75% {
+      transform: translateX(6px);
+    }
+  }
+
+  .equipo .chip-estado span {
+    display: block;
+    padding: 0.62rem 0.95rem 0.5rem;
+    border: 2.5px solid var(--color-ink);
+    border-radius: 999px;
+    background: white;
+    font-family: var(--font-display);
+    font-size: 0.98rem;
+    line-height: 1;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition:
+      transform 0.2s var(--ease-bounce),
+      box-shadow 0.2s;
+    touch-action: manipulation;
+  }
+  .equipo .chip-estado input:checked + span {
+    background: var(--chip);
+    transform: translate(-2px, -2px);
+    box-shadow: var(--shadow-hard-sm);
+  }
+  .equipo .chip-estado input:focus-visible + span {
+    outline: 3px solid var(--color-ink);
+    outline-offset: 2px;
+  }
+
+  .equipo .filtro {
+    height: 2.75rem;
+    padding: 0 0.9rem;
+    border: 2.5px solid var(--color-ink);
+    border-radius: 999px;
+    background: white;
+    font-family: var(--font-display);
+    font-size: 0.9rem;
+    text-transform: uppercase;
+  }
+  .equipo .filtro[aria-pressed='true'] {
+    background: var(--color-ink);
+    color: var(--color-gold);
+  }
+
+  .equipo .fila {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 0.85rem;
+    padding: 0.75rem 0.9rem;
+    border: 2.5px solid var(--color-ink);
+    border-radius: 1.1rem;
+    background: white;
+    text-align: left;
+    width: 100%;
+    touch-action: manipulation;
+  }
+  .equipo .fila:active {
+    background: var(--color-paper);
+  }
+  .equipo .fila[data-pendiente='true'] {
+    border-style: dashed;
+    opacity: 0.7;
+  }
+  .equipo .fila-nuevo {
+    animation: entra 0.6s var(--ease-bounce);
+  }
+  @keyframes entra {
+    from {
+      transform: scale(0.9) translateY(-8px);
+      background: var(--color-gold);
+    }
+  }
+
+  .equipo .interruptor {
+    position: relative;
+    width: 3.4rem;
+    height: 2rem;
+    border-radius: 999px;
+    border: 3px solid var(--color-ink);
+    background: var(--color-paper);
+    transition: background-color 0.2s;
+  }
+  .equipo .interruptor::after {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 1.3rem;
+    height: 1.3rem;
+    border-radius: 999px;
+    background: var(--color-ink);
+    transition: transform 0.3s var(--ease-bounce);
+  }
+  .equipo .peer:checked + .interruptor {
+    background: var(--color-lime);
+  }
+  .equipo .peer:checked + .interruptor::after {
+    transform: translateX(1.4rem);
+  }
+
+  .equipo .paso-num {
+    width: 4rem;
+    height: 4rem;
+    border: 3px solid var(--color-ink);
+    border-radius: 999px;
+    background: var(--color-gold);
+    font-family: var(--font-display);
+    font-size: 2.2rem;
+    line-height: 1;
+    box-shadow: var(--shadow-hard-sm);
+    touch-action: manipulation;
+  }
+
+  .equipo .tostada[hidden] {
+    display: none;
+  }
+  .equipo .tostada {
+    animation: tostada 0.4s var(--ease-bounce);
+  }
+  @keyframes tostada {
+    from {
+      transform: translateY(140%);
+    }
+  }
+
+  /* ---------- Hojas (diálogos) ---------- */
+  .hoja {
+    margin: 0;
+    width: 100%;
+    max-width: none;
+    height: 100%;
+    max-height: none;
+    padding: 0;
+    background: transparent;
+    overscroll-behavior: contain;
+  }
+  .hoja:not([open]) {
+    display: none;
+  }
+  .hoja::backdrop {
+    background: rgb(36 33 30 / 0.55);
+  }
+  .hoja-caja {
+    position: absolute;
+    inset: auto 0 0 0;
+    margin: 0 auto;
+    display: flex;
+    max-height: 94dvh;
+    width: 100%;
+    flex-direction: column;
+    overflow: hidden;
+    border: 3px solid var(--color-ink);
+    border-bottom: 0;
+    border-radius: 2rem 2rem 0 0;
+    background: var(--color-cream);
+    animation: sube 0.35s var(--ease-out-expo);
+  }
+  @media (min-width: 640px) {
+    .hoja-caja {
+      inset: 0;
+      height: fit-content;
+      margin: auto;
+      max-height: 92dvh;
+      border-bottom: 3px solid var(--color-ink);
+      border-radius: 2rem;
+      box-shadow: 10px 10px 0 0 var(--color-ink);
+      animation: aparece 0.3s var(--ease-out-expo);
+    }
+  }
+  @keyframes sube {
+    from {
+      transform: translateY(100%);
+    }
+  }
+  @keyframes aparece {
+    from {
+      transform: translateY(24px) scale(0.97);
+      opacity: 0;
+    }
+  }
+  .hoja-cab {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1.3rem 1.4rem 1.1rem;
+    border-bottom: 3px solid var(--color-ink);
+    text-align: left;
+  }
+  .hoja-cuerpo {
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: 1.4rem 1.4rem calc(1.6rem + env(safe-area-inset-bottom));
+  }
+  .hoja .cerrar {
+    display: grid;
+    width: 2.75rem;
+    height: 2.75rem;
+    flex-shrink: 0;
+    place-items: center;
+    border: 3px solid var(--color-ink);
+    border-radius: 999px;
+    background: var(--color-cream);
+    font-weight: 900;
+    box-shadow: var(--shadow-hard-sm);
+  }
+</style>
+
+<script>
+  import '../scripts/equipo';
+</script>

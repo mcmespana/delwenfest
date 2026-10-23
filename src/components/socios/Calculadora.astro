@@ -1,0 +1,320 @@
+---
+/** Calculadora de desgravación con periodicidad, fidelidad y tabla de cuotas. */
+import { PERIODOS, deduccion, eur } from '../../data/socios';
+
+interface Props {
+  id: string;
+  class?: string;
+}
+const { id, class: cls = '' } = Astro.props;
+const p0 = PERIODOS[0];
+const anual0 = p0.defecto * p0.veces;
+const coste0 = (anual0 - deduccion(anual0)) / p0.veces;
+---
+
+<div class:list={['calc-socio @container', cls]} data-calc-socio>
+  <div class="calc-grid grid gap-5">
+    <div class="calc-a flex flex-col gap-5">
+      <!-- Periodicidad -->
+      <div class="grid grid-cols-3 gap-1.5 rounded-full border-[3px] border-ink bg-white p-1.5" role="radiogroup" aria-label="Cada cuánto pagas">
+        {
+          PERIODOS.map((p, i) => (
+            <button type="button" role="radio" aria-checked={i === 0 ? 'true' : 'false'} class="seg" data-periodo={p.id}>
+              {p.label}
+            </button>
+          ))
+        }
+      </div>
+
+      <!-- Cuota -->
+      <div>
+        <div class="flex items-center justify-between gap-3">
+          <label for={`${id}-cuota`} class="font-display text-lg uppercase">Tu cuota</label>
+          <div class="flex items-center gap-2">
+            <button type="button" class="paso" data-paso="-1" aria-label="Bajar cuota">−</button>
+            <div class="flex items-baseline rounded-2xl border-[3px] border-ink bg-white px-3 pt-1.5 pb-0.5">
+              <input
+                id={`${id}-cuota`}
+                type="text"
+                inputmode="decimal"
+                autocomplete="off"
+                value={p0.defecto}
+                class="font-display w-[3.2ch] bg-transparent text-right text-3xl tabular-nums outline-none"
+                data-cuota
+              />
+              <span class="font-display ml-1 text-xl">€</span>
+            </div>
+            <button type="button" class="paso" data-paso="1" aria-label="Subir cuota">+</button>
+          </div>
+        </div>
+        <div class="mt-3 grid grid-cols-3 gap-2 sm:grid-cols-6" data-chips>
+          {
+            p0.cuotas.map((c) => (
+              <button type="button" class="calc-chip" data-amount={c} aria-pressed={c === p0.defecto ? 'true' : 'false'}>
+                {c} €
+              </button>
+            ))
+          }
+        </div>
+      </div>
+
+      <!-- Fidelidad -->
+      <label class="flex cursor-pointer items-center gap-3 rounded-2xl border-[2.5px] border-dashed border-ink/40 px-4 py-3">
+        <input type="checkbox" class="peer sr-only" data-fiel />
+        <span class="switch shrink-0" aria-hidden="true"></span>
+        <span class="leading-tight font-semibold">
+          Es mi 3.<sup>er</sup> año seguido con Delwende (o más)
+          <span class="block text-sm font-medium text-ink/60">Con la misma cuota o más: lo que pase de 250 € deduce el 45 % en vez del 40 %.</span>
+        </span>
+      </label>
+    </div>
+
+    <div class="calc-b flex flex-col gap-5">
+      <!-- Resultado -->
+      <div class="rounded-[1.5rem] border-[3px] border-ink bg-gold p-5" aria-live="polite">
+        <dl class="grid grid-cols-3 gap-2 text-center">
+          <div>
+            <dt class="text-xs font-semibold tracking-wide uppercase opacity-70">Aportas al año</dt>
+            <dd class="font-display mt-1 text-[1.7rem] leading-none tabular-nums"><span data-out="anual">{eur(anual0)}</span> €</dd>
+          </div>
+          <div>
+            <dt class="text-xs font-semibold tracking-wide text-forest uppercase">Hacienda te devuelve</dt>
+            <dd class="font-display mt-1 text-[1.7rem] leading-none text-forest tabular-nums"><span data-out="deduccion">{eur(deduccion(anual0))}</span> €</dd>
+          </div>
+          <div>
+            <dt class="text-xs font-semibold tracking-wide text-red uppercase">Te cuesta al año</dt>
+            <dd class="font-display mt-1 text-[1.7rem] leading-none text-red tabular-nums"><span data-out="coste">{eur(anual0 - deduccion(anual0))}</span> €</dd>
+          </div>
+        </dl>
+        <div class="mt-4 flex h-4 overflow-hidden rounded-full border-2 border-ink bg-cream" aria-hidden="true">
+          <div class="h-full bg-forest transition-[width] duration-500" style="width:80%" data-calc-barra></div>
+          <div class="h-full flex-1 bg-coral"></div>
+        </div>
+        <p class="mt-5 text-center font-display text-lg leading-tight uppercase">
+          Pagas <span data-out="cuota">{p0.defecto}</span> € <span data-out="cada">{p0.cada}</span>, pero de verdad te cuesta
+          <span class="mt-2.5 block">
+            <span class="inline-block -rotate-2 rounded-xl bg-ink px-4 pt-2 pb-1 text-[2.5rem] leading-none text-gold shadow-[4px_4px_0_0_#f7363a]"
+              ><span data-out="real">{eur(coste0)}</span> € <span class="text-[0.55em]" data-out="cada2">{p0.cada}</span></span
+            >
+          </span>
+        </p>
+      </div>
+
+      <!-- Tabla de cuotas -->
+      <div class="overflow-hidden rounded-[1.25rem] border-[3px] border-ink bg-white">
+        <table class="w-full text-left tabular-nums">
+          <thead class="bg-ink text-cream">
+            <tr class="font-display text-[0.8rem] tracking-wide uppercase">
+              <th class="py-2.5 pl-4 font-normal">Cuota</th>
+              <th class="py-2.5 text-right font-normal">Al año</th>
+              <th class="py-2.5 text-right font-normal text-lime">Te devuelven</th>
+              <th class="py-2.5 pr-4 text-right font-normal text-gold">Te cuesta</th>
+            </tr>
+          </thead>
+          <tbody data-tabla></tbody>
+        </table>
+      </div>
+    </div>
+
+    <p class="calc-c text-xs leading-relaxed text-ink/60">
+      Cálculo orientativo para particulares (Ley 49/2002, porcentajes vigentes desde 2024): 80 % de los primeros 250 € al año y 40 % del resto (45 % si es el tercer año seguido o más
+      con Delwende). Límite: 10 % de la base liquidable. El tramo de 250 € suma todos tus donativos del año.
+    </p>
+  </div>
+</div>
+
+<style>
+  @container (min-width: 48rem) {
+    .calc-grid {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+      grid-template-areas: 'a b' 'c b';
+      column-gap: 1.75rem;
+      align-items: start;
+    }
+    .calc-a {
+      grid-area: a;
+    }
+    .calc-b {
+      grid-area: b;
+    }
+    .calc-c {
+      grid-area: c;
+    }
+  }
+  .seg {
+    border-radius: 999px;
+    padding: 0.7rem 0.4rem 0.55rem;
+    font-family: var(--font-display);
+    font-size: 1.05rem;
+    text-transform: uppercase;
+    line-height: 1;
+    transition: background-color 0.2s;
+  }
+  .seg[aria-checked='true'] {
+    background: var(--color-ink);
+    color: var(--color-gold);
+  }
+  .paso {
+    display: grid;
+    place-items: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 999px;
+    border: 3px solid var(--color-ink);
+    background: var(--color-cream);
+    font-family: var(--font-display);
+    font-size: 1.6rem;
+    line-height: 1;
+    box-shadow: var(--shadow-hard-sm);
+    touch-action: manipulation;
+  }
+  .paso:active {
+    transform: translate(2px, 2px);
+    box-shadow: none;
+  }
+  .calc-socio :global(.calc-chip) {
+    border: 2.5px solid var(--color-ink);
+    border-radius: 999px;
+    padding: 0.6rem 0.4rem 0.45rem;
+    background: white;
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    touch-action: manipulation;
+    transition:
+      transform 0.25s var(--ease-bounce),
+      box-shadow 0.25s var(--ease-bounce),
+      background-color 0.2s;
+  }
+  .calc-socio :global(.calc-chip[aria-pressed='true']) {
+    background: var(--color-gold);
+    transform: translate(-2px, -2px);
+    box-shadow: var(--shadow-hard-sm);
+  }
+  .switch {
+    position: relative;
+    width: 3.25rem;
+    height: 1.9rem;
+    border-radius: 999px;
+    border: 3px solid var(--color-ink);
+    background: white;
+    transition: background-color 0.2s;
+  }
+  .switch::after {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 1.2rem;
+    height: 1.2rem;
+    border-radius: 999px;
+    background: var(--color-ink);
+    transition: transform 0.3s var(--ease-bounce);
+  }
+  .peer:checked + .switch {
+    background: var(--color-lime);
+  }
+  .peer:checked + .switch::after {
+    transform: translateX(1.35rem);
+  }
+  .peer:focus-visible + .switch {
+    outline: 3px solid var(--color-ink);
+    outline-offset: 3px;
+  }
+  .calc-socio :global(tbody tr) {
+    border-top: 2px solid rgb(36 33 30 / 0.1);
+    cursor: pointer;
+  }
+  .calc-socio :global(tbody tr[data-activa='true']) {
+    background: var(--color-gold);
+  }
+</style>
+
+<script>
+  import { PERIODOS, deduccion, eur, type PeriodoId } from '../../data/socios';
+
+  document.querySelectorAll<HTMLElement>('[data-calc-socio]').forEach((root) => {
+    const segs = Array.from(root.querySelectorAll<HTMLButtonElement>('[data-periodo]'));
+    const chipsBox = root.querySelector<HTMLElement>('[data-chips]')!;
+    const input = root.querySelector<HTMLInputElement>('[data-cuota]')!;
+    const fiel = root.querySelector<HTMLInputElement>('[data-fiel]')!;
+    const tabla = root.querySelector<HTMLElement>('[data-tabla]')!;
+    const barra = root.querySelector<HTMLElement>('[data-calc-barra]')!;
+    const out = (k: string) => root.querySelector<HTMLElement>(`[data-out="${k}"]`)!;
+
+    let periodo = PERIODOS[0] as (typeof PERIODOS)[number];
+    let cuota: number = periodo.defecto;
+
+    const coste = (c: number) => {
+      const anual = c * periodo.veces;
+      const ded = deduccion(anual, fiel.checked);
+      return { anual, ded, real: anual - ded };
+    };
+
+    function pintarChips() {
+      chipsBox.innerHTML = periodo.cuotas
+        .map((c) => `<button type="button" class="calc-chip" data-amount="${c}" aria-pressed="${c === cuota}">${c} €</button>`)
+        .join('');
+    }
+
+    function pintar(desdeInput = false) {
+      const { anual, ded, real } = coste(cuota);
+      if (!desdeInput) input.value = eur(cuota);
+      input.style.width = `${Math.max(2, input.value.length) + 0.4}ch`;
+      out('anual').textContent = eur(anual);
+      out('deduccion').textContent = eur(ded);
+      out('coste').textContent = eur(real);
+      out('cuota').textContent = eur(cuota);
+      out('cada').textContent = periodo.cada;
+      out('cada2').textContent = periodo.cada;
+      out('real').textContent = eur(real / periodo.veces);
+      barra.style.width = `${anual ? (ded / anual) * 100 : 0}%`;
+      chipsBox.querySelectorAll<HTMLButtonElement>('[data-amount]').forEach((b) => b.setAttribute('aria-pressed', String(Number(b.dataset.amount) === cuota)));
+      tabla.innerHTML = periodo.cuotas
+        .map((c) => {
+          const r = coste(c);
+          return `<tr data-amount="${c}" data-activa="${c === cuota}">
+            <td class="py-2.5 pl-4 font-display text-lg">${c} € <span class="text-sm text-ink/50">${periodo.cada}</span></td>
+            <td class="py-2.5 text-right font-semibold">${eur(r.anual)} €</td>
+            <td class="py-2.5 text-right font-semibold text-forest">−${eur(r.ded)} €</td>
+            <td class="py-2.5 pr-4 text-right font-display text-lg">${eur(r.real / periodo.veces)} €</td>
+          </tr>`;
+        })
+        .join('');
+    }
+
+    segs.forEach((s) =>
+      s.addEventListener('click', () => {
+        periodo = PERIODOS.find((p) => p.id === (s.dataset.periodo as PeriodoId))!;
+        segs.forEach((x) => x.setAttribute('aria-checked', String(x === s)));
+        cuota = periodo.defecto;
+        pintarChips();
+        pintar();
+      }),
+    );
+    root.addEventListener('click', (e) => {
+      const el = (e.target as HTMLElement).closest<HTMLElement>('[data-amount]');
+      if (!el || !root.contains(el)) return;
+      cuota = Number(el.dataset.amount);
+      pintar();
+    });
+    root.querySelectorAll<HTMLButtonElement>('[data-paso]').forEach((b) =>
+      b.addEventListener('click', () => {
+        const paso = periodo.veces === 12 ? 1 : 5;
+        cuota = Math.max(1, Math.min(9999, Math.round(cuota / paso) * paso + Number(b.dataset.paso) * paso));
+        pintar();
+      }),
+    );
+    input.addEventListener('input', () => {
+      const v = Number(input.value.replace(',', '.').replace(/[^\d.]/g, ''));
+      if (Number.isFinite(v) && v > 0) {
+        cuota = Math.min(9999, v);
+        pintar(true);
+      }
+    });
+    input.addEventListener('focus', () => input.select());
+    input.addEventListener('blur', () => pintar());
+    fiel.addEventListener('change', () => pintar());
+
+    pintar();
+  });
+</script>
