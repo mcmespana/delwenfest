@@ -15,7 +15,8 @@ export default defineConfig({
   env: {
     schema: {
       // Neon Postgres (Vercel → Settings → Environment Variables). Se lee al ejecutar, no se incrusta.
-      DATABASE_URL: envField.string({ context: 'server', access: 'secret', optional: true }),
+      // Nombre propio para no confundirla con otra DATABASE_URL del entorno.
+      SOCIOS_DATABASE_URL: envField.string({ context: 'server', access: 'secret', optional: true }),
     },
   },
   integrations: [sitemap({ filter: (page) => !INTERNAS.some((p) => new URL(page).pathname.startsWith(p)) })],

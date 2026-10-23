@@ -24,7 +24,7 @@ export const seguro =
       return await fn(ctx);
     } catch (err) {
       console.error(err);
-      const msg = err instanceof Error && err.message === 'Falta DATABASE_URL' ? 'La base de datos no está conectada' : 'Error de la base de datos';
+      const msg = err instanceof Error && err.message === 'Falta SOCIOS_DATABASE_URL' ? 'La base de datos no está conectada' : 'Error de la base de datos';
       return json({ error: msg }, 500);
     }
   };

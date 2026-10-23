@@ -1,17 +1,17 @@
 /*
  * Base de datos de socios (Neon Postgres, conectado al proyecto de Vercel con la
- * variable DATABASE_URL). Las tablas se crean solas la primera vez que hacen falta.
+ * variable SOCIOS_DATABASE_URL). Las tablas se crean solas la primera vez que hacen falta.
  */
 import { neon, type NeonQueryFunction } from '@neondatabase/serverless';
-import { DATABASE_URL } from 'astro:env/server';
+import { SOCIOS_DATABASE_URL } from 'astro:env/server';
 import { ESTADO_DEFECTO, ESTADO_IDS, SONIDOS, type Config, type EstadoId, type Origen, type Socio } from '../data/socios';
 
 let client: NeonQueryFunction<false, false> | null = null;
 
 function sql() {
   if (client) return client;
-  if (!DATABASE_URL) throw new Error('Falta DATABASE_URL');
-  client = neon(DATABASE_URL);
+  if (!SOCIOS_DATABASE_URL) throw new Error('Falta SOCIOS_DATABASE_URL');
+  client = neon(SOCIOS_DATABASE_URL);
   return client;
 }
 
