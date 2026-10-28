@@ -26,7 +26,7 @@ self.addEventListener('fetch', (event) => {
   const url = new URL(request.url);
   if (url.origin !== self.location.origin) return;
 
-  // El resto de páginas (hazte socio, equipo, contador) van siempre a la red
+  // El resto de páginas (hazte socio, equipo, contador, bingo) van siempre a la red
   if (url.pathname !== '/' && request.mode === 'navigate') return;
 
   // Portada: primero la red (siempre lo último), si no hay conexión la copia guardada
