@@ -1,0 +1,34 @@
+---
+/** Layout de las pantallas del equipo y del contador: sin SEO y con su propio manifiesto. */
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  manifest: string;
+  theme?: string;
+  bodyClass?: string;
+}
+const { title, manifest, theme = '#24211e', bodyClass = '' } = Astro.props;
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>{title}</title>
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="theme-color" content={theme} />
+    <link rel="manifest" href={manifest} />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content={title} />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="format-detection" content="telephone=no" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  </head>
+  <body class={bodyClass}>
+    <slot />
+  </body>
+</html>
