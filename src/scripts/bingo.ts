@@ -35,6 +35,8 @@ const $$ = <T extends Element = HTMLElement>(sel: string, root: ParentNode = doc
 
 const CANCIONES: Cancion[] = JSON.parse($('#canciones-data').textContent || '[]');
 const porNumero = new Map(CANCIONES.map((c) => [c.n, c]));
+/** Números que comparten canción: si suena una, cuentan las dos. */
+const gemelas = (c: Cancion) => CANCIONES.filter((o) => o.n !== c.n && o.web === c.web).map((o) => o.n);
 const TOTAL = 90;
 
 let estado: Estado = { premios: [], sonadas: [], notas: '' };
@@ -149,6 +151,9 @@ function pintarCancion() {
     $<HTMLAnchorElement>('[data-spotify]').href = c.web;
     $<HTMLAnchorElement>('[data-spotify-app]').href = c.app;
     $('[data-busqueda]').classList.toggle('hidden', c.exacta);
+    const otras = gemelas(c);
+    $('[data-repetida]').classList.toggle('hidden', !otras.length);
+    $('[data-repetida]').textContent = otras.length ? `⚠️ Es la misma canción que la ${otras.join(' y la ')}: cantad los dos números.` : '';
   }
   const pizza = actual ? pizzaDe(actual) : undefined;
   $('[data-pizza]').classList.toggle('hidden', !pizza);
