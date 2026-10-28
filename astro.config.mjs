@@ -5,7 +5,7 @@ import sitemap from '@astrojs/sitemap';
 import vercel from '@astrojs/vercel';
 
 /** Pantallas internas del equipo: fuera del sitemap y de los buscadores. */
-const INTERNAS = ['/equipo', '/contador'];
+const INTERNAS = ['/equipo', '/contador', '/bingo'];
 
 export default defineConfig({
   // Dirección pública de la web (también es la que lleva el QR de /hazte-socio).
