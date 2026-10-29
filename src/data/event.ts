@@ -45,11 +45,17 @@ import gvaIvaj from '../assets/partners/gva-ivaj.webp';
 export const EVENT = {
   name: 'DELWENFEST',
   tagline: 'El festival solidario de la ONGD Delwende',
-  dateLabel: '30 octubre 2026',
+  dateLabel: '13 noviembre 2026',
+  dateLong: '13 de noviembre',
+  day: '13',
+  monthShort: 'Nov',
+  isoDate: '2026-11-13',
   weekday: 'Viernes',
-  // 30/10/2026 ya es horario de invierno (CET, UTC+1)
-  start: '2026-10-30T17:15:00+01:00',
-  end: '2026-10-30T22:30:00+01:00',
+  // Aplazado desde el 30 de octubre de 2026
+  previousDateLabel: '30 octubre',
+  // 13/11/2026 ya es horario de invierno (CET, UTC+1)
+  start: '2026-11-13T17:15:00+01:00',
+  end: '2026-11-13T22:30:00+01:00',
   timeLabel: '17:15 – 22:30',
   // Desde esta hora la portada destaca cómo hacerse socio/a (lleva a /hazte-socio, el QR)
   socioDesde: '2026-10-30T16:00:00+01:00',
@@ -88,7 +94,7 @@ export const CALENDAR = {
   google:
     'https://calendar.google.com/calendar/render?action=TEMPLATE' +
     `&text=${encodeURIComponent('DELWENFEST · Festival solidario Delwende')}` +
-    '&dates=20261030T171500/20261030T223000&ctz=Europe/Madrid' +
+    '&dates=20261113T171500/20261113T223000&ctz=Europe/Madrid' +
     `&details=${encodeURIComponent(calDetails)}` +
     `&location=${encodeURIComponent(`${VENUE.name}, ${VENUE.street}, ${VENUE.city}`)}`,
   ics: '/delwenfest.ics',
