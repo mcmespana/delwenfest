@@ -58,14 +58,17 @@ const stickers = [
 
   <!-- Contenido -->
   <div class="relative z-10 flex w-full flex-col items-center px-4 pt-28 pb-24 text-center sm:pt-32" data-hero-content>
-    <p
-      class="sticker font-condensed inline-flex items-center gap-3 rounded-full bg-gold px-5 pt-2 pb-1 text-[clamp(1.35rem,3.4vw,2.6rem)] leading-none tracking-wide sm:gap-4 sm:px-7"
-      data-hero-pill
-    >
-      <span>30 Octubre 2026</span>
-      <span class="h-[0.9em] w-[3px] -translate-y-[2px] rounded bg-ink"></span>
-      <span>17:15 – 22:30h</span>
-    </p>
+    <div class="flex flex-col items-center gap-3" data-hero-pill>
+      <span class="sticker animate-wiggle font-display inline-flex items-center gap-2 rounded-full bg-red px-4 pt-1.5 pb-1 text-sm leading-none tracking-wide text-cream uppercase shadow-[var(--shadow-hard-sm)] sm:gap-3 sm:px-5 sm:text-lg">
+        ¡Nueva fecha!
+        <span class="font-sans text-[0.7rem] font-bold tracking-normal normal-case line-through decoration-2 opacity-90 sm:text-sm">antes {EVENT.previousDateLabel}</span>
+      </span>
+      <p class="sticker font-condensed inline-flex items-center gap-3 rounded-full bg-gold px-5 pt-2 pb-1 text-[clamp(1.35rem,3.4vw,2.6rem)] leading-none tracking-wide sm:gap-4 sm:px-7">
+        <span>13 Noviembre 2026</span>
+        <span class="h-[0.9em] w-[3px] -translate-y-[2px] rounded bg-ink"></span>
+        <span>17:15 – 22:30h</span>
+      </p>
+    </div>
 
     <h1 class="relative mt-4 w-[min(94vw,1120px)] sm:mt-6" data-wordmark>
       <span class="sr-only">DELWENFEST</span>
@@ -151,7 +154,7 @@ const stickers = [
     if (now >= start) {
       const live = now < end;
       cd.querySelector('[data-cd-boxes]')!.classList.add('hidden');
-      cd.querySelector('[data-cd-label]')!.textContent = live ? 'Ahora mismo' : '30 · 10 · 2026';
+      cd.querySelector('[data-cd-label]')!.textContent = live ? 'Ahora mismo' : '13 · 11 · 2026';
       const liveEl = cd.querySelector<HTMLElement>('[data-cd-live]')!;
       liveEl.classList.remove('hidden');
       liveEl.textContent = live ? '¡Estamos de fiesta!' : '¡Gracias por sumar!';

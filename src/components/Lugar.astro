@@ -36,14 +36,18 @@ import { VENUE, DIRECTIONS, EVENT } from '../data/event';
         </div>
 
         <div class="sticker rounded-[2rem] bg-gold p-7 sm:p-8" data-reveal="up">
-          <p class="eyebrow">¿Cuándo?</p>
+          <div class="flex flex-wrap items-center gap-x-3 gap-y-1">
+            <p class="eyebrow">¿Cuándo?</p>
+            <span class="font-display -rotate-3 rounded-full bg-red px-3 pt-1 pb-0.5 text-sm tracking-wide text-cream uppercase">¡Nueva fecha!</span>
+            <span class="text-sm font-bold text-ink/70 line-through">antes {EVENT.previousDateLabel}</span>
+          </div>
           <div class="mt-2 flex items-center gap-5">
             <div class="sticker grid w-20 shrink-0 overflow-hidden rounded-2xl bg-cream text-center !shadow-[var(--shadow-hard-sm)]">
-              <span class="bg-red pt-1 font-display text-sm text-cream uppercase">Oct</span>
-              <span class="font-display text-4xl leading-tight">30</span>
+              <span class="bg-red pt-1 font-display text-sm text-cream uppercase">{EVENT.monthShort}</span>
+              <span class="font-display text-4xl leading-tight">{EVENT.day}</span>
             </div>
             <p class="font-display text-[clamp(1.6rem,3vw,2.2rem)] leading-[0.95] uppercase">
-              {EVENT.weekday} 30 de octubre<br /><span class="text-red">{EVENT.timeLabel}</span>
+              {EVENT.weekday} {EVENT.dateLong}<br /><span class="text-red">{EVENT.timeLabel}</span>
             </p>
           </div>
         </div>

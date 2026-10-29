@@ -2,10 +2,10 @@ import { EVENT, VENUE } from '../data/event';
 
 /** Avisos que se pueden elegir en el recordatorio (máx. 2, lo que admite el calendario del iPhone). */
 export const ALARMS = [
-  { key: '1s', trigger: '-P7D', label: '1 semana antes', when: 'Vie 23 oct' },
-  { key: '1d', trigger: '-P1D', label: 'El día antes', when: 'Jue 29 · 17:15' },
-  { key: '2h', trigger: '-PT2H', label: '2 horas antes', when: 'Vie 30 · 15:15' },
-  { key: '30m', trigger: '-PT30M', label: '30 min antes', when: 'Vie 30 · 16:45' },
+  { key: '1s', trigger: '-P7D', label: '1 semana antes', when: 'Vie 6 nov' },
+  { key: '1d', trigger: '-P1D', label: 'El día antes', when: 'Jue 12 · 17:15' },
+  { key: '2h', trigger: '-PT2H', label: '2 horas antes', when: 'Vie 13 · 15:15' },
+  { key: '30m', trigger: '-PT30M', label: '30 min antes', when: 'Vie 13 · 16:45' },
 ] as const;
 
 export type AlarmKey = (typeof ALARMS)[number]['key'];
@@ -58,9 +58,10 @@ export function buildIcs(alarms: readonly AlarmKey[]) {
     'METHOD:PUBLISH',
     'BEGIN:VEVENT',
     'UID:delwenfest-2026@movimientoconsolacion.com',
-    'DTSTAMP:20261021T120000Z',
-    'DTSTART:20261030T161500Z',
-    'DTEND:20261030T213000Z',
+    'SEQUENCE:1',
+    'DTSTAMP:20261029T120000Z',
+    'DTSTART:20261113T161500Z',
+    'DTEND:20261113T213000Z',
     `SUMMARY:${escape('DELWENFEST · Festival solidario Delwende')}`,
     `LOCATION:${escape(`${VENUE.name}, ${address}`)}`,
     `X-APPLE-STRUCTURED-LOCATION;VALUE=URI;X-ADDRESS="${address}";X-APPLE-RADIUS=60;X-TITLE="Entrada DELWENFEST (C/ Mª Rosa Molas)":geo:${lat},${lng}`,

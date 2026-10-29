@@ -5,13 +5,13 @@ import { CALENDAR, DIRECTIONS, EVENT, VENUE } from '../data/event';
 const outlook =
   'https://outlook.live.com/calendar/0/action/compose?rru=addevent&allday=false' +
   `&subject=${encodeURIComponent('DELWENFEST · Festival solidario Delwende')}` +
-  '&startdt=2026-10-30T16:15:00Z&enddt=2026-10-30T21:30:00Z' +
+  '&startdt=2026-11-13T16:15:00Z&enddt=2026-11-13T21:30:00Z' +
   `&location=${encodeURIComponent(`${VENUE.name}, ${VENUE.street}, ${VENUE.city}`)}` +
   `&body=${encodeURIComponent(`${VENUE.entrance} (${VENUE.entranceHint}). ${EVENT.url}`)}`;
 
 const whatsappText = [
   '🎉 *DELWENFEST* · Festival solidario Delwende',
-  '📅 Viernes 30 de octubre · 17:15 – 22:30',
+  '📅 Viernes 13 de noviembre · 17:15 – 22:30',
   `📍 ${VENUE.name} (${VENUE.street})`,
   `🚪 ${VENUE.entrance}, ${VENUE.entranceHint}`,
   `🗺️ ${DIRECTIONS.google}`,
@@ -64,14 +64,14 @@ const whatsapp = `https://wa.me/?text=${encodeURIComponent(whatsappText)}`;
       <!-- Entrada tipo ticket -->
       <div class="relative mt-5 flex overflow-hidden rounded-2xl bg-ink text-cream">
         <div class="flex flex-1 flex-col justify-center gap-1 p-4">
-          <p class="font-display text-xl leading-none tracking-wide text-gold uppercase">Delwenfest</p>
-          <p class="text-[0.95rem] font-semibold">Viernes 30 oct · 17:15 – 22:30</p>
+          <p class="font-display text-xl leading-none tracking-wide text-gold uppercase">Delwenfest <span class="ml-1 -rotate-3 inline-block rounded-full bg-red px-2 pt-0.5 pb-px align-middle text-xs text-cream">Nueva fecha</span></p>
+          <p class="text-[0.95rem] font-semibold">Viernes 13 nov · 17:15 – 22:30</p>
           <p class="text-sm text-cream/65">{VENUE.entrance} · {VENUE.entranceHint}</p>
         </div>
         <div class="relative grid w-20 place-items-center border-l-2 border-dashed border-cream/30 bg-gold text-ink">
           <span class="absolute -top-3 -left-3 size-6 rounded-full bg-cream"></span>
           <span class="absolute -bottom-3 -left-3 size-6 rounded-full bg-cream"></span>
-          <p class="text-center font-display leading-none uppercase"><span class="block text-3xl">30</span><span class="text-sm">oct</span></p>
+          <p class="text-center font-display leading-none uppercase"><span class="block text-3xl">13</span><span class="text-sm">nov</span></p>
         </div>
       </div>
 
@@ -105,7 +105,7 @@ const whatsapp = `https://wa.me/?text=${encodeURIComponent(whatsappText)}`;
           <span class="cal-arrow">→</span>
         </a>
         <a href={CALENDAR.google} target="_blank" rel="noopener" class="cal-btn" data-cal="google">
-          <svg viewBox="0 0 24 24" class="size-6" aria-hidden="true"><rect x="3" y="4" width="18" height="17" rx="3" fill="#fff" stroke="currentColor" stroke-width="2"></rect><path d="M3 9h18" stroke="currentColor" stroke-width="2"></path><text x="12" y="18.5" text-anchor="middle" font-size="8" font-weight="900" fill="#2f6bd8" font-family="Arial">30</text></svg>
+          <svg viewBox="0 0 24 24" class="size-6" aria-hidden="true"><rect x="3" y="4" width="18" height="17" rx="3" fill="#fff" stroke="currentColor" stroke-width="2"></rect><path d="M3 9h18" stroke="currentColor" stroke-width="2"></path><text x="12" y="18.5" text-anchor="middle" font-size="8" font-weight="900" fill="#2f6bd8" font-family="Arial">13</text></svg>
           <span class="flex-1"><span class="block">Google Calendar</span><span class="cal-sub">Android · usa tus avisos de Google</span></span>
           <span class="cal-arrow">→</span>
         </a>
@@ -311,8 +311,8 @@ const whatsapp = `https://wa.me/?text=${encodeURIComponent(whatsappText)}`;
   /* ---------- Compartir ---------- */
   dialog.querySelector('[data-share]')?.addEventListener('click', async () => {
     const data = {
-      title: 'DELWENFEST · 30 de octubre',
-      text: 'Festival solidario de la ONGD Delwende en Consolación Castellón. Viernes 30 de octubre, de 17:15 a 22:30.',
+      title: 'DELWENFEST · 13 de noviembre (nueva fecha)',
+      text: 'Festival solidario de la ONGD Delwende en Consolación Castellón. Viernes 13 de noviembre, de 17:15 a 22:30.',
       url: location.origin,
     };
     try {
