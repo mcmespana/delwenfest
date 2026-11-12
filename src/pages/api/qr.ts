@@ -25,7 +25,7 @@ export const POST = seguro(async ({ cookies, request }) => {
   if (!TIPOS_QR.includes(body.tipo as TipoQr)) return json({ error: 'Respuesta no válida' }, 400);
   const tipo = body.tipo as TipoQr;
   if (tipo === 'contactar' && (typeof body.telefono !== 'string' || body.telefono.replace(/\D/g, '').length < 9)) {
-    return json({ error: 'Necesitamos un teléfono para llamarte' }, 400);
+    return json({ error: 'Necesitamos un teléfono para escribirte' }, 400);
   }
   const res = await respuestaQr(device, tipo, body);
   cookies.set(COOKIE, device, { path: '/', maxAge: 60 * 60 * 24 * 365, sameSite: 'lax', secure: true, httpOnly: true });

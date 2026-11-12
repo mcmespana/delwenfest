@@ -8,6 +8,7 @@ export const DELWENDE_URLS = {
   web: 'https://delwende.es/',
   identity: 'https://delwende.es/identidad/',
   project: 'https://delwende.es/proyectos/centro-de-promocion-social-de-la-mujer-en-atakpame-togo/',
+  budget: 'https://delwende.es/categoria/proyectos/presupuesto-actual/',
   member: 'https://delwende.es/colabora/hazte-socio/',
 };
 
@@ -17,7 +18,9 @@ export const ONGD = {
     'Delwende nace en 1997 a iniciativa de personas vinculadas a las Hermanas de Nuestra Señora de la Consolación, para colaborar en proyectos educativos y sanitarios de cooperación al desarrollo y de acción social.',
   mission:
     'Ser cauce «Al servicio de la Vida» cooperando al desarrollo integral de las personas más vulnerables, para procurar su progreso y que sean agentes de su propio cambio y de transformación social.',
-  how: 'Se gestiona íntegramente con voluntariado y trabaja con las delegaciones de las Hermanas de la Consolación en España. Sobre el terreno, los proyectos los llevan a cabo las propias Hermanas.',
+  how: 'Se gestiona a través de personas voluntarias en las distintas delegaciones de la ONGD en España, vinculada a las obras de la Familia Consolación: colegios, residencias de personas mayores, centros sociales y pastorales…',
+  where:
+    'Sobre el terreno, apoya con voluntariado las obras sociales y trabaja con las delegaciones de las Hermanas de la Consolación en España. Sostiene económicamente los proyectos de las Hermanas y de otros colaboradores en centros educativos, sanitarios y sociales de África, América y Asia, y también algunos proyectos en España, como el Proyecto Talita en Salamanca y el Proyecto Mujer y Madre en Linares (Jaén).',
   areas: [
     { title: 'Cooperación al desarrollo', text: 'Educación, alfabetización, nutrición y salud en África, Latinoamérica y Asia.' },
     { title: 'Emergencias', text: 'Apoyo a poblaciones que sufren las consecuencias de catástrofes naturales.' },

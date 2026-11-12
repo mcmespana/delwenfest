@@ -7,7 +7,7 @@ export const prerender = false;
 const celda = (v: string) => (/[";\n]/.test(v) ? `"${v.replace(/"/g, '""')}"` : v);
 const hora = new Intl.DateTimeFormat('es-ES', { timeZone: 'Europe/Madrid', dateStyle: 'short', timeStyle: 'short' });
 
-/** Listado para llamar la semana que viene. Separado por «;» para que Excel lo abra bien. */
+/** Listado para escribir por WhatsApp la semana que viene. Separado por «;» para que Excel lo abra bien. */
 export const GET = seguro(async () => {
   const { socios } = await leerPanel();
   const filas = [

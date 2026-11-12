@@ -4,7 +4,7 @@
  */
 
 export const ESTADOS = [
-  { id: 'contactar', label: 'Contactar la semana que viene', short: 'Contactar', color: 'var(--color-gold)' },
+  { id: 'contactar', label: 'Escribir por WhatsApp la semana que viene', short: 'Contactar', color: 'var(--color-gold)' },
   { id: 'alta_web', label: 'Ya se ha dado de alta en la web', short: 'Alta en la web', color: 'var(--color-lime)' },
   { id: 'ficha', label: 'Ha entregado la ficha', short: 'Ficha entregada', color: 'var(--color-teal)' },
   { id: 'formulario', label: 'Lo hará por su cuenta en el formulario', short: 'Lo hará por el formulario', color: 'var(--color-pink)' },

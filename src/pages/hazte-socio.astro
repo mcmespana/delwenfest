@@ -18,7 +18,7 @@ const flecha =
 
 <Layout
   title="Hazte socio/a de Delwende · DelwenFest"
-  description="Hazte socio/a de la ONGD Delwende desde el DelwenFest: déjanos tu teléfono y te llamamos, o date de alta ahora. Calcula cuánto te desgrava con la Ley 49/2002."
+  description="Hazte socio/a de la ONGD Delwende desde el DelwenFest: déjanos tu teléfono y te escribimos por WhatsApp, o date de alta ahora. Calcula cuánto te desgrava con la Ley 49/2002."
 >
   <main class="socio-page relative overflow-hidden">
     <!-- Cabecera -->
@@ -52,9 +52,9 @@ const flecha =
             <h2 class="font-display text-[2rem] leading-none uppercase">¿Cómo lo hacemos?</h2>
             <div class="mt-5 flex flex-col gap-3">
               <button type="button" class="opcion bg-gold" data-ir="llamar">
-                <span class="opcion-ico">📞</span>
+                <span class="opcion-ico">💬</span>
                 <span>
-                  <span class="opcion-tit">Llamadme la semana que viene</span>
+                  <span class="opcion-tit">Mandadme un WhatsApp la semana que viene</span>
                   <span class="opcion-txt">Déjanos tu nombre y teléfono y te ayudamos a darte de alta sin prisas.</span>
                 </span>
               </button>
@@ -75,21 +75,21 @@ const flecha =
             </div>
           </div>
 
-          <!-- Llamadme -->
+          <!-- WhatsApp -->
           <form class="vista p-5 sm:p-7" data-vista="llamar" hidden novalidate autocomplete="on">
             <button type="button" class="volver" data-ir="menu">← Volver</button>
-            <h2 class="font-display mt-3 text-[2rem] leading-none uppercase">Te llamamos</h2>
-            <p class="mt-2 font-medium text-ink/70">La semana que viene te llamamos para resolver dudas y ayudarte con el alta.</p>
+            <h2 class="font-display mt-3 text-[2rem] leading-none uppercase">Te escribimos</h2>
+            <p class="mt-2 font-medium text-ink/70">La semana que viene te mandamos un WhatsApp para resolver dudas y ayudarte con el alta.</p>
             <div class="mt-5 flex flex-col gap-3.5">
               <label class="campo-s"><span>Nombre y apellidos</span><input name="nombre" type="text" autocomplete="name" autocapitalize="words" enterkeyhint="next" required maxlength="120" /></label>
               <label class="campo-s"><span>Teléfono</span><input name="telefono" type="tel" inputmode="tel" autocomplete="tel" enterkeyhint="next" required maxlength="20" placeholder="612 345 678" /></label>
-              <label class="campo-s"><span>¿Alguna duda o mejor hora para llamarte? <em>opcional</em></span><textarea name="nota" rows="2" maxlength="600"></textarea></label>
+              <label class="campo-s"><span>¿Alguna duda o mejor hora para escribirte? <em>opcional</em></span><textarea name="nota" rows="2" maxlength="600"></textarea></label>
               <label class="flex items-start gap-3 text-[0.95rem] leading-snug font-medium">
                 <input type="checkbox" name="acepto" required class="mt-0.5 size-6 shrink-0 accent-[#24211e]" />
-                <span>Acepto que el equipo del DelwenFest me llame para hablarme de hacerme socio/a de Delwende. Mis datos no se usarán para nada más.</span>
+                <span>Acepto que el equipo del DelwenFest me escriba por WhatsApp para hablarme de hacerme socio/a de Delwende. Mis datos no se usarán para nada más.</span>
               </label>
               <p class="error hidden" data-error></p>
-              <button type="submit" class="btn btn-ink justify-center !py-4 !text-lg">Que me llamen</button>
+              <button type="submit" class="btn btn-ink justify-center !py-4 !text-lg">Que me escriban</button>
             </div>
           </form>
 
@@ -357,7 +357,7 @@ const flecha =
   });
 
   const TEXTOS: Record<Tipo, string> = {
-    contactar: 'Te llamaremos la semana que viene para ayudarte con el alta. ¡Gracias por sumarte!',
+    contactar: 'Te mandaremos un WhatsApp la semana que viene para ayudarte con el alta. ¡Gracias por sumarte!',
     alta_web: 'Ya formas parte de Delwende. Gracias por hacer que la fiesta dure todo el año.',
     ya_socio: 'Gracias por seguir sosteniendo a Delwende. ¡Ya cuentas en el marcador del DelwenFest!',
   };
@@ -416,7 +416,7 @@ const flecha =
     let falta = '';
     if (!String(fd.get('nombre') || '').trim()) falta = 'Falta tu nombre';
     else if (String(fd.get('telefono') || '').replace(/\D/g, '').length < 9) falta = 'Revisa el teléfono';
-    else if (!fd.get('acepto')) falta = 'Marca la casilla para que podamos llamarte';
+    else if (!fd.get('acepto')) falta = 'Marca la casilla para que podamos escribirte';
     if (falta) {
       error.textContent = falta;
       error.classList.remove('hidden');
