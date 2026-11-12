@@ -5,12 +5,13 @@ import sitemap from '@astrojs/sitemap';
 import vercel from '@astrojs/vercel';
 
 /** Pantallas internas del equipo: fuera del sitemap y de los buscadores. */
-const INTERNAS = ['/equipo', '/contador'];
+const INTERNAS = ['/equipo', '/contador', '/bingo'];
 
 export default defineConfig({
-  // Dirección pública de la web (también es la que lleva el QR de /hazte-socio).
-  site: process.env.SITE_URL || 'https://delwenfest.movimientoconsolacion.com',
-  // Todo sigue siendo estático salvo /api, que guarda los socios en la base de datos.
+  // Dirección pública de la web. Mientras delwenfest.movimientoconsolacion.com no
+  // tenga su registro DNS, usamos la de Vercel (si no, WhatsApp no ve la imagen).
+  site: process.env.SITE_URL || 'https://delwenfest.vercel.app',
+  // Todo sigue siendo estático salvo /api, que guarda los socios y los datos del equipo en la base de datos.
   adapter: vercel(),
   env: {
     schema: {
