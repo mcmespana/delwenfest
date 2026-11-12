@@ -1,0 +1,15 @@
+---
+/** QR que lleva a /hazte-socio. Se genera al compilar: no carga nada en el móvil. */
+import QRCode from 'qrcode';
+
+interface Props {
+  class?: string;
+  claro?: string;
+  oscuro?: string;
+}
+const { class: cls = '', claro = '#fff7e8', oscuro = '#24211e' } = Astro.props;
+const url = new URL('/hazte-socio', Astro.site).href;
+const svg = await QRCode.toString(url, { type: 'svg', margin: 1, errorCorrectionLevel: 'M', color: { dark: oscuro, light: claro } });
+---
+
+<div class:list={['[&>svg]:block [&>svg]:h-auto [&>svg]:w-full', cls]} role="img" aria-label={`Código QR: ${url}`} set:html={svg} />

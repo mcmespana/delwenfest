@@ -51,6 +51,8 @@ export const EVENT = {
   start: '2026-10-30T17:15:00+01:00',
   end: '2026-10-30T22:30:00+01:00',
   timeLabel: '17:15 – 22:30',
+  // Desde esta hora la portada destaca cómo hacerse socio/a (lleva a /hazte-socio, el QR)
+  socioDesde: '2026-10-30T16:00:00+01:00',
   donation: '2 €',
   url: import.meta.env.SITE.replace(/\/$/, ''),
 } as const;
